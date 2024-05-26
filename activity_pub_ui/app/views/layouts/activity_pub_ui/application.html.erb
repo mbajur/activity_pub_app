@@ -25,10 +25,10 @@
               <a class="nav-link" href="<%= main_app.good_job_path %>">Jobs</a>
             </li>
           </ul>
-          <form class="d-flex" role="search" action="<%= resolve_objects_path %>" method="post">
+          <%= form_with url: resolve_objects_path, class: 'd-flex', method: :post do %>
             <input class="form-control me-2" type="search" placeholder="Object URI" name="uri">
             <button class="btn btn-outline-success" type="submit">Resolve</button>
-          </form>
+          <% end %>
         </div>
       </div>
     </nav>

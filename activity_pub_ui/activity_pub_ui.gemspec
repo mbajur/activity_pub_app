@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 7.1.3.2"
   spec.add_dependency "pagy", "~> 8.4.0"
+  spec.add_dependency "ransack", "~> 4.1.1"
 end

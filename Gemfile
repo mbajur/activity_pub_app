@@ -66,16 +66,5 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "good_job", "~> 3.28"
-
-gem 'faraday'
-gem 'faraday_middleware'
-
-gem "ransack", "~> 4.1"
-gem 'granola'
-gem 'oj'
-
-gem "panko_serializer", "~> 0.8.1"
-
 gem 'activity_pub', path: 'activity_pub'
 gem 'activity_pub_ui', path: 'activity_pub_ui'

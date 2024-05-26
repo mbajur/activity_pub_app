@@ -22,4 +22,9 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.1.3.2"
+  spec.add_dependency "faraday", "~> 1.10.3"
+  spec.add_dependency "faraday_middleware", "~> 1.2.0"
+  spec.add_dependency "granola", "~> 1.0.0"
+  spec.add_dependency "oj", "~> 3.16.3"
+  spec.add_dependency "good_job", "~> 3.28"
 end

@@ -15,7 +15,7 @@ module ActivityPubUi
 
     def resolve
       @object = ActivityPub::RootObjectResolver.new(params[:uri]).call
-      redirect_to ui_object_path(@object)
+      redirect_to object_path(@object)
     end
   end
 end
