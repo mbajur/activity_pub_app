@@ -1,0 +1,14 @@
+<table class="table align-middle">
+  <thead>
+    <th>ID</th>
+    <th><%= sort_link(@q, :type) %></th>
+    <th><%= sort_link(@q, :status) %></th>
+    <th><%= sort_link(@q, :created_at) %></th>
+    <th><%= sort_link(@q, :last_synced_at) %></th>
+  </thead>
+  <tbody>
+    <%= render collection: @objects, partial: 'row', as: :object %>
+  </tbody>
+</table>
+
+<%== pagy_bootstrap_nav(@pagy) %>

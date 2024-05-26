@@ -1,0 +1,60 @@
+<div class="row mb-5">
+  <div class="col-12">
+    <h1><%= @object.guid %></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-7">
+    <% if @object.error_message %>
+      <h3>Error message</h3>
+      <code><%= @object.error_message %></code>
+    <% end %>
+
+    <h3>Data</h3>
+    <pre><%= JSON.pretty_generate @object.data %></pre>
+  </div>
+
+  <div class="col-5">
+    <h3>In reply to</h3>
+    <% if @object.in_reply_to %>
+      <%= link_to @object.in_reply_to.guid, ui_object_path(@object.in_reply_to) %></li>
+    <% end %>
+
+    <h3 class="mt-4">Attributed to</h3>
+    <ul>
+      <% @object.attributed_to.each do |object| %>
+        <li><%= link_to object.guid, ui_object_path(object) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h3 class="mt-4">Attributions</h3>
+    <table class="table align-middle">
+      <tbody>
+        <% @object.attributions.each do |object| %>
+          <%= render 'row', object: object %>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h3 class="mt-4">Announced</h3>
+    <ul>
+      <% @object.announced.limit(5).each do |announce| %>
+        <li><%= link_to announce.guid, ap_object_path(announce) %></li>
+      <% end %>
+    </ul>
+
+    <h3 class="mt-4">Replies</h3>
+    <table class="table align-middle">
+      <tbody>
+        <% @object.replies.each do |object| %>
+          <%= render 'row', object: object %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<tr class="justify-content-center">
+  <td>
+    <%= link_to object.id, ui_object_path(object), class: 'text-decoration-none font-monospace' %>
+    <div class="text-muted small"><%= object.guid %></div>
+  </td>
+  <td><code><%= object.type %></code></td>
+  <td><%= object.status %></td>
+  <td><%= object.created_at %></td>
+  <td><%= object.last_synced_at %></td>
+</tr>

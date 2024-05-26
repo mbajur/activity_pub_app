@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ap_object: one
+  target_ap_object: one
+  type: 
+
+two:
+  ap_object: two
+  target_ap_object: two
+  type: 

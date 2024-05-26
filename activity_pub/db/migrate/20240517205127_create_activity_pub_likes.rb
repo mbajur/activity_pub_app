@@ -1,0 +1,10 @@
+class CreateActivityPubLikes < ActiveRecord::Migration[7.1]
+  def change
+    create_table :activity_pub_likes, id: :uuid do |t|
+      t.references :source_object_id, null: false, foreign_key: { to_table: :activity_pub_objects }, type: :uuid
+      t.references :target_object_id, null: false, foreign_key: { to_table: :activity_pub_objects }, type: :uuid
+
+      t.timestamps
+    end
+  end
+end
