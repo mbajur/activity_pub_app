@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   mount GoodJob::Engine => 'good_job'
+  mount ActivityPub::Engine => 'ap'
+  mount ActivityPubUi::Engine => 'ap_ui'
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
@@ -11,18 +13,18 @@ Rails.application.routes.draw do
 
   get '.well-known/webfinger', to: 'activity_pub/well_known/webfinger#show', as: :webfinger
 
-  namespace :ui do
-    resources :objects, only: [:index, :show] do
-      post :resolve, on: :collection
-    end
-  end
+  # namespace :ui do
+  #   resources :objects, only: [:index, :show] do
+  #     post :resolve, on: :collection
+  #   end
+  # end
 
-  namespace :activity_pub do
-    post :inbox, to: 'inbox#create'
+  # namespace :activity_pub do
+  #   post :inbox, to: 'inbox#create'
 
-    resources :objects, only: [:show] do
-      post :inbox
-      get :outbox
-    end
-  end
+  #   resources :objects, only: [:show] do
+  #     post :inbox
+  #     get :outbox
+  #   end
+  # end
 end

@@ -9,7 +9,7 @@ module ActivityPub
 
     def links
       [
-        { rel: 'self', type: 'application/activity+json', href: activity_pub_object_url(object) }
+        { rel: 'self', type: 'application/activity+json', href: activity_pub_app.object_url(object) }
       ]
     end
 

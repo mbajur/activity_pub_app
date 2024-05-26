@@ -35,8 +35,7 @@ module ActivityPub
     private
 
     def local_guid
-      # ActivityPub::Engine.routes.url_helpers.object_url(object)
-      activity_pub_object_url(object)
+      ActivityPub::Engine.routes.url_helpers.object_url(object)
     end
   end
 end

@@ -30,8 +30,8 @@ module ActivityPub
 
     def public_key_field
       {
-        id: activity_pub_object_url(@object, anchor: 'main-key'),
-        owner: activity_pub_object_url(@object),
+        id: activity_pub_app.object_url(@object, anchor: 'main-key'),
+        owner: activity_pub_app.object_url(@object),
         public_key_pem: @object.public_key
       }
     end

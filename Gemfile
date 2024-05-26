@@ -77,6 +77,5 @@ gem 'oj'
 
 gem "panko_serializer", "~> 0.8.1"
 
-gem "pagy", "~> 8.4"
-
 gem 'activity_pub', path: 'activity_pub'
+gem 'activity_pub_ui', path: 'activity_pub_ui'

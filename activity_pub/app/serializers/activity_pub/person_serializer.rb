@@ -8,8 +8,8 @@ module ActivityPub
       }
 
       result[:endpoints] = endpoints if resource.has_inbox?
-      result[:inbox]  = activity_pub_app.activity_pub_object_inbox_url(object, **default_url_options) if resource.has_inbox?
-      result[:outbox] = activity_pub_app.activity_pub_object_outbox_url(object, **default_url_options) if resource.has_outbox?
+      result[:inbox]  = activity_pub_app.object_inbox_url(object, **default_url_options) if resource.has_inbox?
+      result[:outbox] = activity_pub_app.object_outbox_url(object, **default_url_options) if resource.has_outbox?
 
       resource.fields.each do |field|
         result[field.key] = resource.field_value(field.key)
@@ -26,7 +26,7 @@ module ActivityPub
 
     def endpoints
       {
-        shared_inbox: activity_pub_app.activity_pub_inbox_url(default_url_options)
+        shared_inbox: activity_pub_app.inbox_url(default_url_options)
       }
     end
   end
