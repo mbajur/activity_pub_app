@@ -1,0 +1,1 @@
+CREATE DATABASE activity_pub_app_production;

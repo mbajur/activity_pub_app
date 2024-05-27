@@ -24,7 +24,10 @@ registry:
 #   secret:
 #     - RAILS_MASTER_KEY
 env:
+  clear:
+    DB_HOST: 5.22.223.28
   secret:
+    - POSTGRES_PASSWORD
     - RAILS_MASTER_KEY
 
 # Use a different ssh user than root
@@ -68,6 +71,23 @@ builder:
 #     port: 6379
 #     directories:
 #       - data:/data
+accessories:
+  db:
+    image: postgres:15
+    host: 5.22.223.28
+    port: 5432
+    env:
+      clear:
+        POSTGRES_USER: "activity_pub_app"
+        POSTGRES_DB: 'activity_pub_app_production'
+      secret:
+        - POSTGRES_PASSWORD
+    files:
+      - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
+    directories:
+      - data:/var/lib/postgresql/data
+    options:
+      network: "private"
 
 # Configure custom arguments for Traefik. Be sure to reboot traefik when you modify it.
 # traefik:
