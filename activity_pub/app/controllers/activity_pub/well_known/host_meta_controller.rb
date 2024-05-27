@@ -11,7 +11,7 @@ module ActivityPub
           </XRD>
         HEREDOC
 
-        render plain: tpl
+        render plain: tpl, status: :ok, content_type: 'application/xrd+xml'
       end
     end
   end
