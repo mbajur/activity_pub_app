@@ -23,6 +23,9 @@ registry:
 #     DB_HOST: 192.168.0.2
 #   secret:
 #     - RAILS_MASTER_KEY
+env:
+  secret:
+    - RAILS_MASTER_KEY
 
 # Use a different ssh user than root
 # ssh:
