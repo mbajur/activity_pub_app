@@ -35,6 +35,8 @@ registry:
 env:
   clear:
     DB_HOST: 5.22.223.28
+    RAILS_SERVE_STATIC_FILES: true
+    RAILS_LOG_TO_STDOUT: true
   secret:
     - POSTGRES_PASSWORD
     - RAILS_MASTER_KEY
