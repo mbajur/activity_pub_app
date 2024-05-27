@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   get '.well-known/webfinger', to: 'activity_pub/well_known/webfinger#show', as: :webfinger
+  get '.well-known/host-meta', to: 'activity_pub/well_known/host_meta#show', as: :host_meta
 
   # namespace :ui do
   #   resources :objects, only: [:index, :show] do
