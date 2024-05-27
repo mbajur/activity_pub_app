@@ -21,6 +21,13 @@ servers:
     options:
       network: "private"
 
+  job:
+    hosts:
+      - 5.22.223.28
+    cmd: bundle exec good_job
+    options:
+      network: "private"
+
 # Credentials for your image host.
 registry:
   server: ghcr.io
