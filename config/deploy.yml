@@ -4,9 +4,18 @@ service: activity_pub_app
 # Name of the container image.
 image: mbajur/activity_pub_app
 
+volumes:
+  - "/home/app/activity_pub_app-cache:/app/tmp/cache"
+  - "/home/app/activity_pub_app-shared:/app/shared"
+  - "/home/app/activity_pub_app-storage:/app/storage"
+
 # Deploy to these servers.
 servers:
-  - 5.22.223.28
+  web:
+    hosts:
+      - 5.22.223.28
+    options:
+      network: "private"
 
 # Credentials for your image host.
 registry:
