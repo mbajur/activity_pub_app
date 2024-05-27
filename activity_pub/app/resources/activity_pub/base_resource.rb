@@ -31,7 +31,7 @@ module ActivityPub
     end
 
     def object_type
-      @type
+      self.class.object_type
     end
 
     def has_inbox?
@@ -48,9 +48,9 @@ module ActivityPub
 
     module ClassMethods
       # Type
-      def type(type = nil)
-        @type = type if type.present?
-        @type
+      def object_type(type = nil)
+        @object_type = type if type.present?
+        @object_type
       end
 
       # Data attributes

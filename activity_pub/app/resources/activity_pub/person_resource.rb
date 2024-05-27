@@ -3,7 +3,7 @@ module ActivityPub
     include RoutingHelper
     include BaseResource
 
-    type 'Person'
+    object_type 'Person'
     category :actor
 
     has_inbox true
