@@ -37,6 +37,11 @@ registry:
 #   remote:
 #     arch: amd64
 #     host: ssh://app@192.168.0.1
+builder:
+  dockerfile: Dockerfile
+  multiarch: false
+  cache:
+    type: registry
 
 # Use accessory services (secrets come from .env).
 # accessories:
