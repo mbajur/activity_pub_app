@@ -44,7 +44,7 @@ class WebfingerResourceValue
 
   def domain_matches_local?
     # local_domain == ActivityPub.domain
-    local_domain == 'me.lvh.me'
+    local_domain == 'aptest.mbajur.com'
   end
 
   def username_from_acct
