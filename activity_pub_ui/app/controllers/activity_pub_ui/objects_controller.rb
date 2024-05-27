@@ -4,6 +4,7 @@ module ActivityPubUi
 
     def index
       @q = ActivityPub::Object.all.ransack(params[:q])
+      @q.sorts = 'created_at desc' if @q.sorts.empty?
       @pagy, @objects = pagy(@q.result)
     end
 

@@ -6,6 +6,7 @@ require 'faraday_middleware'
 require 'granola'
 require 'oj'
 require 'good_job'
+require 'rails_api_logger'
 
 module ActivityPub
   # Your code goes here...

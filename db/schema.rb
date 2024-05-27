@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_26_155426) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_26_213006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -127,6 +127,42 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_155426) do
     t.index ["priority", "created_at"], name: "index_good_jobs_jobs_on_priority_created_at_when_unfinished", order: { priority: "DESC NULLS LAST" }, where: "(finished_at IS NULL)"
     t.index ["queue_name", "scheduled_at"], name: "index_good_jobs_on_queue_name_and_scheduled_at", where: "(finished_at IS NULL)"
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
+  end
+
+  create_table "inbound_request_logs", force: :cascade do |t|
+    t.uuid "uuid"
+    t.string "method"
+    t.string "path"
+    t.text "request_body"
+    t.text "request_headers"
+    t.text "response_body"
+    t.integer "response_code"
+    t.inet "ip_used"
+    t.datetime "started_at", precision: nil
+    t.datetime "ended_at", precision: nil
+    t.string "loggable_type"
+    t.uuid "loggable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loggable_type", "loggable_id"], name: "index_inbound_request_logs_on_loggable"
+  end
+
+  create_table "outbound_request_logs", force: :cascade do |t|
+    t.uuid "uuid"
+    t.string "method"
+    t.string "path"
+    t.text "request_body"
+    t.text "request_headers"
+    t.text "response_body"
+    t.integer "response_code"
+    t.inet "ip_used"
+    t.datetime "started_at", precision: nil
+    t.datetime "ended_at", precision: nil
+    t.string "loggable_type"
+    t.uuid "loggable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loggable_type", "loggable_id"], name: "index_outbound_request_logs_on_loggable"
   end
 
   add_foreign_key "activity_pub_likes", "activity_pub_objects", column: "source_object_id_id"

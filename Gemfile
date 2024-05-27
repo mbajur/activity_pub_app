@@ -68,3 +68,5 @@ end
 
 gem 'activity_pub', path: 'activity_pub'
 gem 'activity_pub_ui', path: 'activity_pub_ui'
+
+gem "rails_api_logger", github: 'Juleffel/rails_api_logger'

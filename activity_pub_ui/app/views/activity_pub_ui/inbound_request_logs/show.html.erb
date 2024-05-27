@@ -1,0 +1,17 @@
+<h1><code><%= @request.path %></code></h1>
+<h4 class="mb-4 text-secondary"><%= @request.method %> <%= @request.response_code %> • <%= @request.started_at %> → <%= @request.ended_at %></h4>
+
+<h3>Related object</h3>
+<div class="mb-3">
+  <% if @request.loggable&.is_a?(ActivityPub::Object) %>
+    <%= link_to @request.loggable.becomes(ActivityPub::Object) do %>
+      <code><%= [@request.loggable_type, @request.loggable_id].join(':') %></code>
+    <% end %>
+  <% end %>
+</div>
+
+<h3>Request body</h3>
+<pre><%= @request.request_body %></pre>
+
+<h3>Response body</h3>
+<pre><%= @request.response_body %></pre>
