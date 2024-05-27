@@ -14,6 +14,10 @@ servers:
   web:
     hosts:
       - 5.22.223.28
+    labels:
+      traefik.http.routers.activity_pub_app.entrypoints: websecure
+      traefik.http.routers.activity_pub_app.rule: Host(`aptest.mbajur.com`)
+      traefik.http.routers.activity_pub_app.tls.certresolver: letsencrypt
     options:
       network: "private"
 
@@ -33,8 +37,9 @@ registry:
 #   secret:
 #     - RAILS_MASTER_KEY
 env:
-  DB_HOST: 5.22.223.28
   clear:
+    HOSTNAME: aptest.mbajur.com
+    APP_DOMAIN: aptest.mbajur.com
     DB_HOST: 5.22.223.28
     RAILS_SERVE_STATIC_FILES: true
     RAILS_LOG_TO_STDOUT: true
@@ -106,6 +111,31 @@ accessories:
 #   args:
 #     accesslog: true
 #     accesslog.format: json
+traefik:
+  options:
+    network: "private"
+    publish:
+      - "443:443"
+    volume:
+      - "/letsencrypt/acme.json:/letsencrypt/acme.json"
+  args:
+    accesslog: true
+    accesslog.format: json
+    accesslog.fields.headers.names.User-Agent: keep
+
+    entryPoints.web.address: ":80"
+
+    entryPoints.websecure.address: ":443"
+    entryPoints.websecure.http.tls.domains[0].main: "aptest.mbajur.com"
+
+    entryPoints.web.http.redirections.entryPoint.to: websecure # We want to force https
+    entryPoints.web.http.redirections.entryPoint.scheme: https
+    entryPoints.web.http.redirections.entrypoint.permanent: true
+
+    certificatesResolvers.letsencrypt.acme.email: "mbajur@gmail.com"
+    certificatesResolvers.letsencrypt.acme.storage: "/letsencrypt/acme.json" # Must match the path in `volume`
+    certificatesResolvers.letsencrypt.acme.httpchallenge: true
+    certificatesResolvers.letsencrypt.acme.httpchallenge.entrypoint: web
 
 # Configure a custom healthcheck (default is /up on port 3000)
 # healthcheck:
