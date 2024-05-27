@@ -79,7 +79,7 @@ test:
 #
 production:
   <<: *default
-  username: psyjaciele
+  username: activity_pub_app
   password: <%= ENV["POSTGRES_PASSWORD"] %>
-  database: psyjaciele_production
+  database: activity_pub_app_production
   host: <%= ENV["DB_HOST"] %>
