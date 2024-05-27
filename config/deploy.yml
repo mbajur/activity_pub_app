@@ -33,6 +33,7 @@ registry:
 #   secret:
 #     - RAILS_MASTER_KEY
 env:
+  DB_HOST: 5.22.223.28
   clear:
     DB_HOST: 5.22.223.28
     RAILS_SERVE_STATIC_FILES: true
