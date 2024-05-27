@@ -5,7 +5,7 @@ module ActivityPub
     before_create :generate_keys
 
     def local_username_and_domain
-      "#{preferred_username}@me.lvh.me"
+      "#{preferred_username}@aptest.mbajur.com"
     end
 
     def to_webfinger_s
