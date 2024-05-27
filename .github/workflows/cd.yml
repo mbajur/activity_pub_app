@@ -42,4 +42,4 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Run deploy command
-        run: kamal deploy
+        run: kamal deploy --verbose
