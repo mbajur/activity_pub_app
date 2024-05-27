@@ -82,4 +82,4 @@ production:
   username: activity_pub_app
   password: <%= ENV["POSTGRES_PASSWORD"] %>
   database: activity_pub_app_production
-  host: <%= ENV["DB_HOST"] %>
+  host: 5.22.223.28
