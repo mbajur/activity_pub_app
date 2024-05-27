@@ -82,4 +82,7 @@ production:
   username: activity_pub_app
   password: <%= ENV["POSTGRES_PASSWORD"] %>
   database: activity_pub_app_production
+  # This should used with ENV var but kamal doesn't let me set DB_HOST env var
+  # for some reason. TO be fixed.
+  # host: <%= ENV["DB_HOST"] %>
   host: 5.22.223.28
