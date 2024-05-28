@@ -19,13 +19,13 @@
   <div class="col-5">
     <h3>In reply to</h3>
     <% if @object.in_reply_to %>
-      <%= link_to @object.in_reply_to.guid, ui_object_path(@object.in_reply_to) %></li>
+      <%= link_to @object.in_reply_to.guid, object_path(@object.in_reply_to) %></li>
     <% end %>
 
     <h3 class="mt-4">Attributed to</h3>
     <ul>
       <% @object.attributed_to.each do |object| %>
-        <li><%= link_to object.guid, ui_object_path(object) %></li>
+        <li><%= link_to object.guid, object_path(object) %></li>
       <% end %>
     </ul>
   </div>
