@@ -31,6 +31,6 @@ module Activitypub
     config.middleware.insert_before Rails::Rack::Logger, InboundRequestsLoggerMiddleware, only_state_change: false,
                                                                                           path_regexp: /ap\/|\.well-known\//,
                                                                                           skip_body_regexp: /ap\//,
-                                                                                          keep_headers: InboundRequestsLoggerMiddleware::DEFAULT_HEADERS + %w[HTTP_DIGEST HTTP_DATE HTTP_SIGNATURE HTTP_HOST]
+                                                                                          keep_headers: InboundRequestsLoggerMiddleware::DEFAULT_HEADERS + %w[HTTP_DIGEST HTTP_DATE HTTP_SIGNATURE HTTP_HOST HTTP_CONTENT_TYPE]
   end
 end
