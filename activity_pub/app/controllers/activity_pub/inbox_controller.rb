@@ -3,7 +3,7 @@ module ActivityPub
     skip_before_action :verify_authenticity_token
 
     def create
-      head :ok
+      head :created
     end
   end
 end
