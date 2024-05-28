@@ -11,7 +11,10 @@
 </div>
 
 <h3>Request body</h3>
-<pre><%= @request.request_body %></pre>
+<pre><%= JSON.pretty_generate @request.request_body %></pre>
+
+<h3>Request headers</h3>
+<pre><%= JSON.pretty_generate(JSON.parse(@request.request_headers)) %></pre>
 
 <h3>Response body</h3>
 <pre><%= @request.response_body %></pre>
