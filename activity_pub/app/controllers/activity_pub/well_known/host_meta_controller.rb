@@ -1,8 +1,6 @@
 module ActivityPub
   module WellKnown
     class HostMetaController < ApplicationController
-      # include ActivityPub::RoutingHelper
-
       def show
         tpl = <<~HEREDOC
           <?xml version="1.0" encoding="UTF-8"?>
