@@ -2,9 +2,7 @@ module ActivityPub
   class ProcessInboxActivityJob < ApplicationJob
     def perform(path:, headers: {}, body:)
       body = JSON.parse(body)
-      actor = ActivityPub::RemoteKeyRefresher.new(body['actor']).call
-      actor_resource = ActivityPub::PersonResource.new(actor)
-      pub_key = actor_resource.field_value(:public_key)
+      local_actor = ActivityPub::RemoteKeyRefresher.new(body['actor']).call
 
       res = ActivityPub::SignatureVerifier.new(
         path: path,
@@ -16,8 +14,8 @@ module ActivityPub
           'Host' => headers['HTTP_HOST']
         },
         body: body,
-        actor_key_id: pub_key[:id],
-        actor_public_key: pub_key[:public_key_pem]
+        actor_key_id: local_actor.data.dig('publicKey', 'id'),
+        actor_public_key: local_actor.data.dig('publicKey', 'publicKeyPem')
       ).call
 
       raise 'Invalid Signature' unless res
