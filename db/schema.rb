@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_29_175439) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_29_185725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
+
+  create_table "activity_pub_follows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "source_object_id_id", null: false
+    t.uuid "target_object_id_id", null: false
+    t.string "state", default: "pending"
+    t.uuid "guid", default: -> { "uuid_generate_v1()" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guid"], name: "index_activity_pub_follows_on_guid", unique: true
+    t.index ["source_object_id_id"], name: "index_activity_pub_follows_on_source_object_id_id"
+    t.index ["target_object_id_id"], name: "index_activity_pub_follows_on_target_object_id_id"
+  end
 
   create_table "activity_pub_likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "source_object_id_id", null: false
@@ -166,6 +179,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_175439) do
     t.index ["loggable_type", "loggable_id"], name: "index_outbound_request_logs_on_loggable"
   end
 
+  add_foreign_key "activity_pub_follows", "activity_pub_objects", column: "source_object_id_id"
+  add_foreign_key "activity_pub_follows", "activity_pub_objects", column: "target_object_id_id"
   add_foreign_key "activity_pub_likes", "activity_pub_objects", column: "source_object_id_id"
   add_foreign_key "activity_pub_likes", "activity_pub_objects", column: "target_object_id_id"
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "ap_object_id"
