@@ -5,7 +5,7 @@ class ActivityPub::Object < ApplicationRecord
   #
   # @todo Maybe we should assign object types on find_or_initialize instead of
   # just storing the guid?
-  store_accessor :data, :publicKey
+  store_accessor :data, :public_key
 
   has_many :attributed_to_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object
   has_many :attributed_to, through: :attributed_to_associations, source: :target_ap_object

@@ -10,6 +10,7 @@ module ActivityPub
 
     def perform(local_object)
       remote_object = HttpClient.new(nil).get(URI.parse(local_object.guid)).body
+      remote_object = ActivityPub::ObjectDataSanitizer.new(remote_object).call
 
       if local_object.fresh?
         logger.info 'Object fresh, skip'
@@ -30,8 +31,8 @@ module ActivityPub
 
       self.batch.add do
         # Resolve authors
-        if remote_object['attributedTo']
-          attributed_to = remote_object['attributedTo'].is_a?(Array) ? remote_object['attributedTo'] : [remote_object['attributedTo']]
+        if remote_object['attributed_to']
+          attributed_to = remote_object['attributed_to'].is_a?(Array) ? remote_object['attributed_to'] : [remote_object['attributed_to']]
 
           attributed_to.each do |attribution|
             attributor = ActivityPub::Object.find_or_create_by(guid: attribution)
@@ -44,8 +45,8 @@ module ActivityPub
         ActivityPub::ObjectResolver.new(remote_object.dig('replies', 'id')).call if remote_object['replies']
 
         # Resolve parent
-        if remote_object['inReplyTo']
-          in_reply_to = remote_object['inReplyTo'].is_a?(Array) ? remote_object['inReplyTo'][0] : remote_object['inReplyTo']
+        if remote_object['in_reply_to']
+          in_reply_to = remote_object['in_reply_to'].is_a?(Array) ? remote_object['in_reply_to'][0] : remote_object['in_reply_to']
           parent_obj = ActivityPub::Object.find_or_create_by(guid: in_reply_to)
           local_object.in_reply_to = parent_obj
           ActivityPub::ObjectResolver.new(in_reply_to).call
