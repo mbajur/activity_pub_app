@@ -1,6 +1,6 @@
 module ActivityPub
   module ActivityHandlers
-    class DeleteHandler
+    class DeleteHandler < BaseHandler
       def call
       end
     end
