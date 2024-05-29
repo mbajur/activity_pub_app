@@ -7,21 +7,21 @@ class ActivityPub::Object < ApplicationRecord
   # just storing the guid?
   store_accessor :data, :public_key
 
-  has_many :attributed_to_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object
+  has_many :attributed_to_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object, dependent: :destroy
   has_many :attributed_to, through: :attributed_to_associations, source: :target_ap_object
 
-  has_many :attribution_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :target_ap_object
+  has_many :attribution_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :target_ap_object, dependent: :destroy
   has_many :attributions, through: :attribution_associations, source: :ap_object
 
   belongs_to :in_reply_to, class_name: 'ActivityPub::Object', foreign_key: :in_reply_to_ap_object_id, optional: true
-  has_many :replies, class_name: 'ActivityPub::Object', foreign_key: :in_reply_to_ap_object_id
+  has_many :replies, class_name: 'ActivityPub::Object', foreign_key: :in_reply_to_ap_object_id, dependent: :destroy
 
-  has_many :announce_associations, ->{ where(type_key: 'announce') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object
+  has_many :announce_associations, ->{ where(type_key: 'announce') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object, dependent: :destroy
   has_many :announced, through: :announce_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
 
-  has_many :followers_associations, class_name: 'ActivityPub::Follow', inverse_of: :target_ap_object
+  has_many :followers_associations, class_name: 'ActivityPub::Follow', inverse_of: :target_ap_object, dependent: :destroy
   has_many :followers, through: :followers_associations, class_name: 'ActivityPub::Object', source: :source_ap_object
-  has_many :following_associations, class_name: 'ActivityPub::Follow', inverse_of: :source_ap_object
+  has_many :following_associations, class_name: 'ActivityPub::Follow', inverse_of: :source_ap_object, dependent: :destroy
   has_many :following, through: :following_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
 
   after_initialize :set_default_type
