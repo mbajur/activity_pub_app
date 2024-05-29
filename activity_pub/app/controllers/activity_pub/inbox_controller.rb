@@ -9,7 +9,7 @@ module ActivityPub
     def create
       ActivityPub::ProcessInboxActivityJob.perform_later(
         path: request.path,
-        headers: request.headers.to_h.slice(%w[HTTP_DIGEST HTTP_DATE HTTP_SIGNATURE HTTP_HOST CONTENT_TYPE CONTENT_LENGTH]),
+        headers: request.headers.to_h.slice(*%w[HTTP_DIGEST HTTP_DATE HTTP_SIGNATURE HTTP_HOST HTTP_CONTENT_TYPE CONTENT_LENGTH]),
         body: request.body.read
       )
       head :created
