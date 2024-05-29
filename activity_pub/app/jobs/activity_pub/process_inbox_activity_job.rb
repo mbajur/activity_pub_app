@@ -1,7 +1,8 @@
 module ActivityPub
   class ProcessInboxActivityJob < ApplicationJob
     def perform(path:, headers: {}, body:)
-      actor = ActivityPub::RemoteKeyRefresher.new(body[:actor]).call
+      body = JSON.parse(body)
+      actor = ActivityPub::RemoteKeyRefresher.new(body['actor']).call
 
       res = ActivityPub::SignatureVerifier.new(
         path: path,
