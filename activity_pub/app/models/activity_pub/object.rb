@@ -1,4 +1,10 @@
 class ActivityPub::Object < ApplicationRecord
+  # I put it in here because sometimes we need to acess user public key before
+  # it's full data has been fetched from remote server. It's set as Unknown type
+  # then.
+  #
+  # @todo Maybe we should assign object types on find_or_initialize instead of
+  # just storing the guid?
   store_accessor :data, :public_key
 
   has_many :attributed_to_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object

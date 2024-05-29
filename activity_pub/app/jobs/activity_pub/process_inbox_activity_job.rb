@@ -3,6 +3,8 @@ module ActivityPub
     def perform(path:, headers: {}, body:)
       body = JSON.parse(body)
       actor = ActivityPub::RemoteKeyRefresher.new(body['actor']).call
+      actor_resource = ActivityPub::PersonResource.new(actor)
+      pub_key = actor_resource.field_value(:public_key)
 
       res = ActivityPub::SignatureVerifier.new(
         path: path,
@@ -14,8 +16,8 @@ module ActivityPub
           'Host' => headers['Host']
         },
         body: body,
-        actor_key_id: actor.data.dig('publicKey', 'id'),
-        actor_public_key: actor.data.dig('publicKey', 'publicKeyPem')
+        actor_key_id: pub_key[:id],
+        actor_public_key: pub_key[:public_key_pem]
       ).call
 
       raise 'Invalid Signature' unless res
