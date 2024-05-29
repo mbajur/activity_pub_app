@@ -15,7 +15,7 @@ module ActivityPub
         },
         body: body,
         actor_key_id: actor.data.dig('publicKey', 'id'),
-        actor_public_key: actor.public_key
+        actor_public_key: actor.data.dig('publicKey', 'publicKeyPem')
       ).call
 
       raise 'Invalid Signature' unless res
