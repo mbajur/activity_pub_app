@@ -1,24 +1,26 @@
 module ActivityPub
   class ProcessInboxActivityJob < ApplicationJob
+    class UnsupportedActivityType < StandardError; end
+
     def perform(path:, headers: {}, body:)
       body = JSON.parse(body)
-      local_actor = ActivityPub::RemoteKeyRefresher.new(body['actor']).call
 
-      res = ActivityPub::SignatureVerifier.new(
-        path: path,
-        headers: {
-          "Date" => headers['HTTP_DATE'],
-          'Content-Type' => headers['CONTENT_TYPE'],
-          'Digest' => headers['HTTP_DIGEST'],
-          'Signature' => headers['HTTP_SIGNATURE'],
-          'Host' => headers['HTTP_HOST']
-        },
-        body: body,
-        actor_key_id: local_actor.data.dig('public_key', 'id'),
-        actor_public_key: local_actor.data.dig('public_key', 'public_key_pem')
-      ).call
+      handler_klass(body['type'])
+        .new(path: path, headers: headers, body: body)
+        .call
+    end
 
-      raise 'Invalid Signature' unless res
+    private
+
+    def handler_klass(type)
+      klass = {
+        'Delete' => ActivityPub::ActivityHandlers::DeleteHandler,
+        'Follow' => ActivityPub::ActivityHandlers::FollowHandler,
+      }[type.capitalize]
+
+      raise UnsupportedActivityType, "Unsupported activity type: #{type}" unless klass
+
+      klass
     end
   end
 end
