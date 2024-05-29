@@ -9,11 +9,11 @@ module ActivityPub
       res = ActivityPub::SignatureVerifier.new(
         path: path,
         headers: {
-          "Date" => headers['Date'],
-          'Content-Type' => headers['Content-Type'],
-          'Digest' => headers['Digest'],
-          'Signature' => headers['Signature'],
-          'Host' => headers['Host']
+          "Date" => headers['HTTP_DATE'],
+          'Content-Type' => headers['CONTENT_TYPE'],
+          'Digest' => headers['HTTP_DIGEST'],
+          'Signature' => headers['HTTP_SIGNATURE'],
+          'Host' => headers['HTTP_HOST']
         },
         body: body,
         actor_key_id: pub_key[:id],
