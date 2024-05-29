@@ -6,7 +6,6 @@ module ActivityPub
 
     def call
       local_object = ActivityPub::Object.create_or_find_by(guid: @uri)
-      ActivityPub::ResolveObjectJob.perform_later(local_object)
       remote_object = HttpClient.new(nil).get(URI.parse(local_object.guid)).body
 
       local_object.update!(public_key: remote_object.dig('publicKey', 'publicKeyPem'))
