@@ -27,6 +27,7 @@ class ActivityPub::Object < ApplicationRecord
   after_initialize :set_default_type
 
   scope :local, ->{ where(guid: nil) }
+  scope :remote, ->{ where.not(guid: nil) }
 
   enum status: {
     draft: 'draft',
