@@ -7,7 +7,7 @@ module ActivityPub
     rescue_from RequestValidationError, with: :request_validation_error
 
     def create
-      ActivityPub::ProcessInboxActivity.perform_later(
+      ActivityPub::ProcessInboxActivityJob.perform_later(
         path: request.path,
         headers: request.headers.to_h.slice(%w[HTTP_DIGEST HTTP_DATE HTTP_SIGNATURE HTTP_HOST CONTENT_TYPE CONTENT_LENGTH]),
         body: request.body.read
