@@ -7,6 +7,7 @@ require 'granola'
 require 'oj'
 require 'good_job'
 require 'rails_api_logger'
+require 'http_signatures'
 
 module ActivityPub
   # Your code goes here...
