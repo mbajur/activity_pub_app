@@ -1,7 +1,8 @@
 module ActivityPub
   class ObjectResolver
-    # Creates a new draft ActivityPub::Object record or finds already existing one for
-    # given guid and enqueues `ActivityPub::ResolveObjectJob` for this record.
+    # Creates a new draft ActivityPub::Object record or finds already existing
+    # one for given guid and enqueues `ActivityPub::ResolveObjectJob` for this
+    # record.
     #
     # For subsequential object resolving. Should be called by
     # RootObjectResolver, do not call it directly.

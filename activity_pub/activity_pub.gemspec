@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "granola", "~> 1.0.0"
   spec.add_dependency "oj", "~> 3.16.3"
   spec.add_dependency "good_job", "~> 3.28"
+  spec.add_dependency "http_signatures"
 end
