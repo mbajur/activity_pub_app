@@ -8,7 +8,7 @@ module ActivityPub
         local_target = ActivityPub::Object.local.find_by(id: local_target_guid)
         raise ActiveRecord::RecordNotFound, "Local target #{local_target_guid} not found" unless local_target
 
-        follow = ActivityPub::ObjectAssociation.first_or_initialize_by(type: 'follow', guid: body['id'])
+        follow = ActivityPub::ObjectAssociation.first_or_initialize(type: 'follow', guid: body['id'])
         return if follow.persisted?
 
         follow.ap_object = ActivityPub::ObjectEnsurer.new(body['actor']).call
