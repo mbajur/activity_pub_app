@@ -1,5 +1,5 @@
 module ActivityPub
-  class ProcessInboxActivityJob
+  class ProcessInboxActivityJob < ApplicationJob
     def perform(path:, headers: {}, body:)
       actor = ActivityPub::RemoteKeyRefresher.new(body[:actor]).call
 
