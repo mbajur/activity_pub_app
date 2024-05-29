@@ -10,9 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_26_213006) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_29_175439) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
@@ -31,7 +30,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_213006) do
     t.string "type_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "guid"
     t.index ["ap_object_id"], name: "index_activity_pub_object_associations_on_ap_object_id"
+    t.index ["guid"], name: "index_activity_pub_object_associations_on_guid", unique: true
     t.index ["target_ap_object_id"], name: "index_activity_pub_object_associations_on_target_ap_object_id"
   end
 

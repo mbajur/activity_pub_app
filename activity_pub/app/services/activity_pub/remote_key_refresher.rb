@@ -5,7 +5,7 @@ module ActivityPub
     end
 
     def call
-      local_object = ActivityPub::Object.create_or_find_by(guid: @uri)
+      local_object = ActivityPub::ObjectEnsurer.new(@uri).call
       remote_object = HttpClient.new(nil).get(URI.parse(local_object.guid)).body
       remote_object = ActivityPub::ObjectDataSanitizer.new(remote_object).call
 

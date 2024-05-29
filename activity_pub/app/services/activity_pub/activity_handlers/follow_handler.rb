@@ -2,7 +2,16 @@ module ActivityPub
   module ActivityHandlers
     class FollowHandler < BaseHandler
       def call
-        # raise NotImplementedError, 'Follow activity is not yet implemented!'
+        verify_signature!
+
+        local_target_guid = body['object']
+        local_target = ActivityPub::Object.local.find_by(guid: local_target_guid)
+        raise ActiveRecord::RecordNotFound, "Local target #{local_target_guid} not found"
+
+        follow = ActivityPub::ObjectAssociation.first_or_initialize_by(type: 'follow', guid: body['id'])
+        follow.ap_object = ActivityPub::ObjectEnsurer.new(body['actor']).call
+        follow.target_ap_object = local_target
+        follow.save!
       end
     end
   end
