@@ -19,9 +19,10 @@ class ActivityPub::Object < ApplicationRecord
   has_many :announce_associations, ->{ where(type_key: 'announce') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object
   has_many :announced, through: :announce_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
 
-  has_many :follow_associations, class_name: 'ActivityPub::Follow'
-  has_many :followers, through: :follow_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
-  has_many :following, through: :follow_associations, class_name: 'ActivityPub::Object', source: :source_ap_object
+  has_many :followers_associations, class_name: 'ActivityPub::Follow', inverse_of: :target_ap_object
+  has_many :followers, through: :followers_associations, class_name: 'ActivityPub::Object', source: :source_ap_object
+  has_many :following_associations, class_name: 'ActivityPub::Follow', inverse_of: :source_ap_object
+  has_many :following, through: :following_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
 
   after_initialize :set_default_type
 

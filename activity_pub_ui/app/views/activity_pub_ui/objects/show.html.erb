@@ -57,5 +57,23 @@
         <% end %>
       </tbody>
     </table>
+
+    <h3 class="mt-4">Followers</h3>
+    <table class="table align-middle">
+      <tbody>
+        <% @object.followers_associations.each do |follow| %>
+          <%= render 'activity_pub_ui/follows/row', follow: follow, object: follow.source_ap_object %>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h3 class="mt-4">Following</h3>
+    <table class="table align-middle">
+      <tbody>
+        <% @object.following_associations.each do |follow| %>
+          <%= render 'activity_pub_ui/follows/row', follow: follow, object: follow.target_ap_object %>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
