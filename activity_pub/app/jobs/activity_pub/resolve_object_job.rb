@@ -8,11 +8,11 @@ module ActivityPub
       key: -> { "#{self.class.name}-#{queue_name}-#{arguments.first}" }
     )
 
-    def perform(local_object)
+    def perform(local_object, shallow: false, skip_if_fresh: true)
       remote_object = HttpClient.new(nil).get(URI.parse(local_object.guid)).body
       remote_object = ActivityPub::ObjectDataSanitizer.new(remote_object).call
 
-      if local_object.fresh?
+      if skip_if_fresh && local_object.fresh?
         logger.info 'Object fresh, skip'
         return true
       end
@@ -31,7 +31,7 @@ module ActivityPub
 
       self.batch.add do
         # Resolve authors
-        if remote_object['attributed_to']
+        if remote_object['attributed_to'] && !shallow
           attributed_to = remote_object['attributed_to'].is_a?(Array) ? remote_object['attributed_to'] : [remote_object['attributed_to']]
 
           attributed_to.each do |attribution|
@@ -42,10 +42,12 @@ module ActivityPub
         end
 
         # Resolve replies
-        ActivityPub::ObjectResolver.new(remote_object.dig('replies', 'id')).call if remote_object['replies']
+        if !shallow
+          ActivityPub::ObjectResolver.new(remote_object.dig('replies', 'id')).call if remote_object['replies']
+        end
 
         # Resolve parent
-        if remote_object['in_reply_to']
+        if remote_object['in_reply_to'] && !shallow
           in_reply_to = remote_object['in_reply_to'].is_a?(Array) ? remote_object['in_reply_to'][0] : remote_object['in_reply_to']
           parent_obj = ActivityPub::Object.find_or_create_by(guid: in_reply_to)
           local_object.in_reply_to = parent_obj
@@ -79,6 +81,7 @@ module ActivityPub
         'OrderedCollectionPage' => ActivityPub::ObjectHandlers::OrderedCollectionPageHandler,
 
         'Create' => ActivityPub::ObjectHandlers::CreateHandler,
+        # 'Update' => ActivityPub::ObjectHandlers::UpdateHandler,
       }[object['type']] || ActivityPub::ObjectHandlers::UnknownHandler
     end
   end

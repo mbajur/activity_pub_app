@@ -17,6 +17,7 @@ module ActivityPub
         'Delete' => ActivityPub::ActivityHandlers::DeleteHandler,
         'Follow' => ActivityPub::ActivityHandlers::FollowHandler,
         'Create' => ActivityPub::ActivityHandlers::CreateHandler,
+        'Update' => ActivityPub::ActivityHandlers::UpdateHandler,
       }[type.capitalize]
 
       raise UnsupportedActivityType, "Unsupported activity type: #{type}" unless klass
