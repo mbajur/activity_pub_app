@@ -6,7 +6,7 @@ module ActivityPub
 
     included do
       def default_url_options
-        ActionMailer::Base.default_url_options
+        ActionMailer::Base.default_url_options.merge(host: ActivityPub.domain)
       end
     end
 

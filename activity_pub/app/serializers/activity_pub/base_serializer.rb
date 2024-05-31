@@ -31,11 +31,5 @@ module ActivityPub
     def to_json(opts = {})
       Oj.dump(as_json(opts))
     end
-
-    private
-
-    def local_guid
-      ActivityPub::Engine.routes.url_helpers.object_url(object)
-    end
   end
 end

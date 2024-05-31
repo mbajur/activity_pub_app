@@ -15,6 +15,7 @@ module ActivityPub
     delegate :type,
              :has_inbox,
              :has_outbox,
+             :has_followers,
              :fields,
              to: 'self.class'
 
@@ -30,6 +31,14 @@ module ActivityPub
                          &.call(@object)
     end
 
+    def local_guid
+      ActivityPub::Engine.routes.url_helpers.object_url(@object, **default_url_options)
+    end
+
+    def followers_url
+      activity_pub_app.object_followers_url(@object, **default_url_options) if has_followers?
+    end
+
     def object_type
       self.class.object_type
     end
@@ -40,6 +49,10 @@ module ActivityPub
 
     def has_outbox?
       self.class.has_outbox
+    end
+
+    def has_followers?
+      self.class.has_followers
     end
 
     def field_value(key)
@@ -99,6 +112,11 @@ module ActivityPub
       def has_outbox(val = nil)
         @_has_outbox = val if val.present?
         @_has_outbox || false
+      end
+
+      def has_followers(val = nil)
+        @_has_followers = val if val.present?
+        @_has_followers || false
       end
     end
   end

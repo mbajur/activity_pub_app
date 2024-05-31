@@ -8,6 +8,7 @@ module ActivityPub
 
     has_inbox true
     has_outbox true
+    has_followers true
 
     register_data_attribute :name
     register_data_attribute :public_key
@@ -27,7 +28,7 @@ module ActivityPub
     end
 
     def public_key_id
-      activity_pub_app.object_url(@object, anchor: 'main-key')
+      activity_pub_app.object_url(@object, anchor: 'main-key', **default_url_options)
     end
 
     private
@@ -35,7 +36,7 @@ module ActivityPub
     def public_key_field
       {
         id: public_key_id,
-        owner: activity_pub_app.object_url(@object),
+        owner: activity_pub_app.object_url(@object, **default_url_options),
         public_key_pem: @object.public_key
       }
     end

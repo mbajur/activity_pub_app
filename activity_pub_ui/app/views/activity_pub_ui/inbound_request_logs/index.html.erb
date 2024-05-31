@@ -5,6 +5,7 @@
     <th><%= sort_link(@q, :code) %></th>
     <th>Path</th>
     <th><%= sort_link(@q, :started_at) %></th>
+    <th><%= sort_link(@q, :ended_at) %></th>
     <th>Loggable</th>
   </thead>
 
@@ -16,6 +17,7 @@
       <td><code><%= request.path %></code></td>
       <td><%= request.started_at %></td>
       <td><%= request.ended_at %></td>
+      <td><%= [request.loggable_type, request.loggable_id].join(':') %></td>
     </tr>
   <% end %>
 </table>
