@@ -5,4 +5,4 @@
 # end
 
 # ActivityPub.logger = Rails.logger
-ActivityPub.domain = ENV.fetch('DOMAIN')
+ActivityPub.domain = ENV.fetch('APP_DOMAIN')
