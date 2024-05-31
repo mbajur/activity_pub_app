@@ -26,7 +26,7 @@ module Activitypub
 
     config.active_job.queue_adapter = :good_job
 
-    config.action_mailer.default_url_options = { host: 'aptest.mbajur.com' }
+    config.action_mailer.default_url_options = { host: ActivityPub.domain, protocol: :https }
 
     config.middleware.insert_before Rails::Rack::Logger, InboundRequestsLoggerMiddleware, only_state_change: false,
                                                                                           path_regexp: /ap\/|\.well-known\//,

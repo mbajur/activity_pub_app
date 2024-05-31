@@ -23,7 +23,11 @@ module ActivityPub
     register_field :public_key, :public_key_field
 
     public_url_resolver do |object|
-      "https://some-domain.com/users/#{object.id}"
+      "https://#{ActivityPub.domain}/users/#{object.id}"
+    end
+
+    def public_key_id
+      activity_pub_app.object_url(@object, anchor: 'main-key')
     end
 
     private
@@ -34,10 +38,6 @@ module ActivityPub
         owner: activity_pub_app.object_url(@object),
         public_key_pem: @object.public_key
       }
-    end
-
-    def public_key_id
-      activity_pub_app.object_url(@object, anchor: 'main-key')
     end
   end
 end
