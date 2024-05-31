@@ -21,7 +21,6 @@ servers:
     options:
       network: "private"
 
-
   job:
     hosts:
       - 5.22.223.28
@@ -47,13 +46,13 @@ registry:
 env:
   clear:
     HOSTNAME: aptest.mbajur.com
-    APP_DOMAIN: aptest.mbajur.com
     DB_HOST: 5.22.223.28
     RAILS_SERVE_STATIC_FILES: true
     RAILS_LOG_TO_STDOUT: true
   secret:
     - POSTGRES_PASSWORD
     - RAILS_MASTER_KEY
+    - APP_DOMAIN
 
 # Use a different ssh user than root
 # ssh:
