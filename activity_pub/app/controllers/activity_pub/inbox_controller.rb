@@ -12,7 +12,7 @@ module ActivityPub
         headers: request.headers.to_h.slice(*%w[HTTP_DIGEST HTTP_DATE HTTP_SIGNATURE HTTP_HOST CONTENT_TYPE CONTENT_LENGTH]),
         body: request.body.read
       )
-      head :created
+      head :accepted
     end
 
     private
