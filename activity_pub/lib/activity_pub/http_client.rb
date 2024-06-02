@@ -20,13 +20,14 @@ module ActivityPub
       @client ||= Faraday.new do |connection|
         resource = ActivityPub::PersonResource.new(actor)
 
+        connection.use FaradayMiddleware::DigestHeader
+
         if actor
           connection.request :signature, keys: {
             resource.public_key_id => { private_key: actor.private_key }
           }, algorithm: 'rsa-sha256'
         end
 
-        connection.use FaradayMiddleware::DigestHeader
 
         connection.headers[:accept] = 'application/activity+json'
         connection.headers[:date] = Time.current.utc.httpdate
