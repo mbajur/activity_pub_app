@@ -12,6 +12,7 @@ require 'http_signatures'
 
 require 'http_signatures/extensions/faraday'
 require 'faraday_middleware/rails_api_outbound_logger'
+require 'faraday_middleware/digest_header'
 
 module ActivityPub
   mattr_accessor :domain

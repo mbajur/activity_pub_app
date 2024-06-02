@@ -26,6 +26,8 @@ module ActivityPub
           }, algorithm: 'rsa-sha256'
         end
 
+        connection.use FaradayMiddleware::DigestHeader
+
         connection.headers[:accept] = 'application/activity+json'
         connection.headers[:date] = Time.current.utc.httpdate
         connection.response :json, content_type: /\bjson$/
