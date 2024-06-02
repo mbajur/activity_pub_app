@@ -4,4 +4,5 @@ ActivityPubUi::Engine.routes.draw do
   end
 
   resources :inbound_request_logs, only: [:index, :show]
+  resources :outbound_request_logs, only: [:index, :show]
 end

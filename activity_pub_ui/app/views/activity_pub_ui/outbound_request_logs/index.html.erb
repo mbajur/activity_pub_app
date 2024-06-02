@@ -1,0 +1,25 @@
+<table class="table">
+  <thead>
+    <th><%= sort_link(@q, :id) %></th>
+    <th><%= sort_link(@q, :method) %></th>
+    <th><%= sort_link(@q, :code) %></th>
+    <th>Path</th>
+    <th><%= sort_link(@q, :started_at) %></th>
+    <th><%= sort_link(@q, :ended_at) %></th>
+    <th>Loggable</th>
+  </thead>
+
+  <% @requests.each do |request| %>
+    <tr>
+      <td><%= link_to request.id, request %></td>
+      <td><%= request.method %></td>
+      <td><%= request.response_code %></td>
+      <td><code><%= request.path %></code></td>
+      <td><%= request.started_at %></td>
+      <td><%= request.ended_at %></td>
+      <td><%= [request.loggable_type, request.loggable_id].join(':') %></td>
+    </tr>
+  <% end %>
+</table>
+
+<%== pagy_bootstrap_nav(@pagy) %>

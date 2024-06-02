@@ -28,9 +28,10 @@ module ActivityPub
 
         connection.headers[:accept] = 'application/activity+json'
         connection.headers[:date] = Time.current.utc.httpdate
-        connection.response :json
+        connection.response :json, content_type: /\bjson$/
 
         connection.use Faraday::Response::RaiseError
+        connection.use FaradayMiddleware::RailsApiOutboundLogger
       end
     end
   end
