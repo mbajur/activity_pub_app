@@ -8,6 +8,10 @@ module ActivityPub
       client.get url
     end
 
+    def post(url, body: {})
+      client.post url, body: body
+    end
+
     private
 
     attr_reader :actor
