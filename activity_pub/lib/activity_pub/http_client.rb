@@ -9,7 +9,7 @@ module ActivityPub
     end
 
     def post(url, body: {})
-      client.post url, body: body
+      client.post url, body
     end
 
     private
