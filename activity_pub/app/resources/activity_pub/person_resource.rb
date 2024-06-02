@@ -31,12 +31,16 @@ module ActivityPub
       activity_pub_app.object_url(@object, anchor: 'main-key', **default_url_options)
     end
 
+    def guid
+      @object.guid.presence || activity_pub_app.object_url(@object, **default_url_options)
+    end
+
     private
 
     def public_key_field
       {
         id: public_key_id,
-        owner: activity_pub_app.object_url(@object, **default_url_options),
+        owner: guid,
         public_key_pem: @object.public_key
       }
     end
