@@ -4,6 +4,9 @@ module HttpSignatures
       SIGNATURE_HEADER = 'Signature'.freeze
 
       def on_request(env)
+        # Make sure Host header exists so it can be signed
+        env[:request_headers]['Host'] = env.url.host
+
         env[:request_headers][SIGNATURE_HEADER] = sign_request(env)
       end
 
