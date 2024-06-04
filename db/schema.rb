@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_30_194232) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_04_064145) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_trgm"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -61,6 +62,31 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_194232) do
     t.datetime "updated_at", null: false
     t.index ["guid"], name: "index_activity_pub_objects_on_guid", unique: true
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
+  end
+
+  create_table "exception_hunter_error_groups", force: :cascade do |t|
+    t.string "error_class_name", null: false
+    t.string "message"
+    t.integer "status", default: 0
+    t.text "tags", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message"], name: "index_exception_hunter_error_groups_on_message", opclass: :gin_trgm_ops, using: :gin
+    t.index ["status"], name: "index_exception_hunter_error_groups_on_status"
+  end
+
+  create_table "exception_hunter_errors", force: :cascade do |t|
+    t.string "class_name", null: false
+    t.string "message"
+    t.datetime "occurred_at", precision: nil, null: false
+    t.json "environment_data"
+    t.json "custom_data"
+    t.json "user_data"
+    t.string "backtrace", default: [], array: true
+    t.bigint "error_group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["error_group_id"], name: "index_exception_hunter_errors_on_error_group_id"
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -201,5 +227,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_194232) do
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "ap_object_id"
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "target_ap_object_id"
   add_foreign_key "activity_pub_objects", "activity_pub_objects", column: "in_reply_to_ap_object_id"
+  add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
   add_foreign_key "users", "activity_pub_objects", column: "ap_object_id"
 end

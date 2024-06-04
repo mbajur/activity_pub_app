@@ -10,6 +10,14 @@ GIT
       railties (>= 4.1.0)
       zeitwerk (>= 2.0.0)
 
+GIT
+  remote: https://github.com/mbajur/flypaper.git
+  revision: cd3e2853a840d383ca3fbae136ee478c8e4d1a3e
+  specs:
+    exception_hunter (1.1.0)
+      pagy (~> 8)
+      slack-notifier (~> 2.3)
+
 PATH
   remote: activity_pub_ui
   specs:
@@ -306,6 +314,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    slack-notifier (2.4.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -356,6 +365,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   dotenv
+  exception_hunter (~> 1.0)!
   importmap-rails
   jbuilder
   pg (~> 1.1)

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   mount ActivityPub::Engine => 'ap'
 
   authenticate :user do
+    mount ExceptionHunter::Engine => 'exception_hunter'
     mount GoodJob::Engine => 'good_job'
     mount ActivityPubUi::Engine => 'ap_ui'
   end
