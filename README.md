@@ -1,24 +1,14 @@
-# README
+### Examples
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+#### Person profile update distribution
 
-Things you may want to cover:
+    actor = ActivityPub::Person.local.first
+    activity = ActivityPub::UpdateSerializer.new(actor, with_context: true, actor: actor)
+    ActivityPub::HttpClient.new(actor).post('https://mastodon.social/inbox', body: activity.to_json)
 
-* Ruby version
+#### Accepting a remote follow distribution
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    follow = ActivityPub::Follow.last
+    actor = follow.target_ap_object
+    activity = ActivityPub::AcceptSerializer.new(follow, with_context: true)
+    ActivityPub::HttpClient.new(actor).post('https://mastodon.social/inbox', body: activity.to_json)
