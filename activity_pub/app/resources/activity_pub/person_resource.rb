@@ -17,11 +17,13 @@ module ActivityPub
     register_data_attribute :summary
     register_data_attribute :url
     register_data_attribute :public_key
+    register_data_attribute :manually_approves_followers
 
     register_field :name
     register_field :preferred_username
     register_field :summary
     register_field :public_key, :public_key_field
+    register_field :manually_approves_followers
 
     public_url_resolver do |object|
       "https://#{ActivityPub.domain}/users/#{object.id}"

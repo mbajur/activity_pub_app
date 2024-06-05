@@ -17,15 +17,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_185316) do
   enable_extension "uuid-ossp"
 
   create_table "activity_pub_follows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "source_object_id_id", null: false
-    t.uuid "target_object_id_id", null: false
+    t.uuid "source_ap_object_id", null: false
+    t.uuid "target_ap_object_id", null: false
     t.string "state", default: "pending"
     t.uuid "guid", default: -> { "uuid_generate_v1()" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["guid"], name: "index_activity_pub_follows_on_guid", unique: true
-    t.index ["source_object_id_id"], name: "index_activity_pub_follows_on_source_object_id_id"
-    t.index ["target_object_id_id"], name: "index_activity_pub_follows_on_target_object_id_id"
+    t.index ["source_ap_object_id"], name: "index_activity_pub_follows_on_source_ap_object_id"
+    t.index ["target_ap_object_id"], name: "index_activity_pub_follows_on_target_ap_object_id"
   end
 
   create_table "activity_pub_likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -63,8 +63,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_185316) do
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
   end
 
-  add_foreign_key "activity_pub_follows", "activity_pub_objects", column: "source_object_id_id"
-  add_foreign_key "activity_pub_follows", "activity_pub_objects", column: "target_object_id_id"
+  add_foreign_key "activity_pub_follows", "activity_pub_objects", column: "source_ap_object_id"
+  add_foreign_key "activity_pub_follows", "activity_pub_objects", column: "target_ap_object_id"
   add_foreign_key "activity_pub_likes", "activity_pub_objects", column: "source_object_id_id"
   add_foreign_key "activity_pub_likes", "activity_pub_objects", column: "target_object_id_id"
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "ap_object_id"

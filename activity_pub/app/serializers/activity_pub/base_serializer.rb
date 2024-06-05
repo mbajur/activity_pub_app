@@ -4,7 +4,10 @@ module ActivityPub
 
     CONTEXT = [
       'https://www.w3.org/ns/activitystreams',
-      'https://w3id.org/security/v1'
+      'https://w3id.org/security/v1',
+      {
+        manually_approves_followers: 'as:manuallyApprovesFollowers'
+      }
     ].freeze
 
     attr_reader :options

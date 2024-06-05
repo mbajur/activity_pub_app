@@ -30,6 +30,9 @@
             <li class="nav-item">
               <a class="nav-link" href="<%= main_app.good_job_path %>">Jobs</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<%= main_app.exception_hunter_path %>">Exceptions</a>
+            </li>
           </ul>
           <%= form_with url: resolve_objects_path, class: 'd-flex', method: :post do %>
             <input class="form-control me-2" type="search" placeholder="Object URI" name="uri">

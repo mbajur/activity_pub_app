@@ -11,7 +11,13 @@ module ActivityPub
         follow = Follow.find_or_initialize_by(guid: body['id'])
         follow.source_ap_object = ActivityPub::ObjectEnsurer.new(body['actor']).call
         follow.target_ap_object = local_target
-        follow.state = 'confirmed' # @todo handle confirmation
+
+        if local_target.manually_approves_followers
+          follow.state = 'pending'
+        else
+          follow.state = 'confirmed'
+        end
+
         follow.save!
       end
     end

@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  mount ActivityPub::Engine => "/activity_pub"
+  mount ActivityPub::Engine => "/ap"
 end
