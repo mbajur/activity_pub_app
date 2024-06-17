@@ -8,6 +8,7 @@ describe ActivityPub::ActivityHandlers::FollowHandler do
 
   let(:incoming_body) do
     {
+      'type' => 'Follow',
       'object' => "https://example.com/ap/objects/#{person.id}"
     }
   end

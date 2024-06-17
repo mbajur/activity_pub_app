@@ -18,6 +18,7 @@ module ActivityPub
     register_data_attribute :url
     register_data_attribute :public_key
     register_data_attribute :manually_approves_followers
+    register_data_attribute :inbox
 
     register_field :name
     register_field :preferred_username
