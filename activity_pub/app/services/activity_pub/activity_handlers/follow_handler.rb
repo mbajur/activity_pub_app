@@ -8,9 +8,10 @@ module ActivityPub
         local_target = ActivityPub::Object.local.find_by(id: local_target_guid)
         raise ActiveRecord::RecordNotFound, "Local target #{local_target_guid} not found" unless local_target
 
-        follow = Follow.find_or_initialize_by(guid: body['id'])
-        follow.source_ap_object = ActivityPub::ObjectEnsurer.new(body['actor']).call
-        follow.target_ap_object = local_target
+        follow = Follow.find_or_initialize_by(
+          source_ap_object: ActivityPub::ObjectEnsurer.new(body['actor']).call,
+          target_ap_object: local_target
+        )
 
         if local_target.manually_approves_followers
           follow.state = 'pending'
