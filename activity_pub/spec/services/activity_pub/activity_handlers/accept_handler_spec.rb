@@ -6,19 +6,19 @@ describe ActivityPub::ActivityHandlers::AcceptHandler do
 
   let(:person) { create(:person) }
   let(:remote_actor) { create(:person, guid: 'https://remote.com/ap/foo') }
-  let!(:follow) { create(:follow, source_ap_object: remote_actor, target_ap_object: person) }
+  let!(:follow) { create(:follow, source_ap_object: person, target_ap_object: remote_actor) }
 
   let(:incoming_body) do
     {
       'type' => 'Accept',
       'object' => {
         'type' => 'Follow',
-        'actor' => 'https://remote.com/ap/foo',
-        'object' => "https://example.com/ap/objects/#{person.id}"
+        'actor' => "https://example.com/ap/objects/#{person.id}",
+        'object' => 'https://remote.com/ap/foo'
       },
       'published' => Time.current,
       to: ['https://remote.com/ap/inbox'],
-      actor: "https://example.com/ap/objects/#{person.id}"
+      actor: 'https://remote.com/ap/foo'
     }
   end
 
