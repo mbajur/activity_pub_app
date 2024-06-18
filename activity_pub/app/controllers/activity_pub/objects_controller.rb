@@ -11,7 +11,7 @@ module ActivityPub
     def activity
       attach_inbound_request_loggable(find_object)
 
-      render json: UpdateSerializer.new(find_object, actor: find_object),
+      render json: CreateSerializer.new(find_object, actor: find_object),
              with_context: true,
              content_type: 'application/activity+json'
     end
