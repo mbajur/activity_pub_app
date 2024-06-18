@@ -14,7 +14,7 @@ describe ActivityPub::ActivityHandlers::AcceptHandler do
       'object' => {
         'type' => 'Follow',
         'actor' => 'https://remote.com/ap/foo',
-        'id' => "https://example.com/ap/objects/#{person.id}"
+        'object' => "https://example.com/ap/objects/#{person.id}"
       },
       'published' => Time.current,
       to: ['https://remote.com/ap/inbox'],

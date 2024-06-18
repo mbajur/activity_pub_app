@@ -4,7 +4,7 @@ module ActivityPub
       def call
         verify_signature!
 
-        local_target_guid = ActivityPub::UriToLocalObjectIdFinder.new(body.dig('object', 'id')).call
+        local_target_guid = ActivityPub::UriToLocalObjectIdFinder.new(body.dig('object', 'object')).call
         local_target = ActivityPub::Object.local.find_by(id: local_target_guid)
         raise ActiveRecord::RecordNotFound, "Local target #{local_target_guid} not found" unless local_target
 
