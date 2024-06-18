@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_04_064145) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_18_183232) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_04_064145) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["guid"], name: "index_activity_pub_follows_on_guid", unique: true
+    t.index ["source_ap_object_id", "target_ap_object_id"], name: "idx_on_source_ap_object_id_target_ap_object_id_8245a2698a", unique: true
     t.index ["source_ap_object_id"], name: "index_activity_pub_follows_on_source_ap_object_id"
     t.index ["target_ap_object_id"], name: "index_activity_pub_follows_on_target_ap_object_id"
   end
