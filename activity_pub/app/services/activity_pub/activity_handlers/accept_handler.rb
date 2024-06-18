@@ -4,21 +4,18 @@ module ActivityPub
       def call
         verify_signature!
 
-        local_target_guid = ActivityPub::UriToLocalObjectIdFinder.new(body['object']).call
+        local_target_guid = ActivityPub::UriToLocalObjectIdFinder.new(body.dig('object', 'id')).call
         local_target = ActivityPub::Object.local.find_by(id: local_target_guid)
         raise ActiveRecord::RecordNotFound, "Local target #{local_target_guid} not found" unless local_target
 
-        follow = Follow.find_or_initialize_by(guid: body['id'])
-        follow.source_ap_object = ActivityPub::ObjectEnsurer.new(body['actor']).call
-        follow.target_ap_object = local_target
+        local_actor_guid = body.dig('object', 'actor')
+        local_actor = ActivityPub::Object.find_by(guid: local_actor_guid)
+        raise ActiveRecord::RecordNotFound, "Local actor #{local_actor_guid} not found" unless local_actor
 
-        if local_target.manually_approves_followers?
-          follow.state = 'pending'
-        else
-          follow.state = 'confirmed'
-        end
+        follow = Follow.find_by(source_ap_object: local_actor, target_ap_object: local_target)
+        raise ActiveRecord::RecordNotFound, 'Follow record not found' unless follow
 
-        follow.save!
+        follow.confirmed!
       end
     end
   end

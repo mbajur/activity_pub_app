@@ -5,6 +5,8 @@ describe ActivityPub::ActivityHandlers::AcceptHandler do
   let(:instance) { described_class.new(path: '/ap/objects/foo', headers: {}, body: incoming_body) }
 
   let(:person) { create(:person) }
+  let(:remote_actor) { create(:person, guid: 'https://remote.com/ap/foo') }
+  let!(:follow) { create(:follow, source_ap_object: remote_actor, target_ap_object: person) }
 
   let(:incoming_body) do
     {
@@ -12,11 +14,11 @@ describe ActivityPub::ActivityHandlers::AcceptHandler do
       'object' => {
         'type' => 'Follow',
         'actor' => 'https://remote.com/ap/foo',
-        'object' => "https://example.com/ap/#{person.id}"
+        'id' => "https://example.com/ap/objects/#{person.id}"
       },
       'published' => Time.current,
       to: ['https://remote.com/ap/inbox'],
-      actor: "https://example.com/ap/#{person.id}"
+      actor: "https://example.com/ap/objects/#{person.id}"
     }
   end
 
@@ -25,4 +27,8 @@ describe ActivityPub::ActivityHandlers::AcceptHandler do
   end
 
   it { is_expected.to be_truthy }
+
+  it 'changes follow status to confirmed' do
+    expect { subject }.to change { follow.reload.state }.to('confirmed')
+  end
 end
