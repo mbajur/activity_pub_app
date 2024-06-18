@@ -31,3 +31,10 @@
     inbox_urls.each do |inbox_url|
       ActivityPub::HttpClient.new(actor).post(inbox_url, body: activity.to_json)
     end
+
+#### Note create activity distribution
+
+    note = ActivityPub::Note.local.first
+    actor = note.attributed_to.first
+    activity = ActivityPub::CreateSerializer.new(note, with_context: true, actor: actor)
+    ActivityPub::HttpClient.new(actor).post('https://masto.mbajur.com/inbox', body: activity.to_json)
