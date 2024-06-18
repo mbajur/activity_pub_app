@@ -1,6 +1,8 @@
 module ActivityPub
   module ActivityHandlers
     class UndoHandler < BaseHandler
+      class UnsupportedUndoActivityType < StandardError; end
+
       def call
         verify_signature!
 
@@ -13,10 +15,11 @@ module ActivityPub
 
       def handler_klass(type)
         klass = {
-          'Follow' => ActivityPub::ActivityHandlers::UndoFollowHandler
+          'Follow' => ActivityPub::ActivityHandlers::UndoFollowHandler,
+          'Like' => ActivityPub::ActivityHandlers::UndoLikeHandler,
         }[type.capitalize]
 
-        raise UnsupportedActivityType, "Unsupported undo activity type: #{type}" unless klass
+        raise UnsupportedUndoActivityType, "Unsupported undo activity type: #{type}" unless klass
 
         klass
       end
