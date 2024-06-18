@@ -24,6 +24,9 @@ class ActivityPub::Object < ApplicationRecord
   has_many :following_associations, class_name: 'ActivityPub::Follow', inverse_of: :source_ap_object, dependent: :destroy
   has_many :following, through: :following_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
 
+  has_many :likes, class_name: 'ActivityPub::Like', inverse_of: :target_ap_object
+  has_many :liked_by, class_name: 'ActivityPub::Like', inverse_of: :source_ap_object
+
   after_initialize :set_default_type
 
   scope :local, ->{ where(guid: nil) }
