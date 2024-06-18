@@ -12,10 +12,13 @@ module ActivityPub
         local_actor = ActivityPub::Object.find_by(guid: local_actor_guid)
         raise ActiveRecord::RecordNotFound, "Local actor #{local_actor_guid} not found" unless local_actor
 
-        ActivityPub::Like.find_or_create_by(
+        like = ActivityPub::Like.find_or_initialize_by(
           source_ap_object: local_actor,
           target_ap_object: local_target
         )
+
+        like.guid = body['id']
+        like.save!
       end
     end
   end
