@@ -105,6 +105,18 @@ Their public URLs to use in, say, Mastodon UI will be:
     activity = ActivityPub::CreateSerializer.new(note, with_context: true, actor: actor)
     ActivityPub::HttpClient.new(actor).post('https://masto.mbajur.com/inbox', body: activity.to_json)
 
+### Troubleshooting
+
+In order to see what's going on, you have couple of options available:
+
+- `/ap_ui/objects` - holds a list of all the AP objects, both local and remote
+- `/ap_ui/inbound_request_logs` - all the incoming AP requests
+- `/ap_ui/outbound_request_logs` - all the outgoing AP requests
+- `/good_job` - async jobs interface, powered by [good_job](https://github.com/bensheldon/good_job)
+- `/exception_hunter` - exception catcher; consider it a poor man's Sentry
+
+When working on that all, i personally host a single-user mastodon instance with verbose logging so i can see what Mastodon is whining about in cause of any issues with federation
+
 ### Contributing
 
 This repo is in very alpha stage and we don't have any sort of good practives or rules on how to work with things. Feel free to open a discussion thread and suggest anything that comes to your mind!
