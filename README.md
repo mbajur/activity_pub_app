@@ -14,6 +14,11 @@ three major elements so far:
 - `/` - Umbrella Rails app that mounts two engines mentioned above and acts as
   a fake AP-enabled app
 
+#### Long-term plan
+
+1. Create a Rails Engine that can be mounted in any Rails app and extended/customized in any desired way
+2. Create an entirely new ActivityPub project that uses this engine. Project will be announced soon but you can already see some sneakpeaks of it if you know where to look 🙃
+
 ### How to deploy
 
 In order to deploy it, I'm using [Kamal](https://kamal-deploy.org/) so all the common steps related to Kamal deploy applies in here. Kamal uses Docker internally though so you should be able to deploy it without Kamal if you want to. Dockerfile is there.
