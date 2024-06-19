@@ -22,7 +22,7 @@ module ActivityPub
     private
 
     def resource
-      @resource ||= PersonResource.new(object)
+      @resource ||= ObjectResource.new(object)
     end
 
     def endpoints

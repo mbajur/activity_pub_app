@@ -10,8 +10,12 @@ module ActivityPub
         attributed_to: author_resource.guid,
         to: ['https://www.w3.org/ns/activitystreams#Public'],
         cc: [author_resource.followers_url],
-        sensitive: false
+        sensitive: false,
       }
+
+      if object.in_reply_to
+        result[:in_reply_to] = in_reply_to_resource.guid
+      end
 
       resource.fields.each do |field|
         result[field.key] = resource.field_value(field.key)
@@ -23,11 +27,15 @@ module ActivityPub
     private
 
     def resource
-      @resource ||= NoteResource.new(object)
+      @resource ||= ObjectResource.new(object)
     end
 
     def author_resource
-      @author_resource ||= PersonResource.new(object.attributed_to.first)
+      @author_resource ||= ObjectResource.new(object.attributed_to.first)
+    end
+
+    def in_reply_to_resource
+      @in_reply_to_resource ||= ObjectResource.new(object.in_reply_to)
     end
   end
 end

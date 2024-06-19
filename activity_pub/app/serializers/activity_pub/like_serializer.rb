@@ -3,8 +3,8 @@ module ActivityPub
     def data
       result = {
         type: 'Like',
-        actor: ActivityPub::PersonResource.new(object.source_ap_object).guid,
-        object: ActivityPub::PersonResource.new(object.target_ap_object).guid,
+        actor: ObjectResource.new(object.source_ap_object).guid,
+        object: ObjectResource.new(object.target_ap_object).guid,
       }
 
       result

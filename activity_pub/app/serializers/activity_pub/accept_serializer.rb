@@ -5,8 +5,8 @@ module ActivityPub
         type: 'Accept',
         object: FollowSerializer.new(object),
         published: object.updated_at,
-        to: [PersonResource.new(object.source_ap_object).guid],
-        actor: PersonResource.new(object.target_ap_object).guid
+        to: [ObjectResource.new(object.source_ap_object).guid],
+        actor: ObjectResource.new(object.target_ap_object).guid
       }
 
       result

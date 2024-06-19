@@ -19,7 +19,7 @@ module ActivityPub
     private
 
     def actor_resource
-      @actor_resoure ||= PersonResource.new(options[:actor])
+      @actor_resoure ||= ObjectResource.new(options[:actor])
     end
 
     def local_guid
