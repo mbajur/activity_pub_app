@@ -15,6 +15,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_091651) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+  enable_extension "hstore"
 
   create_table "activity_pub_follows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "source_ap_object_id", null: false
@@ -53,7 +54,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_091651) do
 
   create_table "activity_pub_objects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "guid"
-    t.json "data", default: {}
+    t.hstore "data", default: {}
     t.string "type"
     t.datetime "last_synced_at"
     t.string "status", default: "draft"

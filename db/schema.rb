@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_18_212251) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -54,7 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_212251) do
 
   create_table "activity_pub_objects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "guid"
-    t.json "data", default: {}
+    t.hstore "data", default: {}
     t.string "type"
     t.datetime "last_synced_at"
     t.string "status", default: "draft"
@@ -64,6 +65,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_212251) do
     t.datetime "updated_at", null: false
     t.index ["guid"], name: "index_activity_pub_objects_on_guid", unique: true
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
+  end
+
+  create_table "conversations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id", null: false
+    t.uuid "ap_object_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ap_object_id"], name: "index_conversations_on_ap_object_id"
+    t.index ["topic_id"], name: "index_conversations_on_topic_id"
   end
 
   create_table "exception_hunter_error_groups", force: :cascade do |t|
@@ -207,6 +217,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_212251) do
     t.index ["loggable_type", "loggable_id"], name: "index_outbound_request_logs_on_loggable"
   end
 
+  create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "ap_object_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ap_object_id"], name: "index_topics_on_ap_object_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -229,6 +246,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_212251) do
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "ap_object_id"
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "target_ap_object_id"
   add_foreign_key "activity_pub_objects", "activity_pub_objects", column: "in_reply_to_ap_object_id"
+  add_foreign_key "conversations", "activity_pub_objects", column: "ap_object_id"
+  add_foreign_key "conversations", "topics"
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
+  add_foreign_key "topics", "activity_pub_objects", column: "ap_object_id"
   add_foreign_key "users", "activity_pub_objects", column: "ap_object_id"
 end
