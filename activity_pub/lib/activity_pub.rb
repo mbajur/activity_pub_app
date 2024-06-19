@@ -16,8 +16,12 @@ require 'faraday_middleware/digest_header'
 
 module ActivityPub
   mattr_accessor :domain
+  mattr_accessor :object_handlers
+  mattr_accessor :object_type_models
 
   self.domain = nil
+  self.object_handlers = {}
+  self.object_type_models = {}
 
   def self.setup(&block)
     yield self

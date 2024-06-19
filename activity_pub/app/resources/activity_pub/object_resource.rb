@@ -3,6 +3,7 @@ module ActivityPub
     class NoResourceDefinedError < StandardError; end
 
     def self.new(object)
+      object = object.ensure_type
       resource = case object
                  when ActivityPub::Person then PersonResource
                  when ActivityPub::Note then NoteResource

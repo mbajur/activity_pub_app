@@ -1,0 +1,1 @@
+ActivityPub.domain = 'example.com'

@@ -17,11 +17,16 @@ module ActivityPub
         return true
       end
 
+      local_object.type = model_from_type(remote_object['type'])
       local_object.status_syncing! if local_object.persisted?
       local_object.error_message = nil
+
+      # We don't want to accept dates from the future. If incoming date is in the
+      # future, just replace it with current time. Supporting future dates comes
+      # with a risk of abuse.
       local_object.created_at = [remote_object['published'], Time.current].compact.min
 
-      self.batch.add do
+      add_to_batch do
         handler_class(remote_object).new(
           batch: self.batch,
           local: local_object,
@@ -29,7 +34,7 @@ module ActivityPub
         ).call
       end
 
-      self.batch.add do
+      add_to_batch do
         # Resolve authors
         if remote_object['attributed_to'] && !shallow
           attributed_to = remote_object['attributed_to'].is_a?(Array) ? remote_object['attributed_to'] : [remote_object['attributed_to']]
@@ -70,19 +75,18 @@ module ActivityPub
     private
 
     def handler_class(object)
-      {
-        'Note' => ActivityPub::ObjectHandlers::NoteHandler,
-        'Announce' => ActivityPub::ObjectHandlers::AnnounceHandler,
-        'Person' => ActivityPub::ObjectHandlers::PersonHandler,
-        'Service' => ActivityPub::ObjectHandlers::ServiceHandler,
-        'Collection' => ActivityPub::ObjectHandlers::CollectionHandler,
-        'OrderedCollection' => ActivityPub::ObjectHandlers::OrderedCollectionHandler,
-        'CollectionPage' => ActivityPub::ObjectHandlers::CollectionPageHandler,
-        'OrderedCollectionPage' => ActivityPub::ObjectHandlers::OrderedCollectionPageHandler,
+      ActivityPub.object_handlers[object['type']] || ActivityPub::ObjectHandlers::UnknownHandler
+    end
 
-        'Create' => ActivityPub::ObjectHandlers::CreateHandler,
-        # 'Update' => ActivityPub::ObjectHandlers::UpdateHandler,
-      }[object['type']] || ActivityPub::ObjectHandlers::UnknownHandler
+    def model_from_type(type)
+      ActivityPub.object_type_models[type] || ActivityPub::Unknown
+    end
+
+    # When this job is called directly, there is no `self.batch`. It probably
+    # shouldn't be called directly so it has to be refactored but that will do
+    # for now
+    def add_to_batch(&block)
+      self.batch ? self.batch.add { yield } : yield
     end
   end
 end

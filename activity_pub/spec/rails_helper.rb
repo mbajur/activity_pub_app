@@ -6,6 +6,7 @@ require File.expand_path('../test/dummy/config/environment', __dir__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 require 'factory_bot_rails'
+require 'webmock/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 FactoryBot.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')

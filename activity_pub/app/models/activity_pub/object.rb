@@ -52,6 +52,11 @@ class ActivityPub::Object < ApplicationRecord
     where("data->>'preferred_username' = ?", username).first!
   end
 
+  # @todo is there any built-in rails method to handle that? It feels hackish
+  def ensure_type
+    becomes(self.type.constantize)
+  end
+
   def fresh?
     return false unless last_synced_at.present?
     last_synced_at > 1.minute.ago

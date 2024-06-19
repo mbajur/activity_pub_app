@@ -9,12 +9,21 @@ describe ActivityPub::ActivityHandlers::FollowHandler do
   let(:incoming_body) do
     {
       'type' => 'Follow',
-      'object' => "https://example.com/ap/objects/#{person.id}"
+      'object' => "https://example.com/ap/objects/#{person.id}",
+      'actor' => 'https://remote.com/ap/objects/foo'
     }
   end
 
   before do
     allow(instance).to receive(:verify_signature!).and_return(true)
+
+    body = {
+      id: 'https://remote.com/ap/objects/foo',
+      type: 'Person',
+      inbox: 'https://remote.com/ap/objects/foo/inbox'
+    }
+    stub_request(:get, 'https://remote.com/ap/objects/foo')
+      .to_return(status: 200, body: body.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   it { is_expected.to be_truthy }
