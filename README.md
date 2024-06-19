@@ -1,7 +1,7 @@
 # ActivityPub on Rails
 
 > [!WARNING]
-> This repo is in early alpha stages of development and there is a lot of mess and commented code. Consider it a draft.
+> This repo is in early alpha stages of development and there is a lot of mess and commented code. Consider it a draft and have in mind anything can change anytime!
 
 Aim of this project is to be able to add ActivityPub features to existing or new
 Ruby on Rails projects. It's in early stage of development and it consists of
