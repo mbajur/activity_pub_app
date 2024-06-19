@@ -19,6 +19,21 @@ three major elements so far:
 1. Create a Rails Engine that can be mounted in any Rails app and extended/customized in any desired way
 2. Create an entirely new ActivityPub project that uses this engine. Project will be announced soon but you can already see some sneakpeaks of it if you know where to look 🙃
 
+### Development
+
+In order to be able to run it locally, you have to have a followint things in place:
+
+- **Ruby 3.x** - I'm using `3.2.0` but most of the modern ones should do
+- **PostgreSQL** - background jobs are using it and also I want to try to use it for all of the things i would normally use Redis for - that's one of my goals, to keep the dependencies as tiny as possible. Also, we rely on `hstore` a lot for storing JSON objects so that dependency is a must
+
+If you have these, a following set of commands should set you up:
+
+```console
+$ bundle install
+$ rails db:create db:migrate
+$ rails s
+```
+
 ### How to deploy
 
 In order to deploy it, I'm using [Kamal](https://kamal-deploy.org/) so all the common steps related to Kamal deploy applies in here. Kamal uses Docker internally though so you should be able to deploy it without Kamal if you want to. Dockerfile is there.
