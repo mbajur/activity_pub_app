@@ -49,7 +49,7 @@ class ActivityPub::Object < ApplicationRecord
   end
 
   def self.find_by_username!(username)
-    where("data->>'preferred_username' = ?", username).first!
+    where("data->'preferred_username' = ?", username).first!
   end
 
   # @todo is there any built-in rails method to handle that? It feels hackish
