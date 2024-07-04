@@ -23,7 +23,7 @@ three major elements so far:
 
 In order to be able to run it locally, you have to have a followint things in place:
 
-- **Ruby 3.x** - I'm using `3.2.0` but most of the modern ones should do
+- **Ruby 3.x** - I'm using `3.3.3` but most of the modern ones should do
 - **PostgreSQL** - background jobs are using it and also I want to try to use it for all of the things i would normally use Redis for - that's one of my goals, to keep the dependencies as tiny as possible. Also, we rely on `hstore` a lot for storing JSON objects so that dependency is a must
 
 If you have these, a following set of commands should set you up:

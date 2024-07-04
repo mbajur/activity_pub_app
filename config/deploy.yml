@@ -61,7 +61,7 @@ env:
 # Configure builder setup.
 # builder:
 #   args:
-#     RUBY_VERSION: 3.2.0
+#     RUBY_VERSION: 3.3.3
 #   secrets:
 #     - GITHUB_TOKEN
 #   remote:
