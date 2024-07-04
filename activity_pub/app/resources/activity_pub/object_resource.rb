@@ -6,6 +6,7 @@ module ActivityPub
       object = object.ensure_type
       resource = case object
                  when ActivityPub::Person then PersonResource
+                 when ActivityPub::Group then GroupResource
                  when ActivityPub::Note then NoteResource
                  else raise NoResourceDefinedError, "No resource found for type #{object.class}"
                  end

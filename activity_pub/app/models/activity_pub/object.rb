@@ -27,6 +27,8 @@ class ActivityPub::Object < ApplicationRecord
   has_many :likes, class_name: 'ActivityPub::Like', inverse_of: :target_ap_object
   has_many :liked_by, class_name: 'ActivityPub::Like', inverse_of: :source_ap_object
 
+  belongs_to :activity_pubable, polymorphic: true, optional: true
+
   after_initialize :set_default_type
 
   scope :local, ->{ where(guid: nil) }

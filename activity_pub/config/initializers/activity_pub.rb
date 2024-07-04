@@ -15,6 +15,7 @@ Rails.application.config.to_prepare do
 
   ActivityPub.object_type_models = {
     'Person' => ActivityPub::Person,
+    'Group' => ActivityPub::Group,
     'Note' => ActivityPub::Note,
   }
 end

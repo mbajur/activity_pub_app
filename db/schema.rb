@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_trgm"
@@ -61,6 +61,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
     t.string "error_message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "activity_pubable_type"
+    t.bigint "activity_pubable_id"
+    t.index ["activity_pubable_type", "activity_pubable_id"], name: "index_activity_pub_objects_on_activity_pubable"
     t.index ["guid"], name: "index_activity_pub_objects_on_guid", unique: true
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
   end
@@ -229,10 +232,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.bigint "ap_object_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["ap_object_id"], name: "index_users_on_ap_object_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -248,5 +249,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
   add_foreign_key "conversations", "topics"
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
   add_foreign_key "topics", "activity_pub_objects", column: "ap_object_id"
-  add_foreign_key "users", "activity_pub_objects", column: "ap_object_id"
 end

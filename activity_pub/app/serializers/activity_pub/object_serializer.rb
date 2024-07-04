@@ -6,6 +6,7 @@ module ActivityPub
       serializer = case object
                    #  when Ap::Page then PageSerializer
                    when ActivityPub::Person then PersonSerializer
+                   when ActivityPub::Group then GroupSerializer
                    when ActivityPub::Note then NoteSerializer
                    #  when Ap::Note then NoteSerializer
                    #  when Ap::Document then DocumentSerializer
