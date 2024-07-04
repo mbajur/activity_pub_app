@@ -14,15 +14,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_trgm"
-  enable_extension "pgcrypto"
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
 
-  create_table "activity_pub_follows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "source_ap_object_id", null: false
-    t.uuid "target_ap_object_id", null: false
+  create_table "activity_pub_follows", force: :cascade do |t|
+    t.bigint "source_ap_object_id", null: false
+    t.bigint "target_ap_object_id", null: false
     t.string "state", default: "pending"
-    t.uuid "guid", default: -> { "uuid_generate_v1()" }, null: false
+    t.uuid "guid", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["guid"], name: "index_activity_pub_follows_on_guid", unique: true
@@ -31,9 +29,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
     t.index ["target_ap_object_id"], name: "index_activity_pub_follows_on_target_ap_object_id"
   end
 
-  create_table "activity_pub_likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "source_ap_object_id", null: false
-    t.uuid "target_ap_object_id", null: false
+  create_table "activity_pub_likes", force: :cascade do |t|
+    t.bigint "source_ap_object_id", null: false
+    t.bigint "target_ap_object_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "guid"
@@ -41,25 +39,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
     t.index ["target_ap_object_id"], name: "index_activity_pub_likes_on_target_ap_object_id"
   end
 
-  create_table "activity_pub_object_associations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "ap_object_id", null: false
-    t.uuid "target_ap_object_id", null: false
+  create_table "activity_pub_object_associations", force: :cascade do |t|
+    t.bigint "ap_object_id", null: false
+    t.bigint "target_ap_object_id", null: false
     t.string "type_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "guid"
+    t.bigint "guid"
     t.index ["ap_object_id"], name: "index_activity_pub_object_associations_on_ap_object_id"
     t.index ["guid"], name: "index_activity_pub_object_associations_on_guid", unique: true
     t.index ["target_ap_object_id"], name: "index_activity_pub_object_associations_on_target_ap_object_id"
   end
 
-  create_table "activity_pub_objects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "activity_pub_objects", force: :cascade do |t|
     t.string "guid"
     t.hstore "data", default: {}
     t.string "type"
     t.datetime "last_synced_at"
     t.string "status", default: "draft"
-    t.uuid "in_reply_to_ap_object_id"
+    t.bigint "in_reply_to_ap_object_id"
     t.string "error_message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -67,9 +65,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
   end
 
-  create_table "conversations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "topic_id", null: false
-    t.uuid "ap_object_id", null: false
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "topic_id", null: false
+    t.bigint "ap_object_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ap_object_id"], name: "index_conversations_on_ap_object_id"
@@ -182,7 +180,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
   end
 
   create_table "inbound_request_logs", force: :cascade do |t|
-    t.uuid "uuid"
+    t.string "uuid"
     t.string "method"
     t.string "path"
     t.text "request_body"
@@ -200,7 +198,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
   end
 
   create_table "outbound_request_logs", force: :cascade do |t|
-    t.uuid "uuid"
+    t.string "uuid"
     t.string "method"
     t.string "path"
     t.text "request_body"
@@ -217,21 +215,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_153319) do
     t.index ["loggable_type", "loggable_id"], name: "index_outbound_request_logs_on_loggable"
   end
 
-  create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "ap_object_id", null: false
+  create_table "topics", force: :cascade do |t|
+    t.bigint "ap_object_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ap_object_id"], name: "index_topics_on_ap_object_id"
   end
 
-  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.uuid "ap_object_id", null: false
+    t.bigint "ap_object_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ap_object_id"], name: "index_users_on_ap_object_id"

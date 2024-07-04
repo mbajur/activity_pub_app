@@ -2,7 +2,7 @@
 
 class DeviseCreateUsers < ActiveRecord::Migration[7.1]
   def change
-    create_table :users, id: :uuid do |t|
+    create_table :users, id: :bigint do |t|
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
@@ -32,7 +32,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       t.string   :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
 
-      t.references :ap_object, null: false, foreign_key: { to_table: :activity_pub_objects }, type: :uuid
+      t.references :ap_object, null: false, foreign_key: { to_table: :activity_pub_objects }, type: :bigint
 
 
       t.timestamps null: false

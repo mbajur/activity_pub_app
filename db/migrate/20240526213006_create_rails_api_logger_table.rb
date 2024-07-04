@@ -1,7 +1,7 @@
 class CreateRailsApiLoggerTable < ActiveRecord::Migration[7.1]
   def change
     create_table :inbound_request_logs do |t|
-      t.uuid :uuid
+      t.string :uuid
       t.string :method
       t.string :path
       t.text :request_body
@@ -16,7 +16,7 @@ class CreateRailsApiLoggerTable < ActiveRecord::Migration[7.1]
     end
 
     create_table :outbound_request_logs do |t|
-      t.uuid :uuid
+      t.string :uuid
       t.string :method
       t.string :path
       t.text :request_body
