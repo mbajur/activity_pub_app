@@ -68,15 +68,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
   end
 
-  create_table "conversations", force: :cascade do |t|
-    t.bigint "topic_id", null: false
-    t.bigint "ap_object_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["ap_object_id"], name: "index_conversations_on_ap_object_id"
-    t.index ["topic_id"], name: "index_conversations_on_topic_id"
-  end
-
   create_table "exception_hunter_error_groups", force: :cascade do |t|
     t.string "error_class_name", null: false
     t.string "message"
@@ -218,13 +209,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
     t.index ["loggable_type", "loggable_id"], name: "index_outbound_request_logs_on_loggable"
   end
 
-  create_table "topics", force: :cascade do |t|
-    t.bigint "ap_object_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["ap_object_id"], name: "index_topics_on_ap_object_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -245,8 +229,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "ap_object_id"
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "target_ap_object_id"
   add_foreign_key "activity_pub_objects", "activity_pub_objects", column: "in_reply_to_ap_object_id"
-  add_foreign_key "conversations", "activity_pub_objects", column: "ap_object_id"
-  add_foreign_key "conversations", "topics"
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
-  add_foreign_key "topics", "activity_pub_objects", column: "ap_object_id"
 end
