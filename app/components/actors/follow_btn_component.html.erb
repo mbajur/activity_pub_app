@@ -1,0 +1,16 @@
+<div class="inline" id="<%= dom_id(@target_actor, :follow_btn) %>">
+  <% if following? %>
+    <%= button_to unfollow_panel_actor_path(@target_actor), method: :post, form_class: 'inline', class: 'inline-flex text-white border border-blue-700 bg-blue-800 hover:bg-red-500 hover:border-red-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-xs px-2 py-0.5 text-center me-1' do %>
+      Following
+
+      <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-4 h-4" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M5 12l5 5l10 -10" />
+      </svg>
+    <% end %>
+  <% else %>
+    <%= button_to follow_panel_actor_path(@target_actor), method: :post, form_class: 'inline', class: "text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-xs px-2 py-0.5 text-center me-1" do %>
+      Follow
+    <% end %>
+  <% end %>
+</div>

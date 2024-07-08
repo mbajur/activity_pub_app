@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable,
          :rememberable, :validatable, :lockable
 
-  has_one :activity_pub_object, class_name: ActivityPub::Object.name, as: :activity_pubable
+  has_one :activity_pub_object, class_name: ActivityPub::Person.name, as: :activity_pubable
 
   before_validation :assign_ap_object, on: :create
 

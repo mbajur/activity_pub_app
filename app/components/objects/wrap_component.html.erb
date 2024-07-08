@@ -1,0 +1,23 @@
+<div class="grid grid-cols-12 gap-7">
+  <div class="col-span-8">
+    <%= content %>
+  </div>
+
+  <div class="col-span-4 text-sm">
+    <div class="pt-14 text-gray-800">
+      <div class="border-l pl-6 pr-4">
+        <turbo-frame id="<%= dom_id(object, :comments) %>" src="<%= panel_object_path(object) if replies.none? %>">
+          <% if replies.any? %>
+            <% replies.each do |reply| %>
+              <%= render(ReplyComponent.new(reply)) %>
+            <% end %>
+          <% else %>
+            <p>No replies yet</p>
+          <% end %>
+        </turbo-frame>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="border-b mt-0 mb-7 border-gray-100"></div>

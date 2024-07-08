@@ -1,0 +1,17 @@
+.mb-5.bg-white.shadow-sm.rounded-sm.overflow-hidden.mx-auto(id=id)
+  - if header.present?
+    .p-4.border-b
+      = header
+
+  - if content.present?
+    .flex.items-center.w-full
+      .w-full
+        = content
+
+  - if body.present?
+    .p-4.w-full
+      = body
+
+  - if footer.present?
+    .p-4.border-t
+      = footer

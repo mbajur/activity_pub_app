@@ -74,3 +74,5 @@ gem "rails_api_logger", github: 'Juleffel/rails_api_logger'
 
 gem "devise", "~> 4.9"
 gem 'exception_hunter', '~> 1.0', github: 'mbajur/flypaper'
+
+gem "view_component", "~> 3.12"

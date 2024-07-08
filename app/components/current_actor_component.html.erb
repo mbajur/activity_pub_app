@@ -1,0 +1,44 @@
+<div class="flex items-center space-x-4 rtl:space-x-reverse">
+  <% if @actor.remote? %>
+    <a href="/panel" class="">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-500" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M15 6l-6 6l6 6" />
+      </svg>
+    </a>
+  <% else %>
+    <a href="/panel" class="">
+      <svg class="w-7 h-7 text-gray-500" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor"><path d="M9 21H7C4.79086 21 3 19.2091 3 17V10.7076C3 9.30887 3.73061 8.01175 4.92679 7.28679L9.92679 4.25649C11.2011 3.48421 12.7989 3.48421 14.0732 4.25649L19.0732 7.28679C20.2694 8.01175 21 9.30887 21 10.7076V17C21 19.2091 19.2091 21 17 21H15M9 21V17C9 15.3431 10.3431 14 12 14V14C13.6569 14 15 15.3431 15 17V21M9 21H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </a>
+  <% end %>
+
+  <%= link_to panel_objects_path do %>
+    <%= image_tag @actor.avatar_url, class: 'h-10 w-10 rounded-full' %>
+  <% end %>
+
+  <div class="self-center whitespace-nowrap">
+    <a href="<%= panel_objects_path %>" class="text-2xl font-semibold mb-0 block leading-3 mt-2 mb-2">
+      <%= @actor.name %>
+    </a>
+
+    <% if @actor.remote? %>
+      <%= render Actors::FollowBtnComponent.new(actor: helpers.current_group, target_actor: @actor) %>
+
+      <a href="/" class="text-xs text-gray-500">
+        <%= @actor.display_username %>
+      </a>
+    <% else %>
+      <span class="text-gray-500 text-xs">Your dashboard</span>
+      •
+      <a href="/" class="text-xs text-gray-500">
+        See your website
+
+        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-3 h-3" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M17 7l-10 10" />
+          <path d="M8 7l9 0l0 9" />
+        </svg>
+      </a>
+    <% end %>
+  </div>
+</div>

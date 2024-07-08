@@ -33,6 +33,7 @@ class ActivityPub::Object < ApplicationRecord
 
   scope :local, ->{ where(guid: nil) }
   scope :remote, ->{ where.not(guid: nil) }
+  scope :not_replies, ->{ where(in_reply_to_ap_object_id: nil) }
 
   enum status: {
     draft: 'draft',

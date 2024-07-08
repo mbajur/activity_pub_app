@@ -21,5 +21,12 @@ Rails.application.routes.draw do
     resources :conversations, only: [:index]
   end
 
+  namespace :panel do
+    resources :objects, only: [:index, :new, :show]
+    resources :actors, only: [] do
+      resources :objects, only: [:index, :show]
+    end
+  end
+
   root to: 'conversations#index'
 end
