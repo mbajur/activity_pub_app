@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_11_145249) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_trgm"
@@ -63,6 +63,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
     t.datetime "updated_at", null: false
     t.string "activity_pubable_type"
     t.bigint "activity_pubable_id"
+    t.integer "attributions_count", default: 0
+    t.integer "replies_count", default: 0
+    t.integer "followers_count", default: 0
+    t.integer "following_count", default: 0
+    t.integer "likes_count", default: 0
+    t.integer "liked_by_count", default: 0
+    t.integer "announced_count", default: 0
     t.index ["activity_pubable_type", "activity_pubable_id"], name: "index_activity_pub_objects_on_activity_pubable"
     t.index ["guid"], name: "index_activity_pub_objects_on_guid", unique: true
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
@@ -207,6 +214,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["loggable_type", "loggable_id"], name: "index_outbound_request_logs_on_loggable"
+  end
+
+  create_table "sites", force: :cascade do |t|
+    t.string "domain"
+    t.text "template_markup"
+    t.json "avatar_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["domain"], name: "index_sites_on_domain", unique: true
+  end
+
+  create_table "uploads", force: :cascade do |t|
+    t.json "file_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,6 +1,0 @@
-= render(Ui::TwoColumnsLayoutComponent.new) do |layout|
-  - layout.with_left do
-    = render(Groups::SidebarComponent.new(current_group))
-
-  - layout.with_right do
-    = render(Objects::WrapComponent.new(@object, current_ap_actor: current_group, liked_ap_object_ids: @liked_object_ids, replies: @replies))

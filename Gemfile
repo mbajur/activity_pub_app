@@ -76,3 +76,14 @@ gem "devise", "~> 4.9"
 gem 'exception_hunter', '~> 1.0', github: 'mbajur/flypaper'
 
 gem "view_component", "~> 3.12"
+
+gem "shrine", "~> 3.6"
+
+gem "fastimage", "~> 2.3"
+
+gem "liquid", "~> 5.5"
+
+gem "pagy", "~> 8.4"
+
+
+gem "render_editorjs", "~> 0.1.4"

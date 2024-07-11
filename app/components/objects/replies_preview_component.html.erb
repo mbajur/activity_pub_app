@@ -1,0 +1,9 @@
+<turbo-frame id="<%= dom_id(object, :replies) %>" src="<%= panel_object_replies_preview_path(object) unless loaded %>">
+  <% if object.replies.any? %>
+    <% object.replies.each do |reply| %>
+      <%= render(ReplyComponent.new(reply)) %>
+    <% end %>
+  <% else %>
+    <p class="text-gray-400">No replies yet</p>
+  <% end %>
+</turbo-frame>

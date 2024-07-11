@@ -18,7 +18,7 @@
 
     <% if @objects.any? %>
       <% @objects.each do |obj| %>
-        <%= render(Objects::WrapComponent.new(obj, current_ap_actor: current_user.activity_pub_object, liked_ap_object_ids: @liked_object_ids)) %>
+        <%= render(Objects::WrapComponent.new(obj, current_ap_actor: current_site.activity_pub_object, liked_ap_object_ids: @liked_object_ids)) %>
       <% end %>
     <% else %>
       no objects

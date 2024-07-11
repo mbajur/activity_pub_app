@@ -63,22 +63,19 @@ module Objects
     end
 
     def preferred_username
-      # if actor.remote?
-      #   "@#{actor.preferred_username}@#{URI.parse(actor.guid).host}"
-      # else
-      #   "@#{actor.preferred_username}"
-      # end
-      actor.display_username
+      if actor.remote?
+        "@#{actor.preferred_username}@#{URI.parse(actor.guid).host}"
+      else
+        "@#{actor.preferred_username}"
+      end
     end
 
     def avatar_url
-      # if actor.local?
-      #   actor.icon_url
-      # else
-      #   actor.data.dig('icon', 'url')
-      # end
-
-      actor.avatar_url
+      if actor.local?
+        actor.activity_pubable.avatar_url
+      else
+        actor.data.dig('icon', 'url')
+      end
     end
 
     def object_url
@@ -89,6 +86,14 @@ module Objects
       # end
       # group_object_path(current_ap_actor, object)
       panel_object_path(object)
+    end
+
+    def public_object_url
+      if object.local?
+        ActivityPub::ObjectResource.new(object).public_url
+      else
+        object.data['url']
+      end
     end
 
     def attachments

@@ -1,0 +1,72 @@
+<%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
+  <% layout.with_right do %>
+    <%= form_with model: @object, url: panel_settings_path, scope: :settings, method: :patch do |f| %>
+      <%= render(Ui::TopBarComponent.new) do |top_bar| %>
+        <% top_bar.with_title do %>
+          Site settings
+        <% end %>
+
+        <% top_bar.with_actions do %>
+          <%= render(Ui::BtnComponent.new(type: :submit)) do %>
+            Save
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-4">
+          <h4 class="font-bold mb-2">Name and meta</h4>
+          <p class="text-sm text-gray-400">
+            Name and meta information about your website determines how it's presented on other instances
+          </p>
+        </div>
+
+        <div class="col-span-8">
+          <%= render(Ui::CardComponent.new) do |card| %>
+            <% card.with_body do %>
+              <label for="" class="block font-semibold mb-2 text-sm">Website name</label>
+              <div class="mb-4">
+                <%= f.fields_for :activity_pub_object do |ff| %>
+                  <%= ff.text_field :name, class: 'w-full py-1 px-2 rounded-md border border-gray-200 transition focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent' %>
+                <% end %>
+              </div>
+
+              <label for="" class="block font-semibold mb-2 text-sm">Description</label>
+              <%= f.fields_for :activity_pub_object do |ff| %>
+                <%= ff.text_area :summary, rows: 5, class: 'w-full py-1 px-2 rounded-md border border-gray-200 transition focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent' %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <hr class="mb-4">
+
+      <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-4">
+          <h4 class="font-bold mb-2">Images</h4>
+          <p class="text-sm text-gray-400">
+            Setup an avatar that will represent your website across entire fediverse
+          </p>
+        </div>
+
+        <div class="col-span-8">
+          <%= render(Ui::CardComponent.new) do |card| %>
+            <% card.with_body do %>
+              <label for="" class="block font-semibold mb-2 text-sm">Avatar</label>
+              <div class="flex mb-4">
+                <% if current_site.avatar %>
+                  <div class="flex-1">
+                    <%= image_tag f.object.avatar_url, class: 'rounded-full', size: 100 %>
+                  </div>
+                <% end %>
+                <div class="pl-5">
+                  <%= f.file_field :avatar %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

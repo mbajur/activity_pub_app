@@ -3,7 +3,8 @@ module Panel
     before_action :authenticate_user!
 
     OBJECT_TYPES = [
-      ActivityPub::Note
+      ActivityPub::Note,
+      ActivityPub::Article,
     ]
 
     def index
@@ -31,85 +32,94 @@ module Panel
     end
 
     def show
-      @object = Note.find(params[:id])
-      @replies = @object.children.includes(:ap_actors).limit(5)
-      @liked_object_ids = current_group.ap_likes
-                                      .joins(:ap_object)
-                                      .where(ap_objects: { id: @object.id })
-                                      .pluck(:ap_object_id)
+      @object = ActivityPub::Object.find(params[:id])
+      @replies = @object.replies.includes(:ap_actors).limit(5)
+      # @liked_object_ids = current_group.ap_likes
+      #                                 .joins(:ap_object)
+      #                                 .where(ap_objects: { id: @object.id })
+      #                                 .pluck(:ap_object_id)
+    end
+
+    def replies_preview
+      @object = ActivityPub::Object.find(params[:object_id])
+      render Objects::RepliesPreviewComponent.new(@object, loaded: true)
     end
 
     def new
-      @ap_object = current_group.ap_objects.new
+      redirect_to new_article_panel_objects_path
+    end
+
+    def new_article
+      @ap_object = current_site.activity_pub_object.attributions.new.becomes(ActivityPub::Article)
     end
 
     def create
-      @ap_object = current_group.ap_objects.create!(
+      @ap_object = current_site.activity_pub_object.attributions.create!(
         ap_object_params.merge(
-          type: 'Note',
+          type: ActivityPub::Article.name,
           published_at: Time.current
         )
       )
 
-      # activity = Ap::Activity.new(
-      #   event: :create,
-      #   local: true,
-      #   ap_object: @ap_object,
-      #   data: {
-      #     object: Ap::ObjectResource.new(@ap_object).to_hash
-      #   }
-      # )
-
-      # activity.save!
-      # activity.ap_actors << current_group
-
-      # Ap::DistributeActivityJob.perform_later(activity.id)
-
       redirect_to panel_object_path(@ap_object)
     end
 
-    def like
-      ap_object = ApObject.find(params[:id])
-      Ap::Like.find_or_create_by!(ap_actor: current_group, ap_object: ap_object)
-      ap_object.reload_likes_count
+    def edit
+      @ap_object = current_site.activity_pub_object.attributions.find(params[:id])
+    end
 
-      respond_to do |format|
-        format.turbo_stream do
-          stream = turbo_stream.replace(ap_object) do
-            view_context.render(
-              ObjectComponent.new(ap_object, current_ap_actor:    current_group,
-                                            liked_ap_object_ids: [ap_object.id])
-            )
-          end
-          render turbo_stream: stream
-        end
+    def update
+      @ap_object = current_site.activity_pub_object.attributions.find(params[:id])
 
-        format.html do
-          redirect_back fallback_location: group_path(current_group)
-        end
+      if @ap_object.update(ap_object_params)
+        redirect_to panel_object_path(@ap_object)
+      else
+        render :edit
       end
     end
 
-    def unlike
-      ap_object = ApObject.find(params[:id])
-      Ap::Like.find_by(ap_actor: current_group, ap_object: ap_object)&.destroy
-      ap_object.reload_likes_count
+    # def like
+    #   ap_object = ApObject.find(params[:id])
+    #   Ap::Like.find_or_create_by!(ap_actor: current_group, ap_object: ap_object)
+    #   ap_object.reload_likes_count
 
-      respond_to do |format|
-        format.turbo_stream do
-          stream = turbo_stream.replace(ap_object) do
-            view_context.render(
-              ObjectComponent.new(ap_object, current_ap_actor: current_group)
-            )
-          end
-          render turbo_stream: stream
-        end
+    #   respond_to do |format|
+    #     format.turbo_stream do
+    #       stream = turbo_stream.replace(ap_object) do
+    #         view_context.render(
+    #           ObjectComponent.new(ap_object, current_ap_actor:    current_group,
+    #                                         liked_ap_object_ids: [ap_object.id])
+    #         )
+    #       end
+    #       render turbo_stream: stream
+    #     end
 
-        format.html do
-          redirect_back fallback_location: group_path(current_group)
-        end
-      end
-    end
+    #     format.html do
+    #       redirect_back fallback_location: group_path(current_group)
+    #     end
+    #   end
+    # end
+
+    # def unlike
+    #   ap_object = ApObject.find(params[:id])
+    #   Ap::Like.find_by(ap_actor: current_group, ap_object: ap_object)&.destroy
+    #   ap_object.reload_likes_count
+
+    #   respond_to do |format|
+    #     format.turbo_stream do
+    #       stream = turbo_stream.replace(ap_object) do
+    #         view_context.render(
+    #           ObjectComponent.new(ap_object, current_ap_actor: current_group)
+    #         )
+    #       end
+    #       render turbo_stream: stream
+    #     end
+
+    #     format.html do
+    #       redirect_back fallback_location: group_path(current_group)
+    #     end
+    #   end
+    # end
 
     private
 
@@ -117,20 +127,12 @@ module Panel
       @find_actor ||= ApActor.find(params[:actor_id])
     end
 
-    def current_actor
-      if params[:actor_id]
-        @current_actor ||= find_actor
-      else
-        super
-      end
-    end
-
-    def ap_actors_follow_form
-      params.require(:ap_actors_follow_form).permit(:username)
-    end
+    # def ap_actors_follow_form
+    #   params.require(:ap_actors_follow_form).permit(:username)
+    # end
 
     def ap_object_params
-      params.require(:ap_object).permit(:content, ap_attachments_attributes: [:file])
+      params.require(:ap_object).permit(:content_raw, :name)
     end
   end
 end
