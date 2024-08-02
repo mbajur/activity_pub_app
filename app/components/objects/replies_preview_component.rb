@@ -7,5 +7,9 @@ module Objects
       @loaded = loaded
       super
     end
+
+    def replies
+      object.children.at_depth(1).order(id: :desc).limit(3)
+    end
   end
 end

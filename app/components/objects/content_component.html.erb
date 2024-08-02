@@ -1,5 +1,5 @@
 <%# Head %>
-<div class="flex flex-row mt-0 px-2 py-3 mx-0">
+<div class="flex flex-row mt-0 py-3 mx-0">
   <div class="w-auto h-auto rounded-full">
     <%= link_to profile_url do %>
       <%= image_tag avatar_url, class: 'w-9 h-9 object-cover rounded-full cursor-pointer' %>
@@ -11,12 +11,12 @@
       <%= link_to profile_name, profile_url %>
     </div>
     <div class="flex w-full mt-0">
-      <div class="text-gray-700 text-xs mr-1 cursor-pointer">
+      <div class="text-gray-400 text-xs mr-1 cursor-pointer">
         <%= link_to preferred_username, profile_url %>
       </div>
       <div class="text-gray-400 text-xs">
         <%= link_to object_url do %>
-          • <%= time_ago_in_words(object.published_at) %> ago
+          • <%= time_ago_in_words(object.created_at) %> ago
         <% end %>
       </div>
       <div class="text-gray-400 text-xs ml-1">
@@ -40,21 +40,4 @@
 <% end %>
 
 <%# Footer %>
-<div class="px-0 py-3 mx-2">
-  <div class="text-gray-400 text-xs flex flex-row items-center">
-    <div class="mr-3">
-      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-    </div>
-
-    <div class="mr-5">
-      <div class="flex -space-x-1 overflow-hidden">
-        <%= image_tag 'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', class: 'inline-block h-6 w-6 rounded-full ring-2 ring-white' %>
-        <%= image_tag 'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', class: 'inline-block h-6 w-6 rounded-full ring-2 ring-white' %>
-        <%= image_tag 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80', class: 'inline-block h-6 w-6 rounded-full ring-2 ring-white' %>
-      </div>
-    </div>
-
-    <div class="mr-3"><%= pluralize(object.replies_count, 'reply') %></div>
-    <div class="mr-3"><%= pluralize(object.announced_count, 'share') %></div>
-  </div>
-</div>
+<%= render(Objects::FooterComponent.new(object, current_ap_actor: current_ap_actor, liked_ap_object_ids: liked_ap_object_ids)) %>

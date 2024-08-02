@@ -48,6 +48,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
   gem 'dotenv', groups: [:development, :test]
+  gem 'faker'
 end
 
 group :development do
@@ -59,6 +60,7 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'bullet'
 end
 
 group :test do
@@ -85,5 +87,10 @@ gem "liquid", "~> 5.5"
 
 gem "pagy", "~> 8.4"
 
-
 gem "render_editorjs", "~> 0.1.4"
+
+gem "ancestry", "~> 4.3"
+
+gem "light-services", "~> 2.1"
+
+gem "tabler_icons_ruby", "~> 3.5"

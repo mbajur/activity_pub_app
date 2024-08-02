@@ -1,0 +1,52 @@
+<% author = comment.attributed_to[0] %>
+<% author_decorated = AuthorDecorator.new(author) %>
+
+<li>
+  <div class="flex flex-row mt-0 pb-3 pt-2 mx-0">
+    <div class="w-auto h-auto rounded-full">
+      <%= link_to panel_actor_objects_path(actor_id: author&.id) do %>
+        <%= image_tag author_decorated.avatar_url, size: '36x36', class: 'w-9 h-9 object-cover rounded-full cursor-pointer' %>
+      <% end %>
+    </div>
+
+    <div class="flex flex-col ml-3 flex-1">
+      <div class="text-gray-600 text-sm font-semibold">
+        <%= link_to author.name, panel_actor_objects_path(actor_id: author&.id) %>
+      </div>
+      <div class="flex w-full mt-0">
+        <div class="text-gray-700 text-xs mr-1 cursor-pointer">
+          <%= link_to author_decorated.display_username, panel_actor_objects_path(actor_id: author&.id) %>
+        </div>
+        <div class="text-gray-400 text-xs">
+          <%= link_to panel_object_url(comment) do %>
+            • <%= time_ago_in_words(comment.created_at) %> ago
+          <% end %>
+        </div>
+
+        <% if comment.remote? %>
+          <div class="text-gray-400 text-xs ml-1">
+            • <%= link_to 'url', comment.guid %>
+          </div>
+        <% end %>
+
+        <% if comment.local? %>
+          <div class="text-gray-400 text-xs ml-1">
+            • <%= link_to 'edit', edit_panel_object_path(comment) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-gray-700 [&_p]:mb-3">
+    <%== comment.content %>
+  </div>
+
+  <%= render 'panel/comments/footer', comment: comment, liked_comment_ids: liked_comment_ids %>
+
+  <ul class="ml-2 pl-6 mt-4 pt-0 border-l">
+    <% replies.each do |comment, children| %>
+      <%= render('panel/objects/comment', comment: comment, replies: children, liked_comment_ids: liked_comment_ids) %>
+    <% end %>
+  </ul>
+</li>

@@ -45,6 +45,10 @@ module Objects
       object.attributed_to[0]
     end
 
+    def actor_decorated
+      @actor_decorated ||= AuthorDecorator.new(actor)
+    end
+
     def profile_name
       if actor.remote?
         actor.data['name']&.presence || actor.data['preferredUsername']
@@ -63,11 +67,7 @@ module Objects
     end
 
     def preferred_username
-      if actor.remote?
-        "@#{actor.preferred_username}@#{URI.parse(actor.guid).host}"
-      else
-        "@#{actor.preferred_username}"
-      end
+      actor_decorated.display_username
     end
 
     def avatar_url
@@ -111,7 +111,7 @@ module Objects
     end
 
     def liked?
-      liked_ap_object_ids.include?(object['id'])
+      liked_ap_object_ids&.include?(object['id'])
     end
   end
 end

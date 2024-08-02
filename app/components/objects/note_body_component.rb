@@ -28,7 +28,8 @@ module Objects
       attr_reader :attachment
 
       def local?
-        attachment.is_a?(Ap::Attachment)
+        # attachment.is_a?(ActivityPub::Attachment)
+        false
       end
     end
 
@@ -43,7 +44,7 @@ module Objects
       col = if object.remote?
               object.data['attachment'] || []
             else
-              object.ap_attachments.all
+              []
             end
 
       col.first(5).map { |att| AttachmentPresenter.new(att) }

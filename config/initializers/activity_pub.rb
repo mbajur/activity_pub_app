@@ -25,4 +25,21 @@ Rails.application.config.to_prepare do
     end
   end
   ActivityPub::Person.prepend(ActivityPub::PersonPatch)
+
+  module ActivityPub::ObjectPatch
+    def self.prepended(base)
+      base.has_ancestry ancestry_format: :materialized_path2,
+                        counter_cache: true,
+                        cache_depth: true
+
+      base.before_save :assign_parent
+
+      private
+
+      def assign_parent
+        self.parent = ActivityPub::Object.find(self.in_reply_to_ap_object_id) if in_reply_to_ap_object_id.present? && ancestry == '/'
+      end
+    end
+  end
+  ActivityPub::Object.prepend(ActivityPub::ObjectPatch)
 end

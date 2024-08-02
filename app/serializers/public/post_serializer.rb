@@ -8,7 +8,7 @@ module Public
         'published_at' => resource.published_at,
         'likes_count' => resource.liked_by_count,
         'boosts_count' => resource.announced_count,
-        'replies_count' => resource.replies_count
+        'replies_count' => resource.children_count
       }
     end
   end

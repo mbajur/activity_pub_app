@@ -1,0 +1,10 @@
+<turbo-stream action="replace" target="<%= dom_id(@ap_object, :footer) %>">
+  <template>
+    <%= render partial: 'panel/comments/footer',
+               locals: {
+                comment: @ap_object,
+                liked_comment_ids: []
+               },
+               formats: [:html] %>
+  </template>
+</turbo-stream>

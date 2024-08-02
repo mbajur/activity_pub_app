@@ -26,9 +26,19 @@ Rails.application.routes.draw do
     resources :objects, only: [:index, :new, :show, :create, :edit, :update] do
       get 'new/article', action: :new_article, on: :collection, as: :new_article
       get :replies_preview
+      post :like, on: :member
+      post :unlike, on: :member
+    end
+
+    resources :comments, only: [:show] do
+      post :like, on: :member
+      post :unlike, on: :member
     end
 
     resources :actors, only: [] do
+      post :follow, on: :member
+      post :unfollow, on: :member
+
       resources :objects, only: [:index, :show]
     end
 

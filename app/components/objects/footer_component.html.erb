@@ -1,0 +1,31 @@
+<div class="px-0 py-3" id="<%= dom_id(object, :footer) %>">
+  <div class="text-gray-400 text-xs flex flex-row items-center h-6">
+    <div class="mr-3">
+      <% if liked? %>
+        <%= button_to unlike_panel_object_path(object), class: 'block text-red-500', data: { method: :patch } do %>
+          <%= tabler_icon(:heart_filled, size: 20) %>
+        <% end %>
+      <% else %>
+        <%= button_to like_panel_object_path(object), class: 'block', data: { method: :patch } do %>
+          <%= tabler_icon(:heart, size: 20) %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if recent_likes.any? %>
+      <div class="mr-5">
+        <div class="flex -space-x-1 overflow-hidden">
+          <% recent_likes.each do |like| %>
+            <% author_decorated = AuthorDecorator.new(like.source_ap_object) %>
+            <%= link_to panel_actor_objects_path(like.source_ap_object) do %>
+              <%= image_tag author_decorated.avatar_url, class: 'inline-block h-6 w-6 rounded-full ring-2 ring-white' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="mr-3"><%= link_to pluralize(object.children_count, 'reply'), panel_object_path(object, anchor: :replies) %></div>
+    <div class="mr-3"><%= pluralize(object.announced_count, 'share') %></div>
+  </div>
+</div>

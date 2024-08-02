@@ -30,3 +30,5 @@ pin "@lezer/css", to: "@lezer--css.js" # @1.1.8
 pin "@lezer/html", to: "@lezer--html.js" # @1.3.10
 pin "@lezer/javascript", to: "@lezer--javascript.js" # @1.4.17
 pin "@lezer/lr", to: "@lezer--lr.js" # @1.4.1
+pin "@kiberpro/editorjs-gallery", to: "@kiberpro--editorjs-gallery.js" # @1.3.0
+pin "sortablejs" # @1.15.2

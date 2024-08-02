@@ -1,12 +1,4 @@
-class PostDecorator < SimpleDelegator
-  def class
-    __getobj__.class
-  end
-
-  def initialize(resource)
-    @resource = resource
-  end
-
+class PostDecorator < BaseDecorator
   def content
     if resource.local?
       renderer = RenderEditorjs::DefaultRenderer.new
@@ -27,8 +19,4 @@ class PostDecorator < SimpleDelegator
     return unless image_tag
     image_tag['src']
   end
-
-  private
-
-  attr_reader :resource
 end

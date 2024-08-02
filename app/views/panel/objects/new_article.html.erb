@@ -18,7 +18,7 @@
         class="content"
       >
         <div data-editorjs-target="editor"></div>
-        <%= f.text_area :content_raw, data: { editorjs_target: :input } %>
+        <%= f.hidden_field :content_raw, data: { editorjs_target: :input } %>
       </div
     <% end %>
   <% end %>

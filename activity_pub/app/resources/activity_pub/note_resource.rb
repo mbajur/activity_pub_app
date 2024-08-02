@@ -11,6 +11,7 @@ module ActivityPub
 
     register_data_attribute :content
     register_data_attribute :url
+    register_data_attribute :published_at
 
     register_field :content
 

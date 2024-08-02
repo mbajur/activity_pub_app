@@ -41,7 +41,7 @@ class ObjectComponent < ViewComponent::Base
   end
 
   def actor
-    object.ap_actors[0]
+    object.attributed_to[0]
   end
 
   def profile_name
