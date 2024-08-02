@@ -1,0 +1,27 @@
+<div class="mb-5 bg-white shadow-sm rounded-sm overflow-hidden mx-auto" id="<%= id %>">
+  <% if header.present? %>
+    <div class="p-4 border-b">
+      <%= header %>
+    </div>
+  <% end %>
+
+  <% if content.present? %>
+    <div class="flex items-center w-full">
+      <div class="w-full">
+        <%= content %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if body.present? %>
+    <div class="p-4 w-full">
+      <%= body %>
+    </div>
+  <% end %>
+
+  <% if footer.present? %>
+    <div class="p-4 border-t">
+      <%= footer %>
+    </div>
+  <% end %>
+</div>

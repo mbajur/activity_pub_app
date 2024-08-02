@@ -1,0 +1,48 @@
+<%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
+  <% layout.with_right do %>
+    <% if @actor %>
+      <% actor_decorated = AuthorDecorator.new(@actor) %>
+
+      <div class="grid grid-cols-12 mt-6 mb-16 max-w-3xl mx-auto items-center">
+        <div class="col-span-3 flex">
+          <%= image_tag actor_decorated.avatar_url, class: 'w-32 h-32 object-cover rounded-full justify-self' %>
+        </div>
+
+        <div class="col-span-9">
+          <div class="flex gap-4 items-center">
+            <h1 class="text-xl">
+              <%= @actor.name %>
+            </h1>
+
+            <span class="text-sm text-gray-500 pt-1">
+              <%= actor_decorated.display_username %>
+            </span>
+
+            <%= render(Actors::FollowBtnComponent.new(
+              actor: current_site.activity_pub_object,
+              target_actor: @actor
+            )) %>
+          </div>
+
+          <div class="text-sm mt-4 text-gray-700">
+            <%= simple_format @actor.summary %>
+          </div>
+
+          <div class="flex gap-6 mt-4 text-sm">
+            <span><%= pluralize(@actor.attributions_count, 'post') %></span>
+            <span><%= pluralize(@actor.followers_count, 'followers') %></span>
+            <span><%= @actor.following_count %> following</span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @objects.any? %>
+      <% @objects.each do |obj| %>
+        <%= render(Objects::WrapComponent.new(obj, current_ap_actor: current_site.activity_pub_object, liked_ap_object_ids: @liked_object_ids)) %>
+      <% end %>
+    <% else %>
+      no objects
+    <% end %>
+  <% end %>
+<% end %>

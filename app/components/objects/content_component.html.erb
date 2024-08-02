@@ -1,0 +1,43 @@
+<%# Head %>
+<div class="flex flex-row mt-0 py-3 mx-0">
+  <div class="w-auto h-auto rounded-full">
+    <%= link_to profile_url do %>
+      <%= image_tag avatar_url, class: 'w-9 h-9 object-cover rounded-full cursor-pointer' %>
+    <% end %>
+  </div>
+
+  <div class="flex flex-col ml-3 flex-1">
+    <div class="text-gray-600 text-sm font-semibold">
+      <%= link_to profile_name, profile_url %>
+    </div>
+    <div class="flex w-full mt-0">
+      <div class="text-gray-400 text-xs mr-1 cursor-pointer">
+        <%= link_to preferred_username, profile_url %>
+      </div>
+      <div class="text-gray-400 text-xs">
+        <%= link_to object_url do %>
+          • <%= time_ago_in_words(object.created_at) %> ago
+        <% end %>
+      </div>
+      <div class="text-gray-400 text-xs ml-1">
+        • <%= link_to 'url', public_object_url %>
+      </div>
+
+      <% if object.local? %>
+        <div class="text-gray-400 text-xs ml-1">
+          • <%= link_to 'edit', edit_panel_object_path(object) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%# Body %>
+<% if object.is_a?(ActivityPub::Note) %>
+  <%= render(Objects::NoteBodyComponent.new(object)) %>
+<% elsif object.is_a?(ActivityPub::Article) %>
+  <%= render(Objects::ArticleBodyComponent.new(object)) %>
+<% end %>
+
+<%# Footer %>
+<%= render(Objects::FooterComponent.new(object, current_ap_actor: current_ap_actor, liked_ap_object_ids: liked_ap_object_ids)) %>

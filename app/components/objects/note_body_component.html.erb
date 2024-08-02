@@ -1,0 +1,43 @@
+<% if attachments.count == 1 %>
+  <div data-controller="lightbox" data-lightbox-options-value='{"counter": false, "download": false}'>
+    <% attachments.first(1).each do |att| %>
+      <a class="w-auto h-96 bg-cover bg-center bg-gray-100 block" href="<%= att.url %>" style="background-image:url('<%= att.url %>')")></a>
+    <% end %>
+  </div>
+
+<% elsif attachments.count == 2 %>
+  <div class="flex gap-3" data-controller="lightbox" data-lightbox-options-value='{"counter": false, "download": false}'>
+    <% attachments.each do |att| %>
+      <a class="w-auto h-96 bg-cover bg-center flex-1" href="<%= att.url %>" style="background-image:url('<%= att.url %>')")></a>
+    <% end %>
+  </div>
+
+<% elsif attachments.count == 3 %>
+  <div class="grid grid-rows-2 grid-flow-col h-96 gap-3">
+    <% attachments.first(1).each do |att| %>
+      <div class="bg-cover bg-center row-span-3" style="background-image:url('<%= att.url %>')"></div>
+    <% end %>
+
+    <% [attachments[1]].each do |att| %>
+      <div class="bg-cover bg-center col-span-1" style="background-image:url('<%= att.url %>')"></div>
+    <% end %>
+
+
+    <% [attachments[2]].each do |att| %>
+      <div class="bg-cover bg-center col-span-1 row-span-2" style="background-image:url('<%= att.url %>')"></div>
+    <% end %>
+  </div>
+
+<% elsif attachments.count == 4 %>
+  <div class="grid grid-rows-2 grid-flow-col h-96 gap-3">
+    <% attachments.each do |att| %>
+      <div class="bg-cover bg-center row-span-1 col-span-1" style="background-image:url('<%= att.url %>')"></div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if object.data&.dig('content')&.presence %>
+  <div class="text-gray-600 text-sm my-3">
+    <%= strip_tags object.data['content'] %>
+  </div>
+<% end %>

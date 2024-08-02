@@ -1,0 +1,66 @@
+<div class="grid grid-cols-12 gap-10 h-screen">
+  <div class="col-span-3 bg-gray-100 relative">
+    <div class="p-6 sticky top-0">
+      <div class="pl-3 mb-7">
+        <h1 class="text-3xl font-extrabold"><%= helpers.current_site.activity_pub_object.name %></h1>
+        <p class="text-gray-500">@<%= helpers.current_site.domain %></p>
+      </div>
+
+      <ul class="text-gray-600 mb-10">
+        <li>
+          <%= link_to new_panel_object_path, class: current_class?(/panel\/objects\/new/) do %>
+            <div class="mr-3">
+              <%= tabler_icon(:circle_plus, size: 20) %>
+            </div>
+            Add Post
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to '/panel', class: current_class?(/(panel\z|panel\/objects\/\d+|panel\/actors)/) do %>
+            <div class="mr-3">
+              <%= tabler_icon(:home, size: 20) %>
+            </div>
+            Dashboard
+          <% end %>
+        </li>
+
+        <li>
+          <a href="" class="flex items-center p-3 hover:bg-gray-50 cursor-pointer">
+            <div class="mr-3">
+              <%= tabler_icon(:book, size: 20) %>
+            </div>
+            Content
+          </a>
+        </li>
+
+        <li>
+          <%= link_to edit_panel_design_path, class: current_class?(/panel\/design/) do %>
+            <div class="mr-3">
+              <%= tabler_icon(:layout, size: 20) %>
+            </div>
+            Design
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to edit_panel_settings_path, class: current_class?(/panel\/settings/) do %>
+            <div class="mr-3">
+              <%= tabler_icon(:settings, size: 20) %>
+            </div>
+            Settings
+          <% end %>
+        </li>
+      </ul>
+
+      <div class="p-3">
+        <p class="text-sm text-gray-500 mb-2">Use @user@domain.com or URL of a post to interact:</p>
+        <input type="text" class="w-full px-3 py-2 bg-gray-50 border-b border-gray-200">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-9 pt-4 pr-10">
+    <%= right %>
+  </div>
+</div>

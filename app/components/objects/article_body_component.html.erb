@@ -1,0 +1,14 @@
+<%= link_to panel_object_path(object), class: 'flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700' do %>
+  <div class="flex flex-col justify-between p-4">
+    <span class="uppercase text-xs text-gray-400">Article</span>
+    <h1 class="text-xl text-gray-700 mb-2 font-bold"><%= object.name %></h1>
+    <p class="text-gray-500"><%= object_decorated.excerpt.truncate(150) %></p>
+  </div>
+
+  <% if object_decorated.thumbnail_url %>
+    <div
+      class="h-40 w-96 rounded-t-lg object-cover bg-gray-100 bg-cover bg-center md:!rounded-none md:!rounded-e-lg"
+      style="background-image: url('<%= object_decorated.thumbnail_url %>')"
+    ></div>
+  <% end %>
+<% end %>

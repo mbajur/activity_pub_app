@@ -1,0 +1,4 @@
+<p class="mb-2 text-gray-700">
+  <%= link_to author_decorated.display_username(simple: true), '', class: 'font-semibold' %>
+  <%= strip_tags reply['data']['content']&.truncate(100) %>
+</p>

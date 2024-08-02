@@ -1,0 +1,65 @@
+= render(Ui::CardComponent.new(id: dom_id(object))) do
+  / head
+  .flex.flex-row.mt-0.px-2.py-3.mx-2
+    .w-auto.h-auto.rounded-full
+      - if avatar_url
+        = link_to profile_url do
+          = image_tag avatar_url, class: 'w-9 h-9 object-cover rounded-full cursor-pointer'
+
+    .flex.flex-col.ml-3.flex-1
+      .text-gray-600.text-sm.font-semibold
+        = link_to profile_name, profile_url
+      .flex.w-full.mt-0
+        .text-gray-700.text-xs.mr-1.cursor-pointer
+          = link_to preferred_username, profile_url
+        .text-gray-400.text-xs
+          | • #{link_to time_ago_in_words(object.published_at), object_url} ago
+
+  / body
+  .border-b.border-gray-100
+  - if object.attachments_count == 1
+    - attachments.each do |att|
+      .w-auto.h-96.bg-cover.bg-center(style="background-image:url(#{att.url})")
+
+  - elsif object.attachments_count == 2
+    .flex.gap-3
+      - attachments.each do |att|
+        .w-auto.h-96.bg-cover.bg-center.flex-1(style="background-image:url(#{att.url})")
+
+  - elsif object.attachments_count == 3
+    .grid.grid-rows-2.grid-flow-col.h-96.gap-3
+      - attachments.first(1).each do |att|
+        .bg-cover.bg-center.row-span-3(style="background-image:url(#{att.url})")
+      - [attachments[1]].each do |att|
+        .bg-cover.bg-center.col-span-1(style="background-image:url(#{att.url})")
+      - [attachments[2]].each do |att|
+        .bg-cover.bg-center.col-span-1.row-span-2(style="background-image:url(#{att.url})")
+
+  - elsif object.attachments_count == 4
+    .grid.grid-rows-2.grid-flow-col.h-96.gap-3
+      - attachments.each do |att|
+        .bg-cover.bg-center.row-span-1.col-span-1(style="background-image:url(#{att.url})")
+
+  - if object.data['content']&.presence
+    .text-gray-400.font-medium.text-sm.px-2.mx-2.my-3
+      = strip_tags object.data['content']
+
+  / Footer
+  .border-b.border-gray-100
+  .px-2.py-3.mx-2
+    .text-gray-400.font-medium.text-sm.flex.flex-row.items-center
+      .mr-3
+        - if liked?
+          = link_to unlike_group_object_path(current_ap_actor, object), method: :post, class: 'text-pink-500' do
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="currentColor" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        - else
+          = link_to like_group_object_path(current_ap_actor, object), method: :post do
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+
+      .mr-5
+        .flex.-space-x-1.overflow-hidden
+          = image_tag 'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', class: 'inline-block h-6 w-6 rounded-full ring-2 ring-white'
+          = image_tag 'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', class: 'inline-block h-6 w-6 rounded-full ring-2 ring-white'
+          = image_tag 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80', class: 'inline-block h-6 w-6 rounded-full ring-2 ring-white'
+      .mr-3 = pluralize(3, 'reply')
+      .mr-3 = pluralize(1, 'share')

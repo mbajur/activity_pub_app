@@ -1,0 +1,22 @@
+<%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
+  <% layout.with_right do %>
+    <%= form_with model: @object, url: panel_design_path, scope: :design, method: :patch do |f| %>
+      <%= render(Ui::TopBarComponent.new) do |top_bar| %>
+        <% top_bar.with_title do %>
+          Design
+        <% end %>
+
+        <% top_bar.with_actions do %>
+          <%= render(Ui::BtnComponent.new(type: :submit)) do %>
+            Save
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <div data-controller='template-editor' data-template-editor-doc-value="<%= f.object.template_markup %>">
+        <%= f.text_area :template_markup, rows: 20, cols: 100, class: 'hidden', data: { template_editor_target: 'input' } %>
+        <div data-template-editor-target="editor" class="w-full"></div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

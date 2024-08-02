@@ -1,0 +1,53 @@
+<%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
+  <% layout.with_left do %>
+    <%= render(Groups::SidebarComponent.new(current_group)) %>
+  <% end %>
+
+  <%= layout.with_right do %>
+    <div class="text-gray-700">
+      <h1 class="text-xl mb-2">Add post</h1>
+      <hr class="mb-5">
+
+      <%= form_with model: @ap_object, url: panel_objects_path, data: { controller: 'media-uploader-form', nested_form_wrapper_selector_value: '.media-uploader-form-wrapper', action: 'media-uploader:uploaded->media-uploader-form#add' } do |f| %>
+        <template data-media-uploader-form-target="template">
+          <%= f.fields_for :ap_attachments, @ap_object.ap_attachments.new, child_index: 'NEW_RECORD' do |attachment_fields| %>
+            <%= render "attachment_form", f: attachment_fields %>
+          <% end %>
+        </template>
+
+        <div class="grid grid-cols-2 gap-8">
+          <div>
+            <h2 class="mb-3">Media</h2>
+            <p class="text-gray-500 mb-4 text-sm">You can include up to 10 files. If you need more, consider switching to <a href="#">post editor</a> instead.</p>
+
+            <div class="cursor-pointer mb-4 bg-gray-100 p-10 border-dashed border-gray-200 border-2 text-center rounded-sm" data-controller="media-uploader" data-action="click->media-uploader#selectFiles" data-media-uploader-direct-upload-url-value="<%= rails_direct_uploads_path %>">
+              <input type="file" data-media-uploader-target="input" class="hidden" data-action="media-uploader#upload" multiple>
+
+              <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto w-10 h-10 text-gray-400 mb-2" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1" />
+                <path d="M9 15l3 -3l3 3" />
+                <path d="M12 12l0 9" />
+              </svg>
+
+              <p class="font-medium">Drop your file(s) here, or <a href="#">Browse</a> to upload</p>
+              <p class="text-gray-400 text-sm">Maximum file size of 10MB</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-5">
+              <div data-media-uploader-form-target="target" class="hidden"></div>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="mb-2">Description</h2>
+            <p class="text-gray-500 mb-4 text-sm">Include some text description with your post. Might be a post title, might be a backstory - whatever needed.</p>
+            <textarea rows="7" class="text optional w-full py-1 px-2 rounded-md border border-gray-200 transition focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"></textarea>
+          </div>
+        </div>
+
+        <%= f.submit %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

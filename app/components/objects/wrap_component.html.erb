@@ -1,0 +1,17 @@
+<div class="grid grid-cols-12 gap-7" id="<%= dom_id(object) %>">
+  <div class="<%= show_replies ? 'col-span-8' : 'col-span-12' %>">
+    <%= content %>
+  </div>
+
+  <% if show_replies %>
+    <div class="col-span-4 text-sm">
+      <div class="pt-14 text-gray-800">
+        <div class="border-l pl-6 pr-4">
+          <%= render(Objects::RepliesPreviewComponent.new(object)) %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="border-b mt-0 mb-7 border-gray-100"></div>

@@ -1,0 +1,6 @@
+<turbo-stream action="replace" target="<%= dom_id(@ap_object, :footer) %>">
+  <template>
+    <%= render(Objects::FooterComponent.new(@ap_object, current_ap_actor: current_site.activity_pub_object,
+                                                        liked_ap_object_ids: [@like.target_ap_object_id])) %>
+  </template>
+</turbo-stream>
