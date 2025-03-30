@@ -5,6 +5,7 @@ module Panel
     OBJECT_TYPES = [
       ActivityPub::Note,
       ActivityPub::Article,
+      ActivityPub::Announce,
     ]
 
     def index
@@ -16,8 +17,10 @@ module Panel
         @objects = @objects.joins(:attributed_to)
                            .where(attributed_tos_activity_pub_objects: { id: @actor.id })
       else
+        followed_object_ids = current_site.activity_pub_object.following.map(&:id).push(current_site.activity_pub_object.id).uniq
         @objects = @objects.left_joins(:attributed_to)
-                           .where(attributed_tos_activity_pub_objects: { id: current_site.activity_pub_object.following.map(&:id).push(current_site.activity_pub_object.id).uniq })
+                           .left_joins(:actors)
+                           .where('attributed_tos_activity_pub_objects.id IN (?) OR actors_activity_pub_objects.id IN (?)', followed_object_ids, followed_object_ids)
         @objects = @objects
       end
 

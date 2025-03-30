@@ -5,7 +5,48 @@ module ActivityPub
     end
 
     def call
-      @data.deep_transform_keys(&:underscore)
+      data = @data
+
+      data = @data.deep_transform_keys(&:underscore)
+      data = sanitize_in_reply_to(data)
+      data = sanitize_attributed_to(data)
+      data = sanitize_replies(data)
+
+      data
+    end
+
+    private
+
+    def sanitize_in_reply_to(data)
+      in_reply_to = data['in_reply_to']
+      return data unless in_reply_to.present?
+
+      data['in_reply_to'] = in_reply_to.is_a?(Array) ? in_reply_to[0] : in_reply_to
+
+      data
+    end
+
+    def sanitize_attributed_to(data)
+      attributed_to = data['attributed_to']
+      return data unless attributed_to.present?
+
+      data['attributed_to'] = attributed_to.is_a?(Array) ? attributed_to : [attributed_to]
+
+      data
+    end
+
+    def sanitize_replies(data)
+      replies = data['replies']
+      return data unless data['replies'].present?
+
+      result = if replies.is_a?(String)
+                 { 'id' => replies }
+               else
+                  replies
+               end
+
+      data['replies'] = result
+      data
     end
   end
 end

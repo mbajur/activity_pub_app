@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_091015) do
 
   create_table "activity_pub_objects", force: :cascade do |t|
     t.string "guid"
-    t.json "data"
+    t.json "data", default: {}
     t.string "type"
     t.datetime "last_synced_at"
     t.string "status", default: "draft"

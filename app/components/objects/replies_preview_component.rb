@@ -9,7 +9,7 @@ module Objects
     end
 
     def replies
-      object.children.at_depth(1).order(id: :desc).limit(3)
+      object.replies.order(id: :desc).limit(3)
     end
   end
 end

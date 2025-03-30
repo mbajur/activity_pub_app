@@ -22,6 +22,13 @@
       <%= link_to @object.in_reply_to.guid, object_path(@object.in_reply_to) %></li>
     <% end %>
 
+    <h3 class="mt-4">Actors</h3>
+    <ul>
+      <% @object.actors.each do |object| %>
+        <li><%= link_to object.guid, object_path(object) %></li>
+      <% end %>
+    </ul>
+
     <h3 class="mt-4">Attributed to</h3>
     <ul>
       <% @object.attributed_to.each do |object| %>
@@ -42,10 +49,19 @@
       </tbody>
     </table>
 
+    <h3 class="mt-4">Activities performed</h3>
+    <table class="table align-middle">
+      <tbody>
+        <% @object.objects_performed.each do |object| %>
+          <%= render 'row', object: object %>
+        <% end %>
+      </tbody>
+    </table>
+
     <h3 class="mt-4">Announced</h3>
     <ul>
       <% @object.announced.limit(5).each do |announce| %>
-        <li><%= link_to announce.guid, ap_object_path(announce) %></li>
+        <li><%= link_to announce.guid, object_path(announce) %></li>
       <% end %>
     </ul>
 

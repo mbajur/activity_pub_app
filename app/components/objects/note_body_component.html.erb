@@ -34,10 +34,18 @@
       <div class="bg-cover bg-center row-span-1 col-span-1" style="background-image:url('<%= att.url %>')"></div>
     <% end %>
   </div>
+<% elsif attachments.count > 4 %>
+  <div class="overflow-x-auto">
+    <div class="flex min-w-max gap-4 mt-2">
+      <% attachments.each do |att| %>
+        <div class="bg-cover bg-center table-cell shrink-0 h-96" style="background-image:url('<%= att.url %>');aspect-ratio:<%= att.width.to_f / att.height.to_f %>"></div>
+      <% end %>
+    </div>
+  </div>
 <% end %>
 
 <% if object.data&.dig('content')&.presence %>
-  <div class="text-gray-600 text-sm my-3">
-    <%= strip_tags object.data['content'] %>
+  <div class="text-gray-600 text-sm my-3 mt-6 leading-relaxed [&_p]:mb-3">
+    <%== truncate(object.data['content'], length: 500) %>
   </div>
 <% end %>

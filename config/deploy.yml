@@ -13,7 +13,7 @@ volumes:
 servers:
   web:
     hosts:
-      - 5.22.223.28
+      - 209.38.211.5
     labels:
       traefik.http.routers.activity_pub_app.entrypoints: websecure
       traefik.http.routers.activity_pub_app.rule: Host(`aptest.mbajur.com`)
@@ -23,7 +23,7 @@ servers:
 
   job:
     hosts:
-      - 5.22.223.28
+      - 209.38.211.5
     cmd: bundle exec good_job
     options:
       network: "private"
@@ -47,7 +47,7 @@ env:
   clear:
     HOSTNAME: aptest.mbajur.com
     APP_DOMAIN: aptest.mbajur.com
-    DB_HOST: 5.22.223.28
+    DB_HOST: 209.38.211.5
     RAILS_SERVE_STATIC_FILES: true
     RAILS_LOG_TO_STDOUT: true
   secret:
@@ -98,7 +98,7 @@ builder:
 accessories:
   db:
     image: postgres:15
-    host: 5.22.223.28
+    host: 209.38.211.5
     port: 5432
     env:
       clear:

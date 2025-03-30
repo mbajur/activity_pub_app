@@ -41,8 +41,10 @@ module Objects
       super
     end
 
+    # @todo rename that, actor is confusing because it also exists on Object
+    # model as an association separate from attributed_to
     def actor
-      object.attributed_to[0]
+      object.attributed_to[0] || object.actors[0]
     end
 
     def actor_decorated

@@ -23,6 +23,14 @@ module Objects
         end
       end
 
+      def width
+        attachment['width']
+      end
+
+      def height
+        attachment['height']
+      end
+
       private
 
       attr_reader :attachment

@@ -10,18 +10,11 @@ module ActivityPub
     def call
       remote_object = HttpClient.new(nil).get(URI.parse(@uri)).body
 
-      batch = GoodJob::Batch.new
-      batch.description = "Resolve #{remote_object['id']} object"
+      local_object = ActivityPub::ObjectResolver.new(
+        remote_object['id'], shallow: @shallow, skip_if_fresh: @skip_if_fresh
+      ).call
 
-      batch.add do
-        @local_object = ActivityPub::ObjectResolver.new(
-          remote_object['id'], shallow: @shallow, skip_if_fresh: @skip_if_fresh
-        ).call
-      end
-
-      batch.enqueue(uri: remote_object['id'])
-
-      @local_object
+      local_object
     end
   end
 end

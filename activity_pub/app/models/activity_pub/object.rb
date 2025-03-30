@@ -13,6 +13,12 @@ class ActivityPub::Object < ApplicationRecord
   has_many :attribution_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :target_ap_object, dependent: :destroy
   has_many :attributions, through: :attribution_associations, source: :ap_object
 
+  has_many :performed_by_associations, ->{ where(type_key: 'actor') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object, dependent: :destroy
+  has_many :actors, through: :performed_by_associations, source: :target_ap_object
+
+  has_many :as_actor_associations, ->{ where(type_key: 'actor') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :target_ap_object, dependent: :destroy
+  has_many :objects_performed, through: :as_actor_associations, source: :ap_object
+
   belongs_to :in_reply_to, class_name: 'ActivityPub::Object', foreign_key: :in_reply_to_ap_object_id, optional: true
   has_many :replies, class_name: 'ActivityPub::Object', foreign_key: :in_reply_to_ap_object_id, dependent: :destroy
 
