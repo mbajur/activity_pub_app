@@ -33,12 +33,10 @@ Rails.application.config.to_prepare do
                         cache_depth: true
 
       base.before_save :assign_parent
+    end
 
-      private
-
-      def assign_parent
-        self.parent = ActivityPub::Object.find(self.in_reply_to_ap_object_id) if in_reply_to_ap_object_id.present? && ancestry == '/'
-      end
+    def assign_parent
+      self.parent = ActivityPub::Object.find(self.in_reply_to_ap_object_id) if in_reply_to_ap_object_id.present? && ancestry == '/'
     end
   end
   ActivityPub::Object.prepend(ActivityPub::ObjectPatch)
