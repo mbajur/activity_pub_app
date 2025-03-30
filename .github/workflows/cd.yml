@@ -41,5 +41,8 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Run deploy command
-        run: kamal deploy --verbose
+      - name: Run setup command
+        run: kamal setup --verbose
+
+      # - name: Run deploy command
+      #   run: kamal deploy --verbose
