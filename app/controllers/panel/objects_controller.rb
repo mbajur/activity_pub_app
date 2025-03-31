@@ -69,6 +69,13 @@ module Panel
         )
       )
 
+      actor = current_site.activity_pub_object
+      activity = ActivityPub::CreateSerializer.new(@ap_object, with_context: true, actor: actor)
+
+      actor.followers.find_each do |follower|
+        ActivityPub::FederateObjectJob.perform_later(actor, follower.inbox, activity.to_json)
+      end
+
       redirect_to panel_object_path(@ap_object)
     end
 
