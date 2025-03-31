@@ -1,12 +1,12 @@
 # Rails.application.config.to_prepare do
 #   ActivityPub::Engine.configure do |config|
-#     config.routes.default_url_options[:host] = 'aptest.mbajur.com'
+#     config.routes.default_url_options[:host] = 'aptest2.mbajur.com'
 #   end
 # end
 
 # ActivityPub.logger = Rails.logger
 # ActivityPub.domain = ENV.fetch('APP_DOMAIN')
-ActivityPub.domain = 'aptest.mbajur.com'
+ActivityPub.domain = 'aptest2.mbajur.com'
 
 Rails.application.config.to_prepare do
   module ActivityPub::ArticleResourcePatch

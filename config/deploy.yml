@@ -29,8 +29,8 @@ registry:
 
 env:
   clear:
-    HOSTNAME: aptest.mbajur.com
-    APP_DOMAIN: aptest.mbajur.com
+    HOSTNAME: aptest2.mbajur.com
+    APP_DOMAIN: aptest2.mbajur.com
     DB_HOST: activity_pub_app-db
     RAILS_SERVE_STATIC_FILES: true
     RAILS_LOG_TO_STDOUT: true
@@ -59,4 +59,4 @@ accessories:
 
 proxy:
   ssl: true
-  host: aptest.mbajur.com
+  host: aptest2.mbajur.com
