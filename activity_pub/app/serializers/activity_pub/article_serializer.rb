@@ -17,6 +17,9 @@ module ActivityPub
         result[field.key] = resource.field_value(field.key)
       end
 
+      result[:content_raw] = JSON.parse(object.content_raw) if object.content_raw.present?
+      result[:content] = RenderEditorjs.render(object.content_raw) if object.content_raw.present?
+
       result
     end
 

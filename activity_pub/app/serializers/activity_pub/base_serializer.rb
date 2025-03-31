@@ -32,7 +32,7 @@ module ActivityPub
     end
 
     def to_json(opts = {})
-      Oj.dump(as_json(opts))
+      Oj.dump(as_json(opts), mode: :compat)
     end
   end
 end
