@@ -8,6 +8,7 @@ module ActivityPub
                    when ActivityPub::Person then PersonSerializer
                    when ActivityPub::Group then GroupSerializer
                    when ActivityPub::Note then NoteSerializer
+                   when ActivityPub::Article then ArticleSerializer
                    #  when Ap::Note then NoteSerializer
                    #  when Ap::Document then DocumentSerializer
                    else raise NoSerializerDefinedError, "No serializer found for type #{object.class}"
