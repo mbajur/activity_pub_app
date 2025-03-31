@@ -18,7 +18,7 @@ module ActivityPub
     register_field :published_at
 
     public_url_resolver do |object|
-      "https://#{ActivityPub.domain}/notes/#{object.id}"
+      "https://#{ActivityPub.domain}/posts/#{object.id}"
     end
 
     def guid

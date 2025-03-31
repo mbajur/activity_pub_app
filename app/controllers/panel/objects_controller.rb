@@ -87,6 +87,13 @@ module Panel
       @ap_object = current_site.activity_pub_object.attributions.find(params[:id])
 
       if @ap_object.update(ap_object_params)
+        actor = current_site.activity_pub_object
+        activity = ActivityPub::UpdateSerializer.new(@ap_object, with_context: true, actor: actor)
+
+        actor.followers.find_each do |follower|
+          ActivityPub::FederateObjectJob.perform_later(actor, follower.inbox, activity.to_json)
+        end
+
         redirect_to panel_object_path(@ap_object)
       else
         render :edit
