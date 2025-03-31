@@ -9,23 +9,17 @@ volumes:
   - "/home/app/activity_pub_app-shared:/app/shared"
   - "/home/app/activity_pub_app-storage:/app/storage"
 
-# Deploy to these servers.
 servers:
   web:
     hosts:
       - 209.38.211.5
     cmd: bundle exec thrust bin/rails server
-    # options:
-    #   network: "private"
 
   job:
     hosts:
       - 209.38.211.5
     cmd: bundle exec good_job
-    # options:
-    #   network: "private"
 
-# Credentials for your image host.
 registry:
   server: ghcr.io
   username: mbajur
@@ -37,7 +31,7 @@ env:
   clear:
     HOSTNAME: aptest.mbajur.com
     APP_DOMAIN: aptest.mbajur.com
-    DB_HOST: 209.38.211.5
+    DB_HOST: activity_pub_app-db
     RAILS_SERVE_STATIC_FILES: true
     RAILS_LOG_TO_STDOUT: true
   secret:
@@ -62,10 +56,7 @@ accessories:
       - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
     directories:
       - data:/var/lib/postgresql/data
-    # options:
-    #   network: "private"
 
 proxy:
-  # app_port: 3000
   ssl: true
   host: aptest.mbajur.com
