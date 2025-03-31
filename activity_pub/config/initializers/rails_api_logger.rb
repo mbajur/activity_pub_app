@@ -30,5 +30,7 @@ module OutboundRequestLogPatch
   end
 end
 
-InboundRequestLog.prepend InboundRequestLogPatch
-OutboundRequestLog.prepend OutboundRequestLogPatch
+Rails.application.config.to_prepare do
+  RailsApiLogger::InboundRequestLog.prepend InboundRequestLogPatch
+  RailsApiLogger::OutboundRequestLog.prepend OutboundRequestLogPatch
+end

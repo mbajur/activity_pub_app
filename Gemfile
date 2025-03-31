@@ -12,7 +12,8 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
+# gem "puma", ">= 5.0"
+gem "webrick"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
@@ -72,7 +73,7 @@ end
 gem 'activity_pub', path: 'activity_pub'
 gem 'activity_pub_ui', path: 'activity_pub_ui'
 
-gem "rails_api_logger"
+gem "rails_api_logger", github: 'mbajur/rails_api_logger', branch: 'patch-1'
 
 gem "devise", "~> 4.9"
 gem 'exception_hunter', '~> 1.0', github: 'mbajur/flypaper'

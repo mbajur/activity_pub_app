@@ -28,9 +28,8 @@ module Activitypub
 
     config.action_mailer.default_url_options = { host: ActivityPub.domain, protocol: :https }
 
-    config.middleware.insert_before Rails::Rack::Logger, InboundRequestsLoggerMiddleware,
+    config.middleware.insert_before Rails::Rack::Logger, RailsApiLogger::Middleware,
                                     only_state_change: false,
-                                    path_regexp: /ap\/|\.well-known\//,
-                                    skip_body_regexp: /ap\//
+                                    path_regexp: /ap\/|\.well-known\//
   end
 end
