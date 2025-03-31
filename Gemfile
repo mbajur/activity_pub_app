@@ -97,3 +97,5 @@ gem "light-services", "~> 2.1"
 gem "tabler_icons_ruby", "~> 3.5"
 
 gem "thruster", "~> 0.1.12"
+
+gem "trailblazer-rails", "~> 2.4"

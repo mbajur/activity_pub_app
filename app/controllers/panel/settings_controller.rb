@@ -6,8 +6,9 @@ module Panel
 
     def update
       @object = current_site
+      result = Site::Operations::Update.call(model: @object, params: settings_params)
 
-      if @object.update(settings_params)
+      if result.success?
         redirect_to edit_panel_settings_path
       else
         render :edit, status: :unprocessable_entity
