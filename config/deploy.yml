@@ -15,15 +15,15 @@ servers:
     hosts:
       - 209.38.211.5
     cmd: bundle exec thrust bin/rails server
-    options:
-      network: "private"
+    # options:
+    #   network: "private"
 
   job:
     hosts:
       - 209.38.211.5
     cmd: bundle exec good_job
-    options:
-      network: "private"
+    # options:
+    #   network: "private"
 
 # Credentials for your image host.
 registry:
@@ -62,8 +62,8 @@ accessories:
       - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
     directories:
       - data:/var/lib/postgresql/data
-    options:
-      network: "private"
+    # options:
+    #   network: "private"
 
 proxy:
   # app_port: 3000
