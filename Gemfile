@@ -94,3 +94,5 @@ gem "ancestry", "~> 4.3"
 gem "light-services", "~> 2.1"
 
 gem "tabler_icons_ruby", "~> 3.5"
+
+gem "thruster", "~> 0.1.12"
