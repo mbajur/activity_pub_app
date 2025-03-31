@@ -42,7 +42,7 @@ module ActivityPub
 
       # Resolve authors
       attributed_to = remote_object['attributed_to']
-      if attributed_to&.any? && !shallow
+      if attributed_to&.any?
         attributed_to.each do |attribution|
           logger.info "Resolving attribution for #{attribution}..."
           attributor = ActivityPub::Object.find_or_create_by(guid: attribution)
