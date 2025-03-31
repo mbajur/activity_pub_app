@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - abelio
+      - main
 
 concurrency:
   group: production-deploy

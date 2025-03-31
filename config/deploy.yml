@@ -14,7 +14,7 @@ servers:
   web:
     hosts:
       - 209.38.211.5
-    cmd: bundle exec thrust
+    cmd: bundle exec thrust bin/rails server
     options:
       network: "private"
 

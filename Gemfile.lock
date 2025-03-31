@@ -264,8 +264,6 @@ GEM
     psych (5.1.2)
       stringio
     public_suffix (5.0.5)
-    puma (6.4.2)
-      nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.7.3)
     rack (3.0.11)
@@ -415,7 +413,6 @@ DEPENDENCIES
   liquid (~> 5.5)
   pagy (~> 8.4)
   pg (~> 1.1)
-  puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.2)
   rails_api_logger!
   redis (>= 4.0.1)
