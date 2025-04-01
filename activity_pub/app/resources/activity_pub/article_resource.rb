@@ -10,7 +10,7 @@ module ActivityPub
     has_followers false
 
     register_data_attribute :name
-    register_data_attribute :content
+    register_data_attribute :content_raw
     register_data_attribute :url
     register_data_attribute :published_at
 
