@@ -5,10 +5,10 @@ service: activity_pub_app
 image: mbajur/activity_pub_app
 
 volumes:
-  - "/home/app/activity_pub_app-cache:/app/tmp/cache"
-  - "/home/app/activity_pub_app-shared:/app/shared"
-  - "/home/app/activity_pub_app-storage:/app/storage"
-  - "/home/app/activity_pub_app-uploads:/app/public/uploads"
+  - "/home/app/activity_pub_app-cache:/rails/tmp/cache"
+  - "/home/app/activity_pub_app-shared:/rails/shared"
+  - "/home/app/activity_pub_app-storage:/rails/storage"
+  - "/home/app/activity_pub_app-uploads:/rails/public/uploads"
 
 servers:
   web:
