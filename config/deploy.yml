@@ -8,6 +8,7 @@ volumes:
   - "/home/app/activity_pub_app-cache:/app/tmp/cache"
   - "/home/app/activity_pub_app-shared:/app/shared"
   - "/home/app/activity_pub_app-storage:/app/storage"
+  - "/home/app/activity_pub_app-uploads:/app/public/uploads"
 
 servers:
   web:
@@ -40,8 +41,8 @@ env:
 
 builder:
   arch: amd64
-  cache:
-    type: registry
+  # cache:
+  #   type: registry
 
 accessories:
   db:
