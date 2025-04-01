@@ -51,6 +51,7 @@ COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
+    mkdir -p public/uploads && \
     chown -R rails:rails db log storage tmp public/uploads
 USER rails:rails
 
