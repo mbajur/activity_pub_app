@@ -14,6 +14,7 @@ module ActivityPub
     register_data_attribute :url
     register_data_attribute :published_at
 
+    register_field :content_raw
     register_field :published_at
 
     public_url_resolver do |object|
