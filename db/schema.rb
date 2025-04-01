@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_16_091015) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_01_072933) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_trgm"
@@ -228,6 +228,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_091015) do
     t.index ["domain"], name: "index_sites_on_domain", unique: true
   end
 
+  create_table "solid_errors", force: :cascade do |t|
+    t.text "exception_class", null: false
+    t.text "message", null: false
+    t.text "severity", null: false
+    t.text "source"
+    t.datetime "resolved_at"
+    t.string "fingerprint", limit: 64, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fingerprint"], name: "index_solid_errors_on_fingerprint", unique: true
+    t.index ["resolved_at"], name: "index_solid_errors_on_resolved_at"
+  end
+
+  create_table "solid_errors_occurrences", force: :cascade do |t|
+    t.integer "error_id", null: false
+    t.text "backtrace"
+    t.json "context"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["error_id"], name: "index_solid_errors_occurrences_on_error_id"
+  end
+
   create_table "uploads", force: :cascade do |t|
     t.json "file_data"
     t.datetime "created_at", null: false
@@ -255,4 +277,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_091015) do
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "target_ap_object_id"
   add_foreign_key "activity_pub_objects", "activity_pub_objects", column: "in_reply_to_ap_object_id"
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
+  add_foreign_key "solid_errors_occurrences", "solid_errors", column: "error_id"
 end
