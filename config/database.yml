@@ -83,3 +83,11 @@ production:
   password: <%= ENV["POSTGRES_PASSWORD"] %>
   database: activity_pub_app_production
   host: <%= ENV["DB_HOST"] %>
+
+errors:
+  <<: *default
+  username: activity_pub_app
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  database: activity_pub_app_production_errors
+  migrations_paths: db/errors_migrate
+  host: <%= ENV["DB_HOST"] %>

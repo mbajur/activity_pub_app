@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   mount ActivityPub::Engine => 'ap'
 
   authenticate :user do
-    mount ExceptionHunter::Engine => 'exception_hunter'
+    mount SolidErrors::Engine, at: "solid_errors"
     mount GoodJob::Engine => 'good_job'
     mount ActivityPubUi::Engine => 'ap_ui'
     mount ActivityPub::ObjectAttachmentUploader.upload_endpoint(:cache) => '/panel/object_attachments/upload'

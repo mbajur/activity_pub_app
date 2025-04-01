@@ -76,7 +76,6 @@ gem 'activity_pub_ui', path: 'activity_pub_ui'
 gem "rails_api_logger", github: 'mbajur/rails_api_logger', branch: 'patch-1'
 
 gem "devise", "~> 4.9"
-gem 'exception_hunter', '~> 1.0', github: 'mbajur/flypaper'
 
 gem "view_component", "~> 3.12"
 
@@ -99,3 +98,5 @@ gem "tabler_icons_ruby", "~> 3.5"
 gem "thruster", "~> 0.1.12"
 
 gem "trailblazer-rails", "~> 2.4"
+
+gem "solid_errors", "~> 0.6.1"
