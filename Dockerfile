@@ -51,11 +51,9 @@ COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    rm -rf /rails/public/uploads && \
-    chown -R rails:rails db log storage tmp public
+    rm -rf public/uploads && mkdir -p public/uploads && \
+    chown -R rails:rails db log storage tmp public public/uploads
 USER rails:rails
-
-RUN ls -lh public
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
