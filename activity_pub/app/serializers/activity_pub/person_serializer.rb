@@ -16,6 +16,17 @@ module ActivityPub
         result[field.key] = resource.field_value(field.key)
       end
 
+      avatar = object.activity_pubable.avatar
+      if avatar.present?
+        result[:icon] = {
+          type: 'Image',
+          mediaType: avatar.content_type,
+          url: avatar.url(host: host_with_protocol),
+          width: avatar.width,
+          height: avatar.height,
+        }
+      end
+
       result
     end
 
