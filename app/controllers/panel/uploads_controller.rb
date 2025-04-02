@@ -7,10 +7,12 @@ module Panel
         render json: {
           success: 1,
           file: {
-            id: upload.file.id,
+            id: upload.id,
             url: upload_redirect_path(upload.signed_id),
             width: upload.file.width,
-            height: upload.file.height
+            height: upload.file.height,
+            filename: upload.file.metadata['filename'],
+            mime_type: upload.file.metadata['mime_type'],
           }
         }, status: :created
       else

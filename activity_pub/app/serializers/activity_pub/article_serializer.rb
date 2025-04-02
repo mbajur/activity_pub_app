@@ -20,6 +20,18 @@ module ActivityPub
       result[:content_raw] = JSON.parse(object.content_raw) if object.content_raw.present?
       result[:content] = RenderEditorjs.render(object.content_raw) if object.content_raw.present?
 
+      if object.content_images.any?
+        result[:attachment] = object.content_images.map do |image|
+          {
+            type: 'Document',
+            url: host_with_protocol + image['url'],
+            width: image['width'],
+            height: image['height'],
+            media_type: image['mime_type'],
+          }
+        end
+      end
+
       result
     end
 
