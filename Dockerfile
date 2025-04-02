@@ -50,10 +50,12 @@ COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
-RUN useradd rails --create-home --shell /bin/bash && \
-    rm -rf public/uploads && mkdir -p public/uploads && \
-    chown -R rails:rails db log storage tmp public public/uploads
-USER rails:rails
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
+# RUN useradd rails --create-home --shell /bin/bash && \
+#     rm -rf public/uploads && mkdir -p public/uploads && \
+#     chown -R rails:rails db log storage tmp public public/uploads
+USER 1000:1000
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
