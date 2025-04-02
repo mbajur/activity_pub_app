@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+# Fix permissions of public/uploads that are somehow being always set to
+# root:root whenever volumes mounting for them is enabled.
+# See: https://github.com/docker/for-win/issues/2476#issuecomment-1295814591
+chown -R app:app /rails/public/uploads
+
 # If running the rails server then create or migrate existing database
 if [[ "${4}" == "bin/rails" && "${5}" == "server" ]]; then
   ./bin/rails db:prepare
