@@ -41,5 +41,10 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Create master key
+        run: |
+          mkdir -p config/credentials
+          echo "${{ secrets.RAILS_MASTER_KEY }}" > config/credentials/production.key
+
       - name: Run deploy command
         run: kamal deploy
