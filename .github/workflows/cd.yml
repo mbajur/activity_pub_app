@@ -47,4 +47,6 @@ jobs:
           echo "${{ secrets.RAILS_MASTER_KEY }}" > config/credentials/production.key
 
       - name: Run deploy command
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: kamal deploy
