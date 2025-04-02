@@ -41,8 +41,8 @@ env:
 
 builder:
   arch: amd64
-  # cache:
-  #   type: registry
+  cache:
+    type: registry
 
 accessories:
   db:
