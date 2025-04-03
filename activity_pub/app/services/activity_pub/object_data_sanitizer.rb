@@ -25,10 +25,8 @@ module ActivityPub
 
       if object.is_a?(String)
         data['object'] = { 'id' => object }
-      elsif object.is_a?(Hash)
-        data['object'] = object.deep_transform_keys(&:underscore)
       else
-        return data
+        data['object'] = object
       end
 
       data
@@ -38,11 +36,13 @@ module ActivityPub
       actor = data['actor']
       return data unless actor.present?
 
-      if object.is_a?(String)
-        data['object'] = { 'id' => object }
-      elsif object.is_a?(Hash)
-        data['object'] = object.deep_transform_keys(&:underscore)
+      if actor.is_a?(String)
+        data['actor'] = { 'id' => actor }
+      else
+        data['actor'] = actor
       end
+
+      data
     end
 
     def sanitize_in_reply_to(data)
