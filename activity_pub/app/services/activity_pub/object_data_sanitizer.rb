@@ -8,6 +8,8 @@ module ActivityPub
       data = @data
 
       data = @data.deep_transform_keys(&:underscore)
+      data = sanitize_object(data)
+      data = sanitize_actor(data)
       data = sanitize_in_reply_to(data)
       data = sanitize_attributed_to(data)
       data = sanitize_replies(data)
@@ -16,6 +18,32 @@ module ActivityPub
     end
 
     private
+
+    def sanitize_object(data)
+      object = data['object']
+      return data unless object.present?
+
+      if object.is_a?(String)
+        data['object'] = { 'id' => object }
+      elsif object.is_a?(Hash)
+        data['object'] = object.deep_transform_keys(&:underscore)
+      else
+        return data
+      end
+
+      data
+    end
+
+    def sanitize_actor(data)
+      actor = data['actor']
+      return data unless actor.present?
+
+      if object.is_a?(String)
+        data['object'] = { 'id' => object }
+      elsif object.is_a?(Hash)
+        data['object'] = object.deep_transform_keys(&:underscore)
+      end
+    end
 
     def sanitize_in_reply_to(data)
       in_reply_to = data['in_reply_to']
