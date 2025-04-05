@@ -11,11 +11,9 @@ class EditorjsContentValue < Hash
   end
 
   def excerpt
-    content = self.dup.tap do |c|
-      c['blocks'] = c['blocks'].filter { |b| b['type'] == 'paragraph' }
-    end
-
-    RenderEditorjs.render(content)
+    html = RenderEditorjs.render(self)
+    doc = Nokogiri::HTML.fragment(html)
+    doc.text
   end
 
   def thumbnail
