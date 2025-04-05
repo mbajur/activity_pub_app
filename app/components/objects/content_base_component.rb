@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Objects
-  class NoteBodyComponent < ViewComponent::Base
+  class ContentBaseComponent < ViewComponent::Base
     class AttachmentPresenter
       def initialize(attachment)
         @attachment = attachment
@@ -48,14 +48,30 @@ module Objects
       super
     end
 
+    def interactions_component
+      Objects::InteractionsComponent.new(object)
+    end
+
     def attachments
       col = if object.remote?
               object.data['attachment'] || []
             else
-              []
+              JSON.parse(object.content_attachments.presence || {}).dig('blocks', 0, 'data', 'files') || []
             end
 
       col.first(5).map { |att| AttachmentPresenter.new(att) }
+    end
+
+    def excerpt
+      result = if object.local?
+        RenderEditorjs.render(object.content_raw)
+      else
+        object.data&.dig('content')
+      end
+
+      result = ActionView::Base.full_sanitizer.sanitize(result)
+
+      truncate(result, length: 500, separator: ' ')
     end
   end
 end

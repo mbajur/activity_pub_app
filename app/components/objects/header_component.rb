@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Objects
-  class ContentComponent < ViewComponent::Base
+  class HeaderComponent < ViewComponent::Base
     class AttachmentPresenter
       def initialize(attachment)
         @attachment = attachment
@@ -35,10 +35,21 @@ module Objects
     attr_reader :object, :current_ap_actor, :liked_ap_object_ids
 
     def initialize(object, current_ap_actor:, liked_ap_object_ids: [])
-      @object = object
+      @original_object = object
       @current_ap_actor = current_ap_actor
       @liked_ap_object_ids = liked_ap_object_ids
       super
+    end
+
+    def object
+      @object ||= begin
+        if @original_object.is_a?(ActivityPub::Announce)
+          data = ActivityPub::ObjectDataSanitizer.new(@original_object.data).call
+          ActivityPub::Object.find_by(guid: data.dig('object', 'id'))
+        else
+          @original_object
+        end
+      end
     end
 
     # @todo rename that, actor is confusing because it also exists on Object
@@ -47,8 +58,16 @@ module Objects
       object.attributed_to[0] || object.actors[0]
     end
 
+    def original_author
+      @original_object.attributed_to[0] || @original_object.actors[0]
+    end
+
     def actor_decorated
       @actor_decorated ||= AuthorDecorator.new(actor)
+    end
+
+    def original_author_decorated
+      @original_author_decorated ||= AuthorDecorator.new(@original_object.attributed_to[0] || @original_object.actors[0])
     end
 
     def profile_name
@@ -108,12 +127,8 @@ module Objects
       col.first(5).map { |att| AttachmentPresenter.new(att) }
     end
 
-    def tags
-      object.data['tag'] || []
-    end
-
-    def liked?
-      liked_ap_object_ids&.include?(object['id'])
+    def announce?
+      @original_object.is_a?(ActivityPub::Announce)
     end
   end
 end

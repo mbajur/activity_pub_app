@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_01_072933) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_03_140404) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_trgm"
@@ -254,6 +254,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_01_072933) do
     t.json "file_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "ap_object_id"
+    t.index ["ap_object_id"], name: "index_uploads_on_ap_object_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -278,4 +280,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_01_072933) do
   add_foreign_key "activity_pub_objects", "activity_pub_objects", column: "in_reply_to_ap_object_id"
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
   add_foreign_key "solid_errors_occurrences", "solid_errors", column: "error_id"
+  add_foreign_key "uploads", "activity_pub_objects", column: "ap_object_id"
 end

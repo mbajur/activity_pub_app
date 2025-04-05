@@ -1,5 +1,5 @@
-<turbo-stream action="replace" target="<%= dom_id(@ap_object, :footer) %>">
+<turbo-stream action="replace" target="<%= dom_id(@ap_object, :interactions) %>">
   <template>
-    <%= render(Objects::FooterComponent.new(@ap_object, current_ap_actor: current_site.activity_pub_object, liked_ap_object_ids: [])) %>
+    <%= render(Objects::InteractionsComponent.new(@ap_object)) %>
   </template>
 </turbo-stream>

@@ -26,11 +26,7 @@ module Panel
 
       @objects = @objects.order('created_at DESC, activity_pub_objects.id')
                          .limit(25)
-      @liked_object_ids = current_site.activity_pub_object
-                                      .likes
-                                      .joins(:target_ap_object)
-                                      .where(target_ap_object: { id: @objects.map(&:id) })
-                                      .pluck(:target_ap_object_id)
+      Current.posts_likes_repo = PostsLikesRepository.new(current_site.activity_pub_object, @objects)
     end
 
     def show
@@ -41,11 +37,7 @@ module Panel
                                        .likes.joins(:target_ap_object)
                                        .where(target_ap_object: { id: @comments.map(&:id) })
                                        .pluck(:target_ap_object_id)
-      @liked_object_ids = current_site.activity_pub_object
-                                      .likes
-                                      .joins(:target_ap_object)
-                                      .where(target_ap_object: { id: @object.id })
-                                      .pluck(:target_ap_object_id)
+      Current.posts_likes_repo = PostsLikesRepository.new(current_site.activity_pub_object, [@object])
     end
 
     def replies_preview
@@ -54,7 +46,8 @@ module Panel
     end
 
     def new
-      redirect_to new_article_panel_objects_path
+      # redirect_to new_article_panel_objects_path
+      @ap_object = current_site.activity_pub_object.attributions.new.becomes(ActivityPub::Note)
     end
 
     def new_article
@@ -64,8 +57,8 @@ module Panel
     def create
       @ap_object = current_site.activity_pub_object.attributions.create!(
         ap_object_params.merge(
-          type: ActivityPub::Article.name,
-          published_at: Time.current
+          published_at: Time.current,
+          content_mime_type: 'application/vnd.editorjs+json'
         )
       )
 
@@ -103,6 +96,7 @@ module Panel
     def like
       @ap_object = ActivityPub::Object.find(params[:id])
       @like = Objects::Liker.run(actor: current_site.activity_pub_object, target: @ap_object).like
+      Current.posts_likes_repo = PostsLikesRepository.new(current_site.activity_pub_object, [@ap_object])
 
       respond_to do |format|
         format.turbo_stream
@@ -113,6 +107,9 @@ module Panel
     def unlike
       @ap_object = ActivityPub::Object.find(params[:id])
       Objects::Unliker.run(actor: current_site.activity_pub_object, target: @ap_object)
+      @ap_object.reload
+
+      Current.posts_likes_repo = PostsLikesRepository.new(current_site.activity_pub_object, [@ap_object])
 
       respond_to do |format|
         format.turbo_stream
@@ -127,7 +124,7 @@ module Panel
     end
 
     def ap_object_params
-      params.require(:ap_object).permit(:content_raw, :name)
+      params.require(:ap_object).permit(:type, :content_raw, :name, :content, :content_attachments)
     end
   end
 end

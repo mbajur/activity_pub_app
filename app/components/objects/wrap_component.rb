@@ -17,12 +17,18 @@ module Objects
     end
 
     def content
-      render(
-        Objects::ContentComponent.new(
-          object, current_ap_actor:    current_ap_actor,
-                  liked_ap_object_ids: liked_ap_object_ids
-        )
-      )
+      klass = component_for_type(object)
+      return unless klass
+
+      render(klass.new(object))
+    end
+
+    def component_for_type(object)
+      {
+        'ActivityPub::Note' => Objects::ContentNoteComponent,
+        'ActivityPub::Article' => Objects::ContentArticleComponent,
+        'ActivityPub::Announce' => Objects::ContentAnnounceComponent,
+      }[object.type]
     end
   end
 end

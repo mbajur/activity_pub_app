@@ -39,7 +39,7 @@
   </div>
 
   <div class="text-gray-600 text-sm leading-relaxed [&_p]:mb-3 [&_p:empty]:hidden">
-    <%= simple_format comment.content %>
+    <%= simple_format comment.data['content'] %>
   </div>
 
   <%= render 'panel/comments/footer', comment: comment, liked_comment_ids: liked_comment_ids %>

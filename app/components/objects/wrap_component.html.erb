@@ -1,5 +1,6 @@
 <div class="grid grid-cols-12 gap-7" id="<%= dom_id(object) %>">
-  <div class="<%= show_replies ? 'col-span-8' : 'col-span-12' %>">
+  <div class="mb-4 <%= show_replies ? 'col-span-8' : 'col-span-12' %>">
+    <%= render(Objects::HeaderComponent.new(object, current_ap_actor: current_ap_actor)) %>
     <%= content %>
   </div>
 
