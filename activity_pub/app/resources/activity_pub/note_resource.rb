@@ -9,6 +9,7 @@ module ActivityPub
     has_outbox false
     has_followers false
 
+    register_data_attribute :content
     register_data_attribute :content_raw
     register_data_attribute :content_attachments
     register_data_attribute :content_mime_type

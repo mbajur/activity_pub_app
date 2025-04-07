@@ -1,13 +1,18 @@
 <% if attachments.any? %>
-  <div class="overflow-x-auto">
-    <div class="flex min-w-max gap-4 mt-2">
-      <% attachments.each do |att| %>
-        <div class="bg-cover bg-center table-cell shrink-0 h-96" style="aspect-ratio:<%= att.width.to_f / att.height.to_f %>">
-          <img src="<%= att.url %>" width="<%= att.width %>" height="<%= att.height %>" loading="lazy"/>
-        </div>
-      <% end %>
+  <% if attachments.size == 1 %>
+    <% att = attachments[0] %>
+    <img src="<%= att.url %>" width="<%= att.width %>" height="<%= att.height %>" loading="lazy"/>
+  <% else %>
+    <div class="overflow-x-auto">
+      <div class="flex min-w-max gap-4 mt-2">
+        <% attachments.each do |att| %>
+          <div class="bg-cover bg-center table-cell shrink-0 h-96" style="aspect-ratio:<%= att.width.to_f / att.height.to_f %>">
+            <img src="<%= att.url %>" width="<%= att.width %>" height="<%= att.height %>" loading="lazy"/>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <%= render(interactions_component) %>
 
