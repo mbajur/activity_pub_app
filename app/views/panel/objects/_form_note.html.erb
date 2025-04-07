@@ -1,0 +1,46 @@
+<% url = @ap_object.persisted? ? panel_object_path(@ap_object) : panel_objects_path %>
+<%= form_with model: @ap_object, url: url, scope: :ap_object, id: :form, data: { controller: 'media-uploader-form', nested_form_wrapper_selector_value: '.media-uploader-form-wrapper', action: 'media-uploader:uploaded->media-uploader-form#add' } do |f| %>
+  <%= f.hidden_field :type, value: f.object.class %>
+
+  <div class="grid grid-cols-3 gap-12 mt-8 mb-8">
+    <div class="col-span-1">
+      <h2 class="mb-3">Media</h2>
+      <p class="text-gray-500 mb-4 text-sm">
+        You can include up to 10 files. If you need more, consider switching to
+        <a href="#">post editor</a> instead.
+      </p>
+    </div>
+
+    <div class="col-span-2 editorjs-note-attachments-wrap">
+      <div
+        data-controller="editorjs-note-attachments"
+        data-editorjs-note-attachments-min-height-value="0"
+        class="content"
+      >
+        <div data-editorjs-note-attachments-target="editor"></div>
+        <%= f.hidden_field :content_attachments, data: { editorjs_note_attachments_target: :input } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-12">
+    <div class="col-span-1">
+      <h2 class="mb-2">Description</h2>
+      <p class="text-gray-500 mb-4 text-sm">
+        Include some text description with your post. Might be a post title,
+        might be a backstory - whatever needed.
+      </p>
+    </div>
+
+    <div class="col-span-2">
+      <div
+        data-controller="editorjs-note-content"
+        data-editorjs-note-content-min-height-value="0"
+        class="content"
+      >
+        <div data-editorjs-note-content-target="editor"></div>
+        <%= f.hidden_field :content_raw, data: { editorjs_note_content_target: :input } %>
+      </div>
+    </div>
+  </div>
+<% end %>

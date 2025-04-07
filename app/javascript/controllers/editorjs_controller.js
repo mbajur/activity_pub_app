@@ -46,6 +46,10 @@ export default class extends Controller {
     });
   }
 
+  disconnect() {
+    this.editor.destroy()
+  }
+
   handleChange() {
     this.editor.save().then((outputData) => {
       this.inputTarget.value = JSON.stringify(outputData)

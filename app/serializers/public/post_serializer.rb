@@ -2,7 +2,7 @@ module Public
   class PostSerializer < BaseSerializer
     def data
       {
-        'name' => resource.name,
+        'name' => resource.try(:name),
         'path' => Rails.application.routes.url_helpers.object_path(resource),
         'content_blocks' => JSON.parse(resource.content_raw)['blocks'],
         'published_at' => resource.published_at,

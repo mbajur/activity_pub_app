@@ -9,3 +9,12 @@
 .image-gallery__image {
   background-color: #fff !important;
 }
+
+.editorjs-note-attachments-wrap .image-gallery__caption {
+  display: none;
+}
+
+.editorjs-note-attachments-wrap .ce-toolbar {
+  display: none !important;
+}
+

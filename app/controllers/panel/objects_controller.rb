@@ -45,8 +45,7 @@ module Panel
       render Objects::RepliesPreviewComponent.new(@object, loaded: true)
     end
 
-    def new
-      # redirect_to new_article_panel_objects_path
+    def new_note
       @ap_object = current_site.activity_pub_object.attributions.new.becomes(ActivityPub::Note)
     end
 

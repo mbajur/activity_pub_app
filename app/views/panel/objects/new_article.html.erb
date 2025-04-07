@@ -1,9 +1,11 @@
 <%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
   <%= layout.with_right do %>
     <%= form_with model: @ap_object, url: panel_objects_path, scope: :ap_object, data: { controller: 'media-uploader-form', nested_form_wrapper_selector_value: '.media-uploader-form-wrapper', action: 'media-uploader:uploaded->media-uploader-form#add' } do |f| %>
+      <%= f.hidden_field :type, value: f.object.class %>
+
       <%= render(Ui::TopBarComponent.new) do |top_bar| %>
         <% top_bar.with_left do %>
-          <%= f.text_field :name, value: (f.object.name || 'Untitled'), class: 'text-xl' %>
+          <%= f.text_field :name, value: (f.object.name || 'Untitled article'), class: 'text-xl' %>
         <% end %>
 
         <% top_bar.with_actions do %>

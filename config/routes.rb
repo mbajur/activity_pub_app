@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   namespace :panel do
     resources :objects, only: [:index, :new, :show, :create, :edit, :update] do
       get 'new/article', action: :new_article, on: :collection, as: :new_article
+      get 'new/note', action: :new_note, on: :collection, as: :new_note
       get :replies_preview
       post :like, on: :member
       post :unlike, on: :member
