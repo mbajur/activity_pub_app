@@ -6,7 +6,12 @@ module Site::Operations
     step :distribute
 
     def assign_attributes(ctx, params:, **)
-      ctx[:model].assign_attributes(params)
+      ap_object = ctx[:model].activity_pub_object
+
+      ctx[:model].avatar = params[:avatar] if params[:avatar].present?
+      ap_object.data.name = params.dig(:activity_pub_object_attributes, :data, :name)
+      ap_object.data.summary = params.dig(:activity_pub_object_attributes, :data, :summary)
+
       true
     end
 
