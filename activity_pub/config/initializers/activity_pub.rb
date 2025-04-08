@@ -1,4 +1,6 @@
 Rails.application.config.to_prepare do
+  ActiveModel::Type.register(:json, JsonType)
+
   ActivityPub.object_handlers = {
     'Note' => ActivityPub::ObjectHandlers::NoteHandler,
     'Article' => ActivityPub::ObjectHandlers::ArticleHandler,

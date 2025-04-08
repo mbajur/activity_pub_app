@@ -1,11 +1,11 @@
 class ActivityPub::Object < ApplicationRecord
-  # I put it in here because sometimes we need to access user public key before
-  # it's full data has been fetched from remote server. It's set as Unknown type
-  # then.
-  #
-  # @todo Maybe we should assign object types on find_or_initialize instead of
-  #   just storing the guid?
-  store_accessor :data, :public_key
+  class DataType
+    include StoreModel::Model
+
+    attribute :public_key, ActivityPub::PublicKeyType.to_type
+  end
+
+  attribute :data, DataType.to_type
 
   has_many :attributed_to_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object, dependent: :destroy
   has_many :attributed_to, through: :attributed_to_associations, source: :target_ap_object
@@ -30,8 +30,8 @@ class ActivityPub::Object < ApplicationRecord
   has_many :following_associations, class_name: 'ActivityPub::Follow', inverse_of: :source_ap_object, dependent: :destroy
   has_many :following, ->{ where('activity_pub_follows.state = ?', 'confirmed') }, through: :following_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
 
-  has_many :likes, class_name: 'ActivityPub::Like', inverse_of: :source_ap_object
-  has_many :liked_by, class_name: 'ActivityPub::Like', inverse_of: :target_ap_object
+  has_many :likes, class_name: 'ActivityPub::Like', inverse_of: :source_ap_object, dependent: :destroy
+  has_many :liked_by, class_name: 'ActivityPub::Like', inverse_of: :target_ap_object, dependent: :destroy
 
   has_many :attachments, class_name: 'Upload', foreign_key: :ap_object_id, dependent: :destroy
 

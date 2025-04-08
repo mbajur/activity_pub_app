@@ -18,7 +18,7 @@ module Panel
     private
 
     def settings_params
-      params.require(:settings).permit(:avatar, activity_pub_object_attributes: [:name, :summary])
+      params.require(:settings).permit(:avatar, activity_pub_object_attributes: [data: [:name, :summary]])
     end
   end
 end

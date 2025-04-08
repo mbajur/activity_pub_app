@@ -8,9 +8,9 @@ class AuthorDecorator < BaseDecorator
     parts << '@' unless simple
 
     if resource.local?
-      parts << resource.preferred_username
+      parts << resource.data.preferred_username
     else
-      parts << "#{resource.preferred_username}@#{domain}"
+      parts << "#{resource.data.preferred_username}@#{domain}"
     end
 
     parts.join
@@ -20,7 +20,7 @@ class AuthorDecorator < BaseDecorator
     if resource.local?
       resource.activity_pubable.avatar_url
     else
-      resource.data.dig('icon', 'url')
+      resource.data.icon.url
     end
   end
 end

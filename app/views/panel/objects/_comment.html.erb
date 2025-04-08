@@ -11,7 +11,7 @@
 
     <div class="flex flex-col ml-3 flex-1">
       <div class="text-gray-600 text-sm font-semibold">
-        <%= link_to author.name, panel_actor_objects_path(actor_id: author&.id) %>
+        <%= link_to author.data.name, panel_actor_objects_path(actor_id: author&.id) %>
       </div>
       <div class="flex w-full mt-0">
         <div class="text-gray-700 text-xs mr-1 cursor-pointer">

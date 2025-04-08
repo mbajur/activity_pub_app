@@ -7,6 +7,8 @@ class BaseDecorator < SimpleDelegator
     @resource = resource
   end
 
+  delegate :data, to: :resource
+
   private
 
   attr_reader :resource

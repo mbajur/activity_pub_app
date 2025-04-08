@@ -1,13 +1,27 @@
 module ActivityPub
   class Article < ActivityPub::Object
-    store_accessor :data, ArticleResource.data_attributes.map(&:key)
+    class DataType
+      include StoreModel::Model
 
-    def content_raw_serialized
-      @content_raw_serialized ||= JSON.parse(content_raw)
+      attribute :name, :string
+      attribute :content, :string
+      attribute :url, :string
+      attribute :published_at, :string
+      attribute :source, ActivityPub::SourceType.to_type, default: -> { {} }
+    end
+
+    attribute :data, DataType.to_type
+
+    def source_content_serialized
+      @source_content_serialized ||= JSON.parse(data.source.content.presence || {})
+    end
+
+    def content
+      local? ? RenderEditorjs.render(data.source.content) : super
     end
 
     def content_images
-      content_raw_serialized['blocks'].select { |block| block['type'] == 'image' }.map do |block|
+      source_content_serialized['blocks'].select { |block| block['type'] == 'image' }.map do |block|
         block.dig('data', 'file')
       end
     end

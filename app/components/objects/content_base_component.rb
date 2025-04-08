@@ -54,9 +54,9 @@ module Objects
 
     def attachments
       col = if object.remote?
-              object.data['attachment'] || []
+              object.data.attachment || []
             else
-              JSON.parse(object.content_attachments.presence || {}).dig('blocks', 0, 'data', 'files') || []
+              object.content_attachments.dig('blocks', 0, 'data', 'files') || []
             end
 
       col.first(5).map { |att| AttachmentPresenter.new(att) }
@@ -64,9 +64,9 @@ module Objects
 
     def excerpt
       result = if object.local?
-        RenderEditorjs.render(object.content_raw)
+        RenderEditorjs.render(object.data.source.content)
       else
-        object.data&.dig('content')
+        object.data.content
       end
 
       result = ActionView::Base.full_sanitizer.sanitize(result)

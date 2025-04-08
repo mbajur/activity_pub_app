@@ -17,8 +17,8 @@ module ActivityPub
         result[field.key] = resource.field_value(field.key)
       end
 
-      result[:content_raw] = JSON.parse(object.content_raw) if object.content_raw.present?
-      result[:content] = RenderEditorjs.render(object.content_raw) if object.content_raw.present?
+      result[:content] = object.content
+      result[:source] = object.data.source.as_json
 
       if object.content_images.any?
         result[:attachment] = object.content_images.map do |image|

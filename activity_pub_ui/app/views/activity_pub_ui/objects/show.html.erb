@@ -13,7 +13,7 @@
     <% end %>
 
     <h3>Data</h3>
-    <pre><%= JSON.pretty_generate @object.data %></pre>
+    <pre><%= JSON.pretty_generate @object.data.as_json %></pre>
   </div>
 
   <div class="col-5">

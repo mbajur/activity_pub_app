@@ -44,8 +44,7 @@ module Objects
     def object
       @object ||= begin
         if @original_object.is_a?(ActivityPub::Announce)
-          data = ActivityPub::ObjectDataSanitizer.new(@original_object.data).call
-          ActivityPub::Object.find_by(guid: data.dig('object', 'id'))
+          ActivityPub::Object.find_by(guid: @original_object.data.object.id)
         else
           @original_object
         end
@@ -71,19 +70,10 @@ module Objects
     end
 
     def profile_name
-      if actor.remote?
-        actor.data['name']&.presence || actor.data['preferredUsername']
-      else
-        actor.name.presence || actor.preferred_username
-      end
+      actor.data.name&.presence || actor.data.preferred_username
     end
 
     def profile_url
-      # if actor.remote?
-      #   actor.data['url']
-      # else
-      #   '/'
-      # end
       panel_actor_objects_path(actor)
     end
 
@@ -95,17 +85,11 @@ module Objects
       if actor.local?
         actor.activity_pubable.avatar_url
       else
-        actor.data.dig('icon', 'url')
+        actor.data.icon.url
       end
     end
 
     def object_url
-      # if object.remote?
-      #   object.data['url']
-      # else
-      #   group_object_path(current_ap_actor, object)
-      # end
-      # group_object_path(current_ap_actor, object)
       panel_object_path(object)
     end
 
@@ -113,7 +97,7 @@ module Objects
       if object.local?
         ActivityPub::ObjectResource.new(object).public_url
       else
-        object.data['url']
+        object.data.url
       end
     end
 

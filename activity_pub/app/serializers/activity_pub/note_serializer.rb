@@ -13,6 +13,9 @@ module ActivityPub
         sensitive: false,
       }
 
+      result[:content] = object.content
+      result[:source] = object.data.source.as_json
+
       if object.in_reply_to
         result[:in_reply_to] = in_reply_to_resource.guid
       end

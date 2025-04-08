@@ -18,7 +18,8 @@
         class="content"
       >
         <div data-editorjs-note-attachments-target="editor"></div>
-        <%= f.hidden_field :content_attachments, data: { editorjs_note_attachments_target: :input } %>
+          <%= f.hidden_field :content_attachments, value: f.object.content_attachments.to_json,
+                                                   data: { editorjs_note_attachments_target: :input } %>
       </div>
     </div>
   </div>
@@ -39,7 +40,9 @@
         class="content"
       >
         <div data-editorjs-note-content-target="editor"></div>
-        <%= f.hidden_field :content_raw, data: { editorjs_note_content_target: :input } %>
+          <%= f.hidden_field :content_text, value: f.object.content_text.to_json,
+                                                   data: { editorjs_note_content_target: :input } %>
+        </div>
       </div>
     </div>
   </div>

@@ -10,16 +10,6 @@ module ActivityPub
     has_outbox true
     has_followers true
 
-    register_data_attribute :name
-    register_data_attribute :public_key
-    register_data_attribute :private_key
-    register_data_attribute :preferred_username
-    register_data_attribute :summary
-    register_data_attribute :url
-    register_data_attribute :public_key
-    register_data_attribute :manually_approves_followers
-    register_data_attribute :inbox
-
     register_field :name
     register_field :preferred_username
     register_field :summary

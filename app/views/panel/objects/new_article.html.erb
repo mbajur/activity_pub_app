@@ -5,7 +5,9 @@
 
       <%= render(Ui::TopBarComponent.new) do |top_bar| %>
         <% top_bar.with_left do %>
-          <%= f.text_field :name, value: (f.object.name || 'Untitled article'), class: 'text-xl' %>
+          <%= f.fields_for :data, f.object.data do |ff| %>
+            <%= ff.text_field :name, value: (ff.object.name || 'Untitled article'), class: 'text-xl' %>
+          <% end %>
         <% end %>
 
         <% top_bar.with_actions do %>
@@ -20,7 +22,11 @@
         class="content"
       >
         <div data-editorjs-target="editor"></div>
-        <%= f.hidden_field :content_raw, data: { editorjs_target: :input } %>
+        <%= f.fields_for :data, f.object.data do |ff| %>
+          <%= ff.fields_for :source, ff.object.source do |fff| %>
+            <%= fff.hidden_field :content, data: { editorjs_target: :input } %>
+          <% end %>
+        <% end %>
       </div
     <% end %>
   <% end %>

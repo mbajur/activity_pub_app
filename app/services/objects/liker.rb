@@ -18,7 +18,7 @@ module Objects
       if target.remote?
         activity = ActivityPub::LikeSerializer.new(like, with_context: true)
         target.attributed_to.each do |target_actor|
-          ActivityPub::FederateObjectJob.perform_later(actor, target_actor.inbox, activity.to_json)
+          ActivityPub::FederateObjectJob.perform_later(actor, target_actor.data.inbox, activity.to_json)
         end
       end
     end

@@ -11,7 +11,7 @@
         <div class="col-span-9">
           <div class="flex gap-4 items-center">
             <h1 class="text-xl">
-              <%= @actor.name %>
+              <%= @actor.data.name %>
             </h1>
 
             <span class="text-sm text-gray-500 pt-1">
@@ -25,7 +25,7 @@
           </div>
 
           <div class="text-sm mt-4 text-gray-700">
-            <%= simple_format @actor.summary %>
+            <%= simple_format @actor.data.summary %>
           </div>
 
           <div class="flex gap-6 mt-4 text-sm">

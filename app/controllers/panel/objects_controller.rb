@@ -46,29 +46,27 @@ module Panel
     end
 
     def new_note
-      @ap_object = current_site.activity_pub_object.attributions.new.becomes(ActivityPub::Note)
+      @ap_object = ActivityPub::Note.new
     end
 
     def new_article
-      @ap_object = current_site.activity_pub_object.attributions.new.becomes(ActivityPub::Article)
+      @ap_object = ActivityPub::Article.new
     end
 
     def create
-      @ap_object = current_site.activity_pub_object.attributions.create!(
-        ap_object_params.merge(
-          published_at: Time.current,
-          content_mime_type: 'application/vnd.editorjs+json'
-        )
+      result = Object::Operations::Create.call(
+        site: current_site,
+        params: ap_object_params,
       )
 
-      actor = current_site.activity_pub_object
-      activity = ActivityPub::CreateSerializer.new(@ap_object, with_context: true, actor: actor)
+      @ap_object = result[:model]
 
-      actor.followers.find_each do |follower|
-        ActivityPub::FederateObjectJob.perform_later(actor, follower.inbox, activity.to_json)
+      if result.success?
+        redirect_to panel_object_path(@ap_object)
+      else
+        template = @ap_object.is_a?(ActivityPub::Article) ? :new_article : :new_note
+        render template, status: :unprocessable_entity
       end
-
-      redirect_to panel_object_path(@ap_object)
     end
 
     def edit
@@ -77,15 +75,11 @@ module Panel
 
     def update
       @ap_object = current_site.activity_pub_object.attributions.find(params[:id])
+      result = Object::Operations::Update.call(
+        model: @ap_object, params: ap_object_params, site: current_site
+      )
 
-      if @ap_object.update(ap_object_params)
-        actor = current_site.activity_pub_object
-        activity = ActivityPub::UpdateSerializer.new(@ap_object, with_context: true, actor: actor)
-
-        actor.followers.find_each do |follower|
-          ActivityPub::FederateObjectJob.perform_later(actor, follower.inbox, activity.to_json)
-        end
-
+      if result.success?
         redirect_to panel_object_path(@ap_object)
       else
         render :edit
@@ -123,7 +117,13 @@ module Panel
     end
 
     def ap_object_params
-      params.require(:ap_object).permit(:type, :content_raw, :name, :content, :content_attachments)
+      params.require(:ap_object).permit(:type,
+                                        :content_attachments,
+                                        :content_text,
+                                        data: [
+                                          :name,
+                                          source: [:content, :media_type]
+                                        ])
     end
   end
 end
