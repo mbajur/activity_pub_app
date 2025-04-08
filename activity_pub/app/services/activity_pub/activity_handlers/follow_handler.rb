@@ -15,7 +15,7 @@ module ActivityPub
           target_ap_object: local_target
         )
 
-        if local_target.manually_approves_followers
+        if local_target.data.manually_approves_followers
           follow.state = 'pending'
         else
           follow.state = 'confirmed'
@@ -25,7 +25,7 @@ module ActivityPub
 
         if follow.confirmed?
           activity = ActivityPub::AcceptSerializer.new(follow, with_context: true)
-          ActivityPub::FederateObjectJob.perform_later(local_target, local_actor.ensure_type.inbox, activity.to_json)
+          ActivityPub::FederateObjectJob.perform_later(local_target, local_actor.ensure_type.data.inbox, activity.to_json)
         end
       end
     end
