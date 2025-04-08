@@ -16,7 +16,7 @@ module Accounts
     end
 
     def distribute
-      activity = ActivityPub::FollowSerializer.new(follow, with_context: true)
+      activity = ActivityPub::UndoSerializer.new(follow, with_context: true)
       ActivityPub::FederateObjectJob.perform_later(actor, target.data.inbox, activity.to_json)
     end
 
