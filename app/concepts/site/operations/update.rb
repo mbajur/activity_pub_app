@@ -23,7 +23,7 @@ module Site::Operations
       activity = ActivityPub::UpdateSerializer.new(ap_object, with_context: true, actor: ap_object)
 
       ap_object.followers.find_each do |follower|
-        ActivityPub::FederateObjectJob.perform_later(ap_object, follower.inbox, activity.to_json)
+        ActivityPub::FederateObjectJob.perform_later(ap_object, follower.data.inbox, activity.to_json)
       end
 
       true
