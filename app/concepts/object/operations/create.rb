@@ -11,6 +11,7 @@ module Object::Operations
     def initialize_model(ctx, params:, **)
       klass = (params[:type] == 'ActivityPub::Article') ? ActivityPub::Article : ActivityPub::Note
       ctx[:model] = klass.new(ancestry: '/')
+      ctx[:model].data.published_at = Time.current
     end
 
     def assign_attribution(ctx, site:, **)

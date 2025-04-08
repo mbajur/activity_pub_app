@@ -5,7 +5,7 @@ module ActivityPub
 
       attribute :content, :string
       attribute :url, :string
-      attribute :published_at, :string
+      attribute :published_at, :datetime
       attribute :source, ActivityPub::SourceType.to_type, default: -> { {} }
       attribute :attachment, ActivityPub::AttachmentType.to_array_type
     end
