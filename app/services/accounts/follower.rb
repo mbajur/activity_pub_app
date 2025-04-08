@@ -15,7 +15,7 @@ module Accounts
       follow.save!
 
       activity = ActivityPub::FollowSerializer.new(follow, with_context: true)
-      ActivityPub::FederateObjectJob.perform_later(actor, target.inbox, activity.to_json)
+      ActivityPub::FederateObjectJob.perform_later(actor, target.data.inbox, activity.to_json)
 
       self.follow = follow
     end
