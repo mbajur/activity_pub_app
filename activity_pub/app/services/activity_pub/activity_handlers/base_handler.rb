@@ -30,7 +30,7 @@ module ActivityPub
             'Host' => headers['HTTP_HOST']
           },
           body: body,
-          actor_key_id: local_actor.public_key.id,
+          actor_key_id: local_actor.data.public_key.id,
           actor_public_key: local_actor.data.public_key.public_key_pem
         ).call
 
