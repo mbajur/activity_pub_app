@@ -5,6 +5,8 @@ module Site::Operations
     step :persist
     step :distribute
 
+    # Using assign_attributes in here resets public and private keys for some
+    # reason. Seems like a bug with store_model?
     def assign_attributes(ctx, params:, **)
       ap_object = ctx[:model].activity_pub_object
 
