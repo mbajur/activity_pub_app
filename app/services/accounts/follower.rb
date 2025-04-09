@@ -4,6 +4,7 @@ module Accounts
     arg :target
 
     step :upsert_follow
+    step :distribute
 
     output :follow
 
@@ -14,10 +15,14 @@ module Accounts
       follow.state = 'pending'
       follow.save!
 
-      activity = ActivityPub::FollowSerializer.new(follow, with_context: true)
-      ActivityPub::FederateObjectJob.perform_later(actor, target.data.inbox, activity.to_json)
-
       self.follow = follow
+    end
+
+    def distribute
+      if target.remote?
+        activity = ActivityPub::FollowSerializer.new(follow, with_context: true)
+        ActivityPub::FederateObjectJob.perform_later(actor, target.data.inbox, activity.to_json)
+      end
     end
   end
 end

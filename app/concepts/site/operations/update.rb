@@ -7,6 +7,8 @@ module Site::Operations
 
     # Using assign_attributes in here resets public and private keys for some
     # reason. Seems like a bug with store_model?
+    # https://github.com/DmitryTsepelev/store_model/issues/157
+    # ^^^ this maybe?
     def assign_attributes(ctx, params:, **)
       ap_object = ctx[:model].activity_pub_object
 

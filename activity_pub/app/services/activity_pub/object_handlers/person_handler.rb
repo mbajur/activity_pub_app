@@ -1,8 +1,11 @@
 module ActivityPub
   module ObjectHandlers
     class PersonHandler < BaseHandler
+      TYPE = ActivityPub::Person
+
       def call
-        local_object.type = ActivityPub::Person
+        local_object = local_object.becomes(TYPE)
+        local_object.type = TYPE
         local_object.data = remote_object
         local_object.save
 
