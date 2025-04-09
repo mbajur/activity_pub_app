@@ -1,7 +1,7 @@
 module ActivityPub
   class Follow < ApplicationRecord
-    belongs_to :source_ap_object, class_name: 'ActivityPub::Object'
-    belongs_to :target_ap_object, class_name: 'ActivityPub::Object'
+    belongs_to :source_ap_object, class_name: 'ActivityPub::Object', counter_cache: :following_count
+    belongs_to :target_ap_object, class_name: 'ActivityPub::Object', counter_cache: :followers_count
 
     before_validation :generate_guid
 
