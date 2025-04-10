@@ -1,11 +1,8 @@
 module ActivityPub
   module ObjectHandlers
     class ServiceHandler < BaseHandler
-      TYPE = ActivityPub::Service
-
       def call
-        local_object = @local_object.becomes(TYPE)
-        local_object.type = TYPE
+        local_object.type = ActivityPub::Service
         local_object.data = remote_object
         local_object.save
 

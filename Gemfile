@@ -89,8 +89,6 @@ gem "pagy", "~> 8.4"
 
 gem "render_editorjs", "~> 0.1.4"
 
-gem "ancestry", "~> 4.3"
-
 gem "light-services", "~> 2.1"
 
 gem "tabler_icons_ruby", "~> 3.5"
@@ -100,5 +98,3 @@ gem "thruster", "~> 0.1.12"
 gem "trailblazer-rails", "~> 2.4"
 
 gem "solid_errors", "~> 0.6.1"
-
-gem "store_model", "~> 4.2"

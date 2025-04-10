@@ -1,11 +1,8 @@
 module ActivityPub
   module ObjectHandlers
     class AnnounceHandler < BaseHandler
-      TYPE = ActivityPub::Announce
-
       def call
-        local_object = @local_object.becomes(TYPE)
-        local_object.type = TYPE
+        local_object.type = ActivityPub::Announce
         local_object.data = remote_object
         local_object.save
 

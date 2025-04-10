@@ -15,7 +15,7 @@ module ActivityPub
     def call
       logger.info "Resolving #{@uri}..."
 
-      local_object = ActivityPub::Object.create_or_find_by(guid: @uri)
+      local_object = ActivityPub::Object.find_or_initialize_by(guid: @uri)
       remote_object = HttpClient.new(nil).get(URI.parse(local_object.guid)).body
       remote_object = ActivityPub::ObjectDataSanitizer.new(remote_object).call
 
@@ -26,6 +26,8 @@ module ActivityPub
 
       local_object.ancestry ||= '/'
       local_object.type = model_from_type(remote_object['type'])
+      local_object = local_object.becomes(local_object.type.constantize)
+
       local_object.status_syncing! if local_object.persisted?
       local_object.error_message = nil
 

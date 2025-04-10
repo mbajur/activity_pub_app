@@ -28,6 +28,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "oj", "~> 3.16.3"
   spec.add_dependency "good_job", "~> 3.28"
   spec.add_dependency "http_signatures"
+  spec.add_dependency "store_model", "~> 4.2"
+  spec.add_dependency "ancestry", "~> 4.3"
 
   spec.add_development_dependency 'rspec', '~> 3.6'
   spec.add_development_dependency 'rspec-rails', '~> 4.0'

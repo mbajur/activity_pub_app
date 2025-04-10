@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_16_090938) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_10_055906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -69,7 +69,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_090938) do
     t.integer "following_count", default: 0
     t.integer "likes_count", default: 0
     t.integer "liked_by_count", default: 0
+    t.string "ancestry"
+    t.integer "ancestry_depth", default: 0
     t.index ["activity_pubable_type", "activity_pubable_id"], name: "index_activity_pub_objects_on_activity_pubable"
+    t.index ["ancestry"], name: "index_activity_pub_objects_on_ancestry"
     t.index ["guid"], name: "index_activity_pub_objects_on_guid", unique: true
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
   end
