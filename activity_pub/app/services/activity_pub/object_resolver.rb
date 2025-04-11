@@ -50,7 +50,7 @@ module ActivityPub
           logger.info "Resolving attribution for #{attribution}..."
           attributor = ActivityPub::Object.find_or_create_by(guid: attribution)
           local_object.attributed_to_associations.find_or_create_by(target_ap_object: attributor)
-          ActivityPub::ObjectResolver.new(attribution).call
+          ActivityPub::ObjectResolver.new(attribution, actor: @actor).call
         end
       end
 
@@ -67,7 +67,7 @@ module ActivityPub
         logger.info 'Resolving parent...'
         parent_obj = ActivityPub::Object.find_or_create_by(guid: remote_object['in_reply_to'])
         local_object.in_reply_to = parent_obj
-        ActivityPub::ObjectResolver.new(parent_obj.guid).call
+        ActivityPub::ObjectResolver.new(parent_obj.guid, actor: @actor).call
       end
 
       if local_object.persisted?
