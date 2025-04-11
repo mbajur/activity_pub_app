@@ -6,17 +6,18 @@ module ActivityPub
     #
     # For subsequential object resolving. Should be called by
     # RootObjectResolver, do not call it directly.
-    def initialize(uri, shallow: false, skip_if_fresh: true)
+    def initialize(uri, actor: nil, shallow: false, skip_if_fresh: true)
       @uri = uri
       @shallow = shallow
       @skip_if_fresh = skip_if_fresh
+      @actor = actor
     end
 
     def call
       logger.info "Resolving #{@uri}..."
 
       local_object = ActivityPub::Object.find_or_initialize_by(guid: @uri)
-      remote_object = HttpClient.new(nil).get(URI.parse(local_object.guid)).body
+      remote_object = HttpClient.new(@actor).get(URI.parse(local_object.guid)).body
       remote_object = ActivityPub::ObjectDataSanitizer.new(remote_object).call
 
       if skip_if_fresh && local_object.fresh?
