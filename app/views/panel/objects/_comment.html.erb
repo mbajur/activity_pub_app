@@ -1,6 +1,12 @@
 <% author = comment.attributed_to[0] %>
 <% author_decorated = AuthorDecorator.new(author) %>
 
+<%= render(Comments::WrapComponent.new(comment: comment, replies: replies)) do |c| %>
+  <% c.with_header %>
+  <% c.with_body %>
+  <% c.with_footer %>
+<% end %>
+
 <li>
   <div class="flex flex-row mt-0 pb-3 pt-2 mx-0">
     <div class="w-auto h-auto rounded-full">
@@ -50,4 +56,6 @@
       <%= render('panel/objects/comment', comment: comment, replies: children, liked_comment_ids: liked_comment_ids) %>
     <% end %>
   </ul>
+
+  <%= render partial: 'panel/comments/form' %>
 </li>

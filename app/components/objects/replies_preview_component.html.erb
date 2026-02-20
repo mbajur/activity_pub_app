@@ -3,7 +3,9 @@
     <% replies.each do |reply| %>
       <%= render(ReplyComponent.new(reply)) %>
     <% end %>
-  <% else %>
-    <p class="text-gray-400">No replies yet</p>
+  <% end %>
+
+  <%= form_with data: { controller: 'reply-form' } do %>
+    <textarea placeholder="Add comment..." data-reply-form-target="content"></textarea>
   <% end %>
 </turbo-frame>
