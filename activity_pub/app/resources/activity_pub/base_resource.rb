@@ -26,9 +26,9 @@ module ActivityPub
     end
 
     def public_url
-      @object.url || self.class
-                         .instance_variable_get(:@_public_url_resolver)
-                         &.call(@object)
+      @object.data.url || self.class
+                              .instance_variable_get(:@_public_url_resolver)
+                              &.call(@object)
     end
 
     def local_guid

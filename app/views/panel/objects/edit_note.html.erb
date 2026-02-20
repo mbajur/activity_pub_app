@@ -1,0 +1,23 @@
+<%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
+  <% layout.with_left do %>
+    <%= render(Groups::SidebarComponent.new(current_group)) %>
+  <% end %>
+
+  <%= layout.with_right do %>
+    <%= render(Ui::TopBarComponent.new) do |top_bar| %>
+      <% top_bar.with_left do %>
+        <h1 class="text-xl">Edit note</h1>
+      <% end %>
+
+      <% top_bar.with_actions do %>
+        <%= render(Ui::BtnComponent.new(type: :submit, form: :form)) do %>
+          Save
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <div class="text-gray-700">
+      <%= render 'panel/objects/form_note' %>
+    </div>
+  <% end %>
+<% end %>

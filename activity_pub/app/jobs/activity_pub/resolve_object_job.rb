@@ -8,8 +8,8 @@ module ActivityPub
       key: -> { "#{self.class.name}-#{queue_name}-#{arguments.first}" }
     )
 
-    def perform(local_object, shallow: false, skip_if_fresh: true)
-      remote_object = HttpClient.new(nil).get(URI.parse(local_object.guid)).body
+    def perform(local_object, actor: nil, shallow: false, skip_if_fresh: true)
+      remote_object = HttpClient.new(actor).get(URI.parse(local_object.guid)).body
       remote_object = ActivityPub::ObjectDataSanitizer.new(remote_object).call
 
       if skip_if_fresh && local_object.fresh?

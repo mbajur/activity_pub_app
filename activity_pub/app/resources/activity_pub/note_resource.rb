@@ -9,10 +9,7 @@ module ActivityPub
     has_outbox false
     has_followers false
 
-    register_data_attribute :content
-    register_data_attribute :url
-
-    register_field :content
+    # register_field :content
 
     public_url_resolver do |object|
       "https://#{ActivityPub.domain}/notes/#{object.id}"

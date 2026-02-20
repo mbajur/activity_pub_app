@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_03_140404) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_trgm"
@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
 
   create_table "activity_pub_objects", force: :cascade do |t|
     t.string "guid"
-    t.hstore "data", default: {}
+    t.json "data", default: {}
     t.string "type"
     t.datetime "last_synced_at"
     t.string "status", default: "draft"
@@ -63,7 +63,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
     t.datetime "updated_at", null: false
     t.string "activity_pubable_type"
     t.bigint "activity_pubable_id"
+    t.integer "attributions_count", default: 0
+    t.integer "children_count", default: 0
+    t.integer "followers_count", default: 0
+    t.integer "following_count", default: 0
+    t.integer "likes_count", default: 0
+    t.integer "liked_by_count", default: 0
+    t.integer "announced_count", default: 0
+    t.string "ancestry"
+    t.integer "ancestry_depth", default: 0
     t.index ["activity_pubable_type", "activity_pubable_id"], name: "index_activity_pub_objects_on_activity_pubable"
+    t.index ["ancestry"], name: "index_activity_pub_objects_on_ancestry"
     t.index ["guid"], name: "index_activity_pub_objects_on_guid", unique: true
     t.index ["in_reply_to_ap_object_id"], name: "index_activity_pub_objects_on_in_reply_to_ap_object_id"
   end
@@ -209,6 +219,45 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
     t.index ["loggable_type", "loggable_id"], name: "index_outbound_request_logs_on_loggable"
   end
 
+  create_table "sites", force: :cascade do |t|
+    t.string "domain"
+    t.text "template_markup"
+    t.json "avatar_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["domain"], name: "index_sites_on_domain", unique: true
+  end
+
+  create_table "solid_errors", force: :cascade do |t|
+    t.text "exception_class", null: false
+    t.text "message", null: false
+    t.text "severity", null: false
+    t.text "source"
+    t.datetime "resolved_at"
+    t.string "fingerprint", limit: 64, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fingerprint"], name: "index_solid_errors_on_fingerprint", unique: true
+    t.index ["resolved_at"], name: "index_solid_errors_on_resolved_at"
+  end
+
+  create_table "solid_errors_occurrences", force: :cascade do |t|
+    t.integer "error_id", null: false
+    t.text "backtrace"
+    t.json "context"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["error_id"], name: "index_solid_errors_occurrences_on_error_id"
+  end
+
+  create_table "uploads", force: :cascade do |t|
+    t.json "file_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "ap_object_id"
+    t.index ["ap_object_id"], name: "index_uploads_on_ap_object_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -230,4 +279,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_04_121342) do
   add_foreign_key "activity_pub_object_associations", "activity_pub_objects", column: "target_ap_object_id"
   add_foreign_key "activity_pub_objects", "activity_pub_objects", column: "in_reply_to_ap_object_id"
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
+  add_foreign_key "solid_errors_occurrences", "solid_errors", column: "error_id"
+  add_foreign_key "uploads", "activity_pub_objects", column: "ap_object_id"
 end

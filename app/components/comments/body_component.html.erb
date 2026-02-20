@@ -1,0 +1,10 @@
+<div class="text-gray-600 text-sm leading-relaxed [&_p]:mb-3 [&_p:empty]:hidden">
+  <% content = Objects::ContentValueResolver.new(comment) %>
+  <%= content.sanitized %>
+</div>
+
+<ul class="ml-2 pl-6 mt-4 pt-0 border-l">
+  <% replies.each do |comment, children| %>
+    <%= render('panel/objects/comment', comment: comment, replies: children, liked_comment_ids: liked_comment_ids) %>
+  <% end %>
+</ul>

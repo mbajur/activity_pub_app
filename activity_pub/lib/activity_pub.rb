@@ -9,6 +9,8 @@ require 'granola'
 require 'oj'
 require 'good_job'
 require 'http_signatures'
+require 'store_model'
+require 'ancestry'
 
 require 'http_signatures/extensions/faraday'
 require 'faraday_middleware/rails_api_outbound_logger'

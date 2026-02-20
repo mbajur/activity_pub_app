@@ -1,8 +1,7 @@
 module ActivityPub
   module ObjectHandlers
     class BaseHandler
-      def initialize(batch:, local:, remote:)
-        @batch = batch
+      def initialize(local:, remote:)
         @local_object = local
         @remote_object = remote
       end

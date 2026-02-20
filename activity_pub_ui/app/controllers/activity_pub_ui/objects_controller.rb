@@ -4,7 +4,7 @@ module ActivityPubUi
 
     def index
       @q = ActivityPub::Object.all.ransack(params[:q])
-      @q.sorts = 'created_at desc' if @q.sorts.empty?
+      @q.sorts = 'id desc' if @q.sorts.empty?
       @pagy, @objects = pagy(@q.result)
     end
 
@@ -15,7 +15,9 @@ module ActivityPubUi
     end
 
     def resolve
-      @object = ActivityPub::RootObjectResolver.new(params[:uri]).call
+      @object = ActivityPub::RootObjectResolver.new(params[:uri],
+                                                    actor: ActivityPub::Person.local.first,
+                                                    shallow: true).call
       redirect_to object_path(@object)
     end
   end

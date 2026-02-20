@@ -1,0 +1,33 @@
+<%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
+  <%= layout.with_right do %>
+    <%= form_with model: @ap_object, url: panel_objects_path, scope: :ap_object, data: { controller: 'media-uploader-form', nested_form_wrapper_selector_value: '.media-uploader-form-wrapper', action: 'media-uploader:uploaded->media-uploader-form#add' } do |f| %>
+      <%= f.hidden_field :type, value: f.object.class %>
+
+      <%= render(Ui::TopBarComponent.new) do |top_bar| %>
+        <% top_bar.with_left do %>
+          <%= f.fields_for :data, f.object.data do |ff| %>
+            <%= ff.text_field :name, value: (ff.object.name || 'Untitled article'), class: 'text-xl' %>
+          <% end %>
+        <% end %>
+
+        <% top_bar.with_actions do %>
+          <%= render(Ui::BtnComponent.new(type: :submit)) do %>
+            Save
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <div
+        data-controller="editorjs"
+        class="content"
+      >
+        <div data-editorjs-target="editor"></div>
+        <%= f.fields_for :data, f.object.data do |ff| %>
+          <%= ff.fields_for :source, ff.object.source do |fff| %>
+            <%= fff.hidden_field :content, data: { editorjs_target: :input } %>
+          <% end %>
+        <% end %>
+      </div
+    <% end %>
+  <% end %>
+<% end %>

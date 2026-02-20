@@ -1,11 +1,19 @@
 FactoryBot.define do
   factory :person, class: 'ActivityPub::Person' do
-    name { 'John' }
-    preferred_username  { 'john' }
-    summary { 'Something about me' }
+    data do
+      {
+        name: 'John',
+        preferred_username: 'john',
+        summary: 'Something about me',
+      }
+    end
   end
 
   factory :note, class: 'ActivityPub::Note' do
-    content { 'Test content' }
+    data do
+      {
+        content: 'Test content'
+      }
+    end
   end
 end

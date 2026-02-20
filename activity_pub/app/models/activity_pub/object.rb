@@ -1,11 +1,11 @@
 class ActivityPub::Object < ApplicationRecord
-  # I put it in here because sometimes we need to acess user public key before
-  # it's full data has been fetched from remote server. It's set as Unknown type
-  # then.
-  #
-  # @todo Maybe we should assign object types on find_or_initialize instead of
-  # just storing the guid?
-  store_accessor :data, :public_key
+  class DataType
+    include StoreModel::Model
+
+    attribute :public_key, ActivityPub::PublicKeyType.to_type
+  end
+
+  attribute :data, DataType.to_type
 
   has_many :attributed_to_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object, dependent: :destroy
   has_many :attributed_to, through: :attributed_to_associations, source: :target_ap_object
@@ -13,19 +13,27 @@ class ActivityPub::Object < ApplicationRecord
   has_many :attribution_associations, ->{ where(type_key: 'attributed_to') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :target_ap_object, dependent: :destroy
   has_many :attributions, through: :attribution_associations, source: :ap_object
 
+  has_many :performed_by_associations, ->{ where(type_key: 'actor') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object, dependent: :destroy
+  has_many :actors, through: :performed_by_associations, source: :target_ap_object
+
+  has_many :as_actor_associations, ->{ where(type_key: 'actor') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :target_ap_object, dependent: :destroy
+  has_many :objects_performed, through: :as_actor_associations, source: :ap_object
+
   belongs_to :in_reply_to, class_name: 'ActivityPub::Object', foreign_key: :in_reply_to_ap_object_id, optional: true
   has_many :replies, class_name: 'ActivityPub::Object', foreign_key: :in_reply_to_ap_object_id, dependent: :destroy
 
   has_many :announce_associations, ->{ where(type_key: 'announce') }, class_name: 'ActivityPub::ObjectAssociation', inverse_of: :ap_object, dependent: :destroy
-  has_many :announced, through: :announce_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
+  has_many :announced, through: :announce_associations, class_name: 'ActivityPub::Object', source: :target_ap_object, counter_cache: true
 
   has_many :followers_associations, class_name: 'ActivityPub::Follow', inverse_of: :target_ap_object, dependent: :destroy
   has_many :followers, through: :followers_associations, class_name: 'ActivityPub::Object', source: :source_ap_object
   has_many :following_associations, class_name: 'ActivityPub::Follow', inverse_of: :source_ap_object, dependent: :destroy
-  has_many :following, through: :following_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
+  has_many :following, ->{ where('activity_pub_follows.state = ?', 'confirmed') }, through: :following_associations, class_name: 'ActivityPub::Object', source: :target_ap_object
 
-  has_many :likes, class_name: 'ActivityPub::Like', inverse_of: :target_ap_object
-  has_many :liked_by, class_name: 'ActivityPub::Like', inverse_of: :source_ap_object
+  has_many :likes, class_name: 'ActivityPub::Like', inverse_of: :source_ap_object, dependent: :destroy
+  has_many :liked_by, class_name: 'ActivityPub::Like', inverse_of: :target_ap_object, dependent: :destroy
+
+  has_many :attachments, class_name: 'Upload', foreign_key: :ap_object_id, dependent: :destroy
 
   belongs_to :activity_pubable, polymorphic: true, optional: true
 
@@ -33,6 +41,8 @@ class ActivityPub::Object < ApplicationRecord
 
   scope :local, ->{ where(guid: nil) }
   scope :remote, ->{ where.not(guid: nil) }
+  scope :not_replies, ->{ where(in_reply_to_ap_object_id: nil) }
+  scope :newest_first, ->{ order(created_at: :desc) }
 
   enum status: {
     draft: 'draft',
@@ -51,7 +61,7 @@ class ActivityPub::Object < ApplicationRecord
   end
 
   def self.find_by_username!(username)
-    where("data->'preferred_username' = ?", username).first!
+    where("data->>'preferred_username' = ?", username).first!
   end
 
   # @todo is there any built-in rails method to handle that? It feels hackish
@@ -70,6 +80,10 @@ class ActivityPub::Object < ApplicationRecord
 
   def local?
     attributes['guid'].blank?
+  end
+
+  def remote?
+    !local?
   end
 
   private

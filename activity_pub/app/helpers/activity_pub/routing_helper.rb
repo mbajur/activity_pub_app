@@ -8,6 +8,11 @@ module ActivityPub
       def default_url_options
         ActionMailer::Base.default_url_options.merge(host: ActivityPub.domain)
       end
+
+      def host_with_protocol
+        protocol = Rails.application.config.force_ssl ? 'https://' : 'http://'
+        "#{protocol}#{default_url_options[:host]}"
+      end
     end
 
     def full_asset_url(source)

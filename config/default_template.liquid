@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import hotwiredTurbo from 'https://cdn.skypack.dev/@hotwired/turbo@7.3.0';
+  </script>
+
+  {% if activity_pub.guid %}
+    <link href='{{ activity_pub.guid }}' rel='alternate' type='application/activity+json'>
+  {% endif %}
+</head>
+<body>
+  <!-- Home page template -->
+  {% if page_type == 'home' %}
+    <div class="text-center py-8 mb-6 container max-w-2xl mx-auto">
+      <a href="/" class="inline-block mb-4 mx-auto">
+        <img src="{{ site.avatar.url }}" width="64" height="64"/>
+      </a>
+
+      <h1 class="text-4xl font-bold mb-2">
+        This is {{ site.name }}
+      </h1>
+
+      <p class="text-lg">A modest and free media publishing platform for creators and artists.</p>
+    </div>
+
+    <div class="max-w-xl mx-auto mb-24">
+      <div class="border-b">
+        {% for post in posts %}
+          <article class="flex items-center border-t pb-4 pt-4">
+            <h2 class="text-2xl font-medium"><a href="{{ post.path }}">{{ post.name }}</a></h2>
+            <time datetime="2022-10-31" class="ml-auto text-gray-500">{{ post.published_at | date: "%a, %b %d %Y" }}</time>
+          </article>
+        {% endfor %}
+      </div>
+
+      <div class="flex mt-4 text-gray-500">
+        {% if pagination.prev %}<a href="?page={{ pagination.prev }}">&larr; Previous</a>{% endif %}
+        {% if pagination.next %}<a href="?page={{ pagination.next }}" class="ml-auto">Next &rarr;</a>{% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Single post page template -->
+  {% if page_type == 'post' %}
+    <div class="text-center py-8 mb-6 container max-w-2xl mx-auto border-b">
+      <a href="/" class="inline-block mb-4 mx-auto">
+        <img src="{{ site.avatar.url }}" width="64" height="64"/>
+      </a>
+
+      <h1 class="text-4xl font-bold mb-2">
+        {{ post.name }}
+      </h1>
+
+      <p class="text-lg text-gray-500 italic">Posted {{ post.published_at | date: "%a, %b %d %Y" }}</p>
+    </div>
+
+    <div class="
+      py-8 mb-6 container max-w-2xl mx-auto
+      [&_p]:mb-4
+      [&_p]:text-md
+      [&_p]:leading-7
+      [&_h1]:text-4xl
+      [&_h1]:font-bold
+      [&_h1]:mb-2
+      [&_h2]:text-3xl
+      [&_h2]:font-bold
+      [&_h2]:mb-2
+      [&_h3]:text-2xl
+      [&_h3]:font-bold
+      [&_h3]:mb-2
+      [&_h4]:text-xl
+      [&_h4]:font-bold
+      [&_h4]:mb-2
+      [&_h5]:text-sm
+      [&_h5]:font-bold
+      [&_h6]:text-xs
+      [&_h6]:font-bold
+      [&_p+h1]:mt-5
+      [&_p+h2]:mt-5
+      [&_p+h3]:mt-5
+      [&_p+h4]:mt-6
+    ">
+      {% for block in post.content_blocks %}
+        {% if block.type == 'header' %}
+          <h{{ block.data.level }}>{{ block.data.text }}</h{{ block.data.level }}>
+        {% endif %}
+
+        {% if block.type == 'paragraph' %}
+          <p>{{ block.data.text }}</p>
+        {% endif %}
+
+        {% if block.type == 'image' %}
+          <p><img src="{{ block.data.file.url }}" width="{{ block.data.file.width }}" height="{{ block.data.file.height }}"/></p>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Interactions -->
+      <div class="flex items-center justify-center gap-x-10 text-gray-400 text-md mt-12">
+        <div class="text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          {{ post.likes_count }}
+        </div>
+        <div class="text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+          {{ post.boosts_count }}
+        </div>
+        <div class="text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          {{ post.replies_count }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <footer class="max-w-xl mx-auto text-center text-sm text-gray-500 mt-12 mb-6">
+    <p>Made with <a href="https://mastodon.social/@abelio">Abelio</a></p>
+  </footer>
+</body>
+</html>

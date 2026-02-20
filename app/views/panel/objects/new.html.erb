@@ -1,0 +1,41 @@
+<%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
+  <%= layout.with_right do %>
+    <%= form_with model: @ap_object, url: panel_objects_path, scope: :ap_object, data: { controller: 'media-uploader-form', nested_form_wrapper_selector_value: '.media-uploader-form-wrapper', action: 'media-uploader:uploaded->media-uploader-form#add' } do |f| %>
+      <%= render(Ui::TopBarComponent.new) do |top_bar| %>
+        <% top_bar.with_left do %>
+          <h1 class="text-xl">Add post</h1>
+        <% end %>
+      <% end %>
+
+      <p class="max-w-2xl mx-auto text-center my-12 text-xl">What kind of post you want to add?</p>
+
+      <div class="max-w-2xl mx-auto flex flex-col gap-4">
+        <a href="<%= new_note_panel_objects_path %>" class="flex justify-between gap-8 bg-gray-50 p-8 group hover:bg-gray-100">
+          <div class="flex justify-center items-center w-10 h-10 rounded-full bg-gray-200">
+            <%= tabler_icon :note, size: 24, class: 'text-gray-500 flex-shrink-0 w-6 h-6' %>
+          </div>
+
+          <div class="flex-1">
+            <h3 class="text-xl font-semibold mb-2">Note</h3>
+            <p class="text-sm text-gray-500">Simple post with just an optional basic text and up to 10 attachments</p>
+          </div>
+
+          <%= tabler_icon :arrow_right, size: 24, class: 'text-gray-500 w-8 h-8 group-hover:-mr-2' %>
+        </a>
+
+        <a href="<%= new_article_panel_objects_path %>" class="flex justify-between gap-8 bg-gray-50 p-8 group hover:bg-gray-100">
+          <div class="flex justify-center items-center w-10 h-10 rounded-full bg-gray-200">
+            <%= tabler_icon :notes, size: 24, class: 'text-gray-500 flex-shrink-0 w-6 h-6' %>
+          </div>
+
+          <div class="flex-1">
+            <h3 class="text-xl font-semibold mb-2">Article</h3>
+            <p class="text-sm text-gray-500">Full post editor with all the block types, maximum control and unlimited attachments</p>
+          </div>
+
+          <%= tabler_icon :arrow_right, size: 24, class: 'text-gray-500 w-8 h-8 group-hover:-mr-2' %>
+        </a>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

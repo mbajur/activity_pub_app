@@ -1,0 +1,14 @@
+<%= render(Ui::TwoColumnsLayoutComponent.new) do |layout| %>
+  <% layout.with_right do %>
+    <div class="max-w-3xl mx-auto">
+      <%= render(Objects::WrapComponent.new(@object, current_ap_actor: current_site.activity_pub_object, liked_ap_object_ids: @liked_object_ids, replies: @replies, show_replies: false)) %>
+
+      <h5 class="font-bold mb-3">Replies</h5>
+      <ul>
+        <% @comments.arrange(order: :created_at).each do |comment, replies| %>
+          <%= render('panel/objects/comment', comment: comment, replies: replies, liked_comment_ids: @liked_comment_ids) %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>

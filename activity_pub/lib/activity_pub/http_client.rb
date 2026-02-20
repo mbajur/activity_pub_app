@@ -24,7 +24,7 @@ module ActivityPub
 
         if actor
           connection.request :signature, keys: {
-            resource.public_key_id => { private_key: actor.private_key }
+            resource.public_key_id => { private_key: actor.data.private_key }
           }, algorithm: 'rsa-sha256'
         end
 

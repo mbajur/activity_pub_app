@@ -1,6 +1,9 @@
 Rails.application.config.to_prepare do
+  ActiveModel::Type.register(:json, JsonType)
+
   ActivityPub.object_handlers = {
     'Note' => ActivityPub::ObjectHandlers::NoteHandler,
+    'Article' => ActivityPub::ObjectHandlers::ArticleHandler,
     'Announce' => ActivityPub::ObjectHandlers::AnnounceHandler,
     'Person' => ActivityPub::ObjectHandlers::PersonHandler,
     'Service' => ActivityPub::ObjectHandlers::ServiceHandler,
@@ -17,5 +20,6 @@ Rails.application.config.to_prepare do
     'Person' => ActivityPub::Person,
     'Group' => ActivityPub::Group,
     'Note' => ActivityPub::Note,
+    'Article' => ActivityPub::Article,
   }
 end

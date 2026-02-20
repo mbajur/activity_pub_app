@@ -1,27 +1,21 @@
 module ActivityPub
   # For initial/master object resolving, not for the subsequential resolve
   class RootObjectResolver
-    def initialize(uri, shallow: false, skip_if_fresh: true)
+    def initialize(uri, actor: nil, shallow: false, skip_if_fresh: true)
       @uri = uri
       @shallow = shallow
       @skip_if_fresh = skip_if_fresh
+      @actor = actor
     end
 
     def call
-      remote_object = HttpClient.new(nil).get(URI.parse(@uri)).body
+      remote_object = HttpClient.new(@actor).get(URI.parse(@uri)).body
 
-      batch = GoodJob::Batch.new
-      batch.description = "Resolve #{remote_object['id']} object"
+      local_object = ActivityPub::ObjectResolver.new(
+        remote_object['id'], actor: @actor, shallow: @shallow, skip_if_fresh: @skip_if_fresh
+      ).call
 
-      batch.add do
-        @local_object = ActivityPub::ObjectResolver.new(
-          remote_object['id'], shallow: @shallow, skip_if_fresh: @skip_if_fresh
-        ).call
-      end
-
-      batch.enqueue(uri: remote_object['id'])
-
-      @local_object
+      local_object
     end
   end
 end

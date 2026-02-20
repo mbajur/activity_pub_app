@@ -16,9 +16,9 @@ module ActivityPub
         # Instead, if original object is Actor - we resolve it's outbox.
         # Otherwise we just resolve all the associated objects and associated
         # actors but we skip their outboxes.
-        if batch.properties[:uri] == local_object.guid
-          ActivityPub::ObjectResolver.new(remote_object['outbox']).call
-        end
+        # if batch.properties[:uri] == local_object.guid
+        #   ActivityPub::ObjectResolver.new(remote_object['outbox']).call
+        # end
       end
     end
   end

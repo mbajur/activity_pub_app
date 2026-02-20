@@ -8,7 +8,7 @@ module FaradayMiddleware
         request[key] = val
       end
 
-      log = OutboundRequestLog.from_request(request)
+      log = ::RailsApiLogger::OutboundRequestLog.from_request(request)
       @app.call(env).tap do |response|
         log.response_code = response.status
         log.response_body = response.env.response_body

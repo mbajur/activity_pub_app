@@ -1,0 +1,46 @@
+<div id="<%= dom_id(object, :interactions) %>">
+  <div class="px-0 pt-3">
+    <div class="text-gray-400 text-xs flex flex-row items-center h-6">
+      <div class="mr-3 flex gap-3">
+        <% if liked? %>
+          <%= button_to unlike_panel_object_path(object), class: 'block text-red-500', data: { method: :patch } do %>
+            <%= tabler_icon(:heart_filled, size: 25) %>
+          <% end %>
+        <% else %>
+          <%= button_to like_panel_object_path(object), class: 'block', data: { method: :patch } do %>
+            <%= tabler_icon(:heart, size: 25) %>
+          <% end %>
+        <% end %>
+
+        <a href="#">
+          <%= tabler_icon(:message_circle, size: 25) %>
+        </a>
+
+        <a href="#">
+          <%= tabler_icon(:refresh, size: 25) %>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <% if show_summary? %>
+    <div class="flex flex-row items-center mt-3">
+      <% if recent_likes.any? %>
+        <div class="mr-2">
+          <div class="flex -space-x-1 overflow-hidden">
+            <% recent_likes.each do |like| %>
+              <% author_decorated = AuthorDecorator.new(like.source_ap_object) %>
+              <%= link_to panel_actor_objects_path(like.source_ap_object), class: 'inline-flex' do %>
+                <%= image_tag author_decorated.avatar_url, class: 'inline-block h-4 w-4 rounded-full ring-2 ring-white' %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="text-gray-400 text-xs">
+        <%= summary %>
+      </div>
+    </div>
+  <% end %>
+</div>

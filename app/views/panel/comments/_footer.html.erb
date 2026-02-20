@@ -1,0 +1,18 @@
+<div class="text-gray-400 text-xs flex gap-2" id="<%= dom_id(comment, :footer) %>">
+  <div class="flex">
+    <% if liked_comment_ids.include?(comment.id) %>
+      <%= button_to unlike_panel_comment_path(comment), method: :post, class: 'text-red-500' do %>
+        <%= tabler_icon :heart_filled, size: 17 %>
+      <% end %>
+    <% else %>
+      <%= button_to like_panel_comment_path(comment), method: :post do %>
+        <%= tabler_icon :heart, size: 17 %>
+      <% end %>
+    <% end %>
+
+  </div>
+  <div>•</div>
+  <div><%= pluralize(0, 'reply') %></div>
+  <div>•</div>
+  <div>Reply</div>
+</div>

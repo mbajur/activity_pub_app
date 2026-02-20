@@ -1,0 +1,5 @@
+<% if @ap_object.is_a?(ActivityPub::Article) %>
+  <%= render template: 'panel/objects/edit_article' %>
+<% else %>
+  <%= render template: 'panel/objects/edit_note' %>
+<% end %>
